@@ -20,7 +20,7 @@ public class Menu extends StateMenu
 		menu_stage = new Stage(new ScreenViewport()); 
 		
 		//creation du bouton
-		skin_bouton = new Skin( Gdx.files.internal( "ui/defaultskin.json" ));
+		skin_bouton = new Skin( Gdx.files.internal( "Asset/Ui_main_menu/defaultskin.json" ));
 		jeu_bouton=new TextButton("Mon boutton", skin_bouton);
 		jeu_bouton.setPosition(350,200);
 		menu_stage.addActor(jeu_bouton);
