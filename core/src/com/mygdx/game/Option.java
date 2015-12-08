@@ -4,8 +4,9 @@ public class Option extends StateMenu
 {
 	
 	@Override
-	public void changer_Etat() 
+	public StateMenu changer_Etat() 
 	{
-		
+		System.out.println("etat Option");
+		return null;
 	}
 }

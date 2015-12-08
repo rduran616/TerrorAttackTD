@@ -4,9 +4,10 @@ public class Quitter extends StateMenu
 {
 
 	@Override
-	public void changer_Etat() {
-		// TODO Auto-generated method stub
-		
+	public StateMenu changer_Etat() 
+	{
+		System.out.println("etat Quitter");
+		return null;
 	}
 
 }

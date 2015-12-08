@@ -4,8 +4,10 @@ public class Statistique extends StateMenu
 {
 
 	@Override
-	public void changer_Etat() {
-		// TODO Auto-generated method stub
+	public StateMenu changer_Etat() 
+	{
+		System.out.println("etat Statistique");
+		return null;
 		
 	}
 
