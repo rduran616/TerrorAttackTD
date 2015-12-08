@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-public class StateMenu 
+abstract class StateMenu 
 {
-
+	public abstract void changer_Etat();
 }
