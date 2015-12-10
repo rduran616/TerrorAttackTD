@@ -38,7 +38,7 @@ public class MyGdxGame extends ApplicationAdapter
 		
 		//rendu du menu
 		menu_en_cours = main_menu[menu_en_cours.ordinal()].changer_Etat();
-		System.out.println(menu_en_cours+"1");
+
 
 		/*batch.begin();
 		batch.draw(img, 0, 0);
