@@ -67,6 +67,8 @@ public class Menu extends StateMenu
 		System.out.println("Création menu !");
 	}
 	
+	
+	//changement d'etat ( pour le moment que si on appui sur "haut" 
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
@@ -75,8 +77,7 @@ public class Menu extends StateMenu
 		//affichage menu
 		menu_stage.act();
 		menu_stage.draw();
-		//menu_stage.setViewport(800,480,false);
-		
+
 		//si touche, on change de menu
 		if(Gdx.input.isKeyPressed(Keys.UP))
 		{
