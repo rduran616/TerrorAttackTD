@@ -20,7 +20,7 @@ public class MyGdxGame extends ApplicationAdapter
 		//batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");
 		
-		main_menu = new StateMenu[5];
+		main_menu 	 = new StateMenu[5];
 		main_menu[0] = new Menu();
 		main_menu[1] = new Jeu();
 		main_menu[2] = new Statistique();
@@ -28,8 +28,6 @@ public class MyGdxGame extends ApplicationAdapter
 		main_menu[4] = new Quitter();
 		
 		menu_en_cours = StateMEnuEnum.MENU;
-		
-		
 	}
 
 	@Override
@@ -40,6 +38,7 @@ public class MyGdxGame extends ApplicationAdapter
 		
 		//rendu du menu
 		menu_en_cours = main_menu[menu_en_cours.ordinal()].changer_Etat();
+		System.out.println(menu_en_cours+"1");
 
 		/*batch.begin();
 		batch.draw(img, 0, 0);

@@ -5,24 +5,30 @@ import com.badlogic.gdx.Input.Keys;
 
 public class Jeu extends StateMenu
 {
+	GlobalValues values_;		
+	StateMEnuEnum selection_;
 	
-	public Jeu(){System.out.println("Création jeu !");}
+	public Jeu()
+	{
+		selection_ = StateMEnuEnum.JEU;
+		values_ = GlobalValues.getInstance();
+	}
 
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
-		System.out.println("etat Jeu");
-		
+
 		//affichage menu
 		
-		//si touche, on change de menu
-		if(Gdx.input.isKeyPressed(Keys.UP))
+		//Changer de menu
+		if(selection_ != StateMEnuEnum.JEU)
 		{
-			return StateMEnuEnum.MENU;
+			StateMEnuEnum tps = selection_;
+			selection_ = StateMEnuEnum.JEU;
+			return  tps;
 		}
-		
-		
-		return StateMEnuEnum.JEU;
+		else
+			return selection_;
 	}
 
 }

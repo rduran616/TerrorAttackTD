@@ -5,7 +5,15 @@ import com.badlogic.gdx.Input.Keys;
 
 public class Option extends StateMenu
 {
-	public Option(){System.out.println("Création Option !");}
+	
+	GlobalValues values_;		
+	StateMEnuEnum selection_;
+	
+	public Option()
+	{
+		selection_ = StateMEnuEnum.OPTION;
+		values_ = GlobalValues.getInstance();
+	}
 	
 	@Override
 	public StateMEnuEnum changer_Etat() 
@@ -14,12 +22,15 @@ public class Option extends StateMenu
 		
 		//affichage menu
 		
-		//si touche, on change de menu
-		if(Gdx.input.isKeyPressed(Keys.UP))
+		//Changer de menu
+		if(selection_ != StateMEnuEnum.OPTION)
 		{
-			return StateMEnuEnum.JEU;
+			StateMEnuEnum tps = selection_;
+			selection_ = StateMEnuEnum.OPTION;
+			return  tps;
 		}
-
-		return StateMEnuEnum.OPTION;
+		else
+			return selection_;
+				
 	}
 }

@@ -5,24 +5,28 @@ import com.badlogic.gdx.Input.Keys;
 
 public class Statistique extends StateMenu
 {
-
-	public Statistique(){System.out.println("Création stat !");}
+	GlobalValues values_;		
+	StateMEnuEnum selection_;
+	
+	public Statistique()
+	{
+		selection_ = StateMEnuEnum.STATISTIQUE;
+		values_ = GlobalValues.getInstance();
+	}
 	
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
-		System.out.println("etat Statistique");
-		
-		//affichage menu
-		
-		//si touche, on change de menu
-		if(Gdx.input.isKeyPressed(Keys.UP))
+
+		//Changer de menu
+		if(selection_ != StateMEnuEnum.STATISTIQUE)
 		{
-			return StateMEnuEnum.OPTION;
+			StateMEnuEnum tps = selection_;
+			selection_ = StateMEnuEnum.STATISTIQUE;
+			return  tps;
 		}
-		
-		
-		return StateMEnuEnum.STATISTIQUE;
+		else
+			return selection_;
 		
 	}
 
