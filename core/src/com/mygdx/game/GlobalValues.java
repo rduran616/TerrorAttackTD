@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  * Possibilité d'ajouter des fonctions
  */
 
+
 //final car pas d'héritier possible
 public final class GlobalValues 
 {
