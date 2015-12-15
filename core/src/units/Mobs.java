@@ -1,5 +1,6 @@
 package units;
 
-public class Mobs {
+public class Mobs 
+{
 
 }

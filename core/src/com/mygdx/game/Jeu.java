@@ -34,7 +34,7 @@ public class Jeu extends StateMenu
 	public StateMEnuEnum changer_Etat() 
 	{
 
-		// choix de l'etat et action en focntion de l'état
+		// choix de l'etat et action en fonction de l'état du jeu
 		
 		
 		
