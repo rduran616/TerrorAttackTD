@@ -73,12 +73,9 @@ public class Quitter extends StateMenu
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
-
 		Gdx.input.setInputProcessor(stage);
-		//stage.act();
 		stage.draw();
-		
-		
+
 		//Changer de menu
 		if(selection_ != StateMEnuEnum.QUITTER)
 		{
