@@ -51,7 +51,7 @@ public class Jeu extends StateMenu
 		}
 		else if(etat_jeu_ == StateJeuEnum.RETOUR)
 		{
-			etat_jeu_ = StateJeuEnum.CHOIX;
+			etat_jeu_  = StateJeuEnum.CHOIX;
 			selection_ = StateMEnuEnum.MENU;
 		}
 

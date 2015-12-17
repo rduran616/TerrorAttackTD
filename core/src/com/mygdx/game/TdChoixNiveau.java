@@ -49,7 +49,6 @@ public class TdChoixNiveau extends StateJeu
 		//initialisation des widgets
 		
 		retour_=new TextButton("Retour", values_.get_Skin());//init du bouton Jeu 
-		jouer_=new TextButton("Jouer", values_.get_Skin());//init du bouton Option 
 		
 		layout_menu = new Table();
 		layout_menu.setSize(values_.get_width(),values_.get_height());
@@ -83,7 +82,10 @@ public class TdChoixNiveau extends StateJeu
 		layout_menu.row();
 		
 		if(lst.size > 0)
+		{
+			jouer_=new TextButton("Jouer", values_.get_Skin());//init du bouton Option 
 			layout_menu.add(jouer_).pad(10);
+		}
 		
 		layout_menu.row();
 		layout_menu.add(retour_).pad(10);
@@ -99,6 +101,20 @@ public class TdChoixNiveau extends StateJeu
 		    	   selection_ = StateJeuEnum.RETOUR;
 		       }
 		 });
+		
+		
+		if(jouer_ != null)
+		{	jouer_.addListener(new ClickListener()
+			{
+			       @Override
+			       public void clicked(InputEvent event, float x, float y) 
+			       {
+			    	   values_.map_name(lst.get(lvl_list_.getSelectedIndex()));	
+					   values_.init_tile_map();
+			    	   selection_ = StateJeuEnum.INTRO;
+			       }
+			 });
+		}
 	}
 	
 	public String carte_name(){return carte_name_;}
