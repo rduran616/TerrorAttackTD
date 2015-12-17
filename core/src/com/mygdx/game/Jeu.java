@@ -43,11 +43,26 @@ public class Jeu extends StateMenu
 		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
 		{
 			//dessin de la carte
-			values_.camera_Update();
-			values_.tiled_Map_View();
-	        values_.tiled_Map_Render();
-	        
+			if(values_.camera_Update() != ErrorEnum.OK)
+			{	
+				etat_jeu_ = StateJeuEnum.CHOIX;
+				selection_ = StateMEnuEnum.JEU;
+			}
+			
+			if(values_.tiled_Map_View()!= ErrorEnum.OK)
+			{	
+				etat_jeu_ = StateJeuEnum.CHOIX;
+				selection_ = StateMEnuEnum.JEU;
+			}
+			
+			if(values_.tiled_Map_Render()!= ErrorEnum.OK)
+			{	
+				etat_jeu_ = StateJeuEnum.CHOIX;
+				selection_ = StateMEnuEnum.JEU;
+			}
+			
 	        //dessins du reste
+			
 		}
 		else if(etat_jeu_ == StateJeuEnum.RETOUR)
 		{

@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.SerializationException;
 
 import units.Mobs;
 import units.Tower;
@@ -150,19 +151,38 @@ public final class GlobalValues
 	Mobs[] mobs(){return liste_mobs;}
 
 	
-	public void camera_Update()
+	public ErrorEnum camera_Update()
 	{
-		camera_.update();
+		if(camera_ != null)
+		{
+			camera_.update();
+			return ErrorEnum.OK;
+		}
+		else
+			return ErrorEnum.UNINITIALIZED;
+		
 	}
 	
-	public void tiled_Map_View()
+	public ErrorEnum tiled_Map_View()
 	{
-		tiledMapRenderer_.setView(camera_);
+		if(tiledMapRenderer_ != null && camera_ != null)
+		{
+			tiledMapRenderer_.setView(camera_);
+			return ErrorEnum.OK;
+		}
+		else
+			return ErrorEnum.UNINITIALIZED;
 	}
 	
-	public void tiled_Map_Render()
+	public ErrorEnum tiled_Map_Render()
 	{
-		 tiledMapRenderer_.render();
+		if(tiledMapRenderer_ != null)
+		{
+			tiledMapRenderer_.render();
+			return ErrorEnum.OK;
+		}
+		else
+			return ErrorEnum.UNINITIALIZED;
 	}
 
 	public void init_tile_map(String name)
@@ -179,8 +199,16 @@ public final class GlobalValues
 		camera_ = new OrthographicCamera();
 		camera_.setToOrtho(false,width_,height_);
         camera_.update();
-		tiledMap_ = new TmxMapLoader().load(carte_name_);
-        tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
+		
+        try 
+        {
+        	tiledMap_ = new TmxMapLoader().load(carte_name_);
+            tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
+            
+        }catch(SerializationException e) 
+        {
+        	System.err.println("Erreur: carte non valide");
+        }
 	}
 	
 	public void print_carte() 
