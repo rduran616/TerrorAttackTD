@@ -3,11 +3,13 @@ package com.mygdx.game;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -69,19 +71,34 @@ public class TdChoixNiveau extends StateJeu
 		{
 			erreur_nb_map_ = new Label("Erreur: aucune carte trouvee",values_.get_Skin());
 			layout_menu.add(erreur_nb_map_).pad(10);
-			layout_menu.row();
 		}
 		else
 		{
 			lvl_list_.setItems(lst);
 			layout_menu.add(lvl_list_);
-			layout_menu.row();
-			layout_menu.add(jouer_).pad(10);
-			layout_menu.add(retour_).pad(10);
+			//layout_menu.add(jouer_).pad(10);
+			//layout_menu.add(retour_).pad(10);
 		}
 		
+		layout_menu.row();
+		
+		if(lst.size > 0)
+			layout_menu.add(jouer_).pad(10);
+		
+		layout_menu.row();
 		layout_menu.add(retour_).pad(10);
 		menu_stage.addActor(layout_menu);
+		
+		
+		
+		
+		retour_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) {
+		    	   selection_ = StateJeuEnum.RETOUR;
+		       }
+		 });
 	}
 	
 	public String carte_name(){return carte_name_;}
@@ -91,11 +108,12 @@ public class TdChoixNiveau extends StateJeu
 	{
 		
 		//afficher menu de selection
-		if(lst.size <=1 && lst.size >0)
+		if(lst.size == 1 )
 		{
 			selection_ = StateJeuEnum.INTRO;
 			values_.map_name(lst.get(0));
-			values_.carte_init();
+			//values_.carte_init();		
+			values_.init_tile_map();
 		}
 		
 			

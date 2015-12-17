@@ -6,5 +6,6 @@ public enum StateJeuEnum
 	INTRO,
 	PAUSE,
 	JEU,
-	FIN;	
+	FIN,
+	RETOUR;	
 }

@@ -43,8 +43,13 @@ public class Jeu extends StateMenu
 		
 		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
 		{
-			
-			
+			values_.camera_Update();
+			values_.tiled_Map_View();
+	        values_.tiled_Map_Render();
+		}
+		else if(etat_jeu_ == StateJeuEnum.RETOUR)
+		{
+			selection_ = StateMEnuEnum.MENU;
 		}
 
 		

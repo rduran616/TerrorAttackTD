@@ -2,6 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import units.Mobs;
@@ -66,21 +72,27 @@ public final class GlobalValues
 	/**** Attributs *****/
 	
 	//général
-	int height_	= 0; 
-	int width_	= 0;
-	int size_px_ = 32;
+	int height_	= 0; 			//resolution en w et h en px
+	int width_	= 0;			
+	int size_px_ = 32;			//Taille en px d'un carreaux de la carte
 	
-	//decors
-	Skin skin_bouton_;
+	//decors	
+	Skin skin_bouton_;			//peau des boutons
 	
 	//carte
-	int ennemi_max_=1000;
-	int size_n_ = 20;
-	int size_m_ = 30;
-	TypeObjet carte_[];
-	Tower liste_tours[];
-	Mobs liste_mobs[];
-	String carte_name_;
+	int ennemi_max_=1000;		//nombre max d'ennemi
+	int size_n_ = 20;			//nombre de carreaux de la carte en width
+	int size_m_ = 30;			//nombre de carreaux de la carte en height
+	TypeObjet carte_[];			//une carte ( à enlever? )
+	Tower liste_tours[];		//liste des tours placées
+	Mobs liste_mobs[];			//liste des mobs à afficher
+	String carte_name_;			//nom ou chemin de la carte
+	
+		
+	Texture img_;  						//texture carte
+    TiledMap tiledMap_; 				//carte
+    OrthographicCamera camera_;			//camera
+    TiledMapRenderer tiledMapRenderer_;	//rendu de la carte
 
 		
 	/**** Méthodes *****/
@@ -137,7 +149,40 @@ public final class GlobalValues
 	Tower[] tower(){return liste_tours;}
 	Mobs[] mobs(){return liste_mobs;}
 
+	
+	public void camera_Update()
+	{
+		camera_.update();
+	}
+	
+	public void tiled_Map_View()
+	{
+		tiledMapRenderer_.setView(camera_);
+	}
+	
+	public void tiled_Map_Render()
+	{
+		 tiledMapRenderer_.render();
+	}
 
+	public void init_tile_map(String name)
+	{
+		camera_ = new OrthographicCamera();
+		camera_.setToOrtho(false,width_,height_);
+        camera_.update();
+		tiledMap_ = new TmxMapLoader().load(name);
+        tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
+	}
+	
+	public void init_tile_map()
+	{
+		camera_ = new OrthographicCamera();
+		camera_.setToOrtho(false,width_,height_);
+        camera_.update();
+		tiledMap_ = new TmxMapLoader().load(carte_name_);
+        tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
+	}
+	
 	public void print_carte() 
 	{
 		for(int i=0;i<carte_.length;i++)
