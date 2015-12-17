@@ -36,19 +36,22 @@ public class Jeu extends StateMenu
 	{
 
 		// choix de l'etat et action en fonction de l'état du jeu
-		
 		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute();
 
 		//dessin du jeu
 		
 		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
 		{
+			//dessin de la carte
 			values_.camera_Update();
 			values_.tiled_Map_View();
 	        values_.tiled_Map_Render();
+	        
+	        //dessins du reste
 		}
 		else if(etat_jeu_ == StateJeuEnum.RETOUR)
 		{
+			etat_jeu_ = StateJeuEnum.CHOIX;
 			selection_ = StateMEnuEnum.MENU;
 		}
 
