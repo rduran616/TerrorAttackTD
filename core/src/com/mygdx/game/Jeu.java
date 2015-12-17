@@ -18,29 +18,34 @@ public class Jeu extends StateMenu
 		values_ = GlobalValues.getInstance();
 		
 		//initialisation du jeu
-		etat_jeu_ = StateJeuEnum.INTRO;
-		jeu_ = new StateJeu[4];
+		etat_jeu_ = StateJeuEnum.CHOIX;
+		jeu_ = new StateJeu[5];
+		
 		if(jeu_ != null)
 		{
-			jeu_[0] = new TdIntro();
-			jeu_[1] = new TdPause();
-			jeu_[2] = new TdJeu();
-			jeu_[3] = new TdFin();
+			jeu_[0] = new TdChoixNiveau();
+			jeu_[1] = new TdIntro();
+			jeu_[2] = new TdPause();
+			jeu_[3] = new TdJeu();
+			jeu_[4] = new TdFin();
 		}
-
 	}
 
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
 
-		// choix de l'etat et action en focntion de l'état
+		// choix de l'etat et action en fonction de l'état du jeu
 		
-		
-		
+		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute();
+
 		//dessin du jeu
 		
-		
+		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
+		{
+			
+			
+		}
 
 		
 		//Changer de menu
