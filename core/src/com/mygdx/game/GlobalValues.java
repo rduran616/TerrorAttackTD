@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 /*
  * Classe singleton contenant toutes les variables global et accessible par tous et partout
  * Possibilité d'ajouter des fonctions
- *
  */
 
 
@@ -27,10 +26,6 @@ public final class GlobalValues
 		
 		//creation d'un skin ( fond des boutons )
 		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
-		
-		//creation carte de base
-		if(size_n_ > 0 && size_m_>0 )
-			carte = new TypeObjet[size_n_ * size_m_];
 
 	}
 
@@ -56,13 +51,7 @@ public final class GlobalValues
 	int height_	= 0; 
 	int width_	= 0;
 	Skin skin_bouton_;
-	int ennemi_max_=1000;
-	int size_n_ = 20;
-	int size_m_ = 30;
-	TypeObjet carte[];
-	
 
-	
 	
 	/**** Méthodes *****/
 	
