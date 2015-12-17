@@ -59,7 +59,7 @@ public class TdChoixNiveau extends StateJeu
 		
 		lvl_list_ = new List<String>(values_.get_Skin());
 		lst = new Array<String>();
-		FileHandle dirHandle = Gdx.files.internal("C:/Users/Florian/Desktop/YP-M4A-EQG3/TerrorAttackTD-master/android/assets/map/");
+		FileHandle dirHandle = Gdx.files.internal("../android/assets/map");
 		for (FileHandle entry: dirHandle.list()) 
 		{
 			lst.add(entry.path());
