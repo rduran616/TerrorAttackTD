@@ -196,19 +196,27 @@ public final class GlobalValues
 	
 	public void init_tile_map()
 	{
-		camera_ = new OrthographicCamera();
-		camera_.setToOrtho(false,width_,height_);
-        camera_.update();
+		float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 		
         try 
         {
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
             tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
             
+            		
+    		camera_ = new OrthographicCamera();
+        	//camera_ = new OrthographicCamera(25 * aspectRatio ,25);
+    		camera_.setToOrtho(false,width_,height_);
+    		//camera_.position.set(960/2,640/2,0);
+    		camera_.translate(camera_.viewportWidth/2,camera_.viewportHeight/2);
+            camera_.update();
+            
+            
         }catch(SerializationException e) 
         {
         	System.err.println("Erreur: carte non valide");
         }
+
 	}
 	
 	public void print_carte() 
@@ -222,5 +230,21 @@ public final class GlobalValues
 		}
 	}
 	
+	public void camera_Init()
+	{
+		
+	}
+	
+	public ErrorEnum camera_Translate(float x, float y)
+	{
+		if(camera_!=null)
+		{
+			camera_.translate(x, y);
+			
+			return ErrorEnum.OK;
+		}
+		
+		return ErrorEnum.UNINITIALIZED;
+	}
 
 }
