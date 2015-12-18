@@ -64,8 +64,11 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		layout_table_tower_ 	= new Table();
 		Layout_table_upgrade_	= new Table();
 		Layout_table_bonus_		= new Table();
-		main_layout_game_		= new Table();
+		main_table_game_		= new Table();
 		stage_game_				= new Stage(new ScreenViewport());
+		
+		
+		
 		
 		
 		main_table_game_.add(layout_table_tower_);
