@@ -8,6 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+
+
+/*
+ * pour le hud mais pour le moment osef ^^
+ */
+
+
+
+
+
+
+
 public class Tower extends Group implements EventListener {
 
 	public static final int STATUT_VALIDER = 1;

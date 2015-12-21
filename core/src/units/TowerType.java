@@ -2,37 +2,31 @@ package units;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class TowerType {
+public abstract class TowerType {
+	
+	/*
+	 * classe mère de toutes les tours!
+	 * 
+	 * Gestion des images de chaque tour ainsi que des positions 
+	 * + mise en place dans un tableau de coordonnées
+	 */
+	
+	int a = 0;
+	
 	
 	private String texture; //lien vers l'image
 	private String bulletTexture;
 	public final Vector2 bulletSize;
-	public String nom;
-	int cout;
-	float attspeed;
-	float range;
-	int damage;
-	float dps;
-	float dot;
-	int slow;
-	float zone;
-	boolean air;
+	int[][] coords;
 	
-	public TowerType(String texture, String bulletTexture, Vector2 bulletSize, String nom, int cout, float attspeed,float range, int damage, float dps, float dot, int slow, float zone, boolean air)
+	
+	
+	public TowerType(String texture, String bulletTexture, Vector2 bulletSize, int x, int y)
 	{
 		this.texture = texture; //lien vers l'image
-		this.bulletTexture = bulletTexture;
+		this.setBulletTexture(bulletTexture);
 		this.bulletSize = bulletSize;
-		this.nom = nom;
-		this.cout = cout;
-		this.attspeed=attspeed;
-		this.range = range;
-		this.damage = damage;
-		this.dps = dps;
-		this.dot = dot;
-		this.slow = slow;
-		this.zone = zone;
-		this.air = air;
+		coords[x][y]=1;
 	}
 	
 	 public String getTexture() {
@@ -47,4 +41,19 @@ public class TowerType {
 	    public void onImpact(Mobs target) {
 	    	// a voir
 	    }
+	    
+	    public void onExecute()
+	    {
+	    	// a faire
+	    }
+
+		public String getBulletTexture() {
+			return bulletTexture;
+		}
+
+		public void setBulletTexture(String bulletTexture) {
+			this.bulletTexture = bulletTexture;
+		}
+
+	
 }
