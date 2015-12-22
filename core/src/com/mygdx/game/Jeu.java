@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import Utilitaires.TickHorloge;
+
 public class Jeu extends StateMenu  implements ApplicationListener,InputProcessor
 { 
 	//var global
@@ -21,6 +23,7 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	StateJeu jeu_[];
 	StateJeuEnum etat_jeu_;
 	boolean touche_activer_;
+	TickHorloge tick_;		//gestion des ticks pour attente passive
 	
 	//HUD
 	
@@ -74,6 +77,8 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		
 		stage_game_.addActor(main_table_game_);
 
+		
+		tick_ = new TickHorloge(30); //30fps max
 	}
 
 	@Override
@@ -198,13 +203,16 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		//System.out.println("toucher");
 		//if(Gdx.input.justTouched()== true)
 		
-		double ecartX = Gdx.input.getDeltaX(0) - Gdx.input.getDeltaX(1);
-		double ecartY = Gdx.input.getDeltaY(0) - Gdx.input.getDeltaY(1);
-		
-		if(ecartX > 0 || ecartY >0)
-			values_.zoom(range);
-		else
-			values_.zoom(-range);
+		if(tick_.tick())
+		{
+			double ecartX = Gdx.input.getDeltaX(0) - Gdx.input.getDeltaX(1);
+			double ecartY = Gdx.input.getDeltaY(0) - Gdx.input.getDeltaY(1);
+			
+			if(ecartX > 0 || ecartY >0)
+				values_.zoom(range);
+			else
+				values_.zoom(-range);
+		}
 
 		return false;
 	}

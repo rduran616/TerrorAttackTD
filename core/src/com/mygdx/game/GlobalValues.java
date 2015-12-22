@@ -89,11 +89,14 @@ public final class GlobalValues
 	Mobs liste_mobs[];			//liste des mobs à afficher
 	String carte_name_;			//nom ou chemin de la carte
 	
-		
 	Texture img_;  						//texture carte
     TiledMap tiledMap_; 				//carte
-    OrthographicCamera camera_;			//camera
     TiledMapRenderer tiledMapRenderer_;	//rendu de la carte
+    
+    //gestion de la caméra
+    OrthographicCamera camera_;			//camera
+    double zoom_max_ =1000;				//control du zoom max
+    double zoom_min_ = 0;				//control du zoom min
 
 		
 	/**** Méthodes *****/
@@ -247,9 +250,19 @@ public final class GlobalValues
 		return ErrorEnum.UNINITIALIZED;
 	}
 
-	public void zoom(double d)
+	public ErrorEnum zoom(double d)
 	{
 		if(camera_!=null)
-			camera_.zoom+=d;
+		{
+			if((camera_.zoom + d ) < zoom_max_ && (camera_.zoom + d) > zoom_min_)
+				camera_.zoom+=d;
+			
+			return ErrorEnum.OK;
+		}
+		else
+		{
+			System.err.println("Camera non instancier");
+			return ErrorEnum.UNINITIALIZED;
+		}
 	}
 }

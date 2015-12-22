@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -59,7 +60,13 @@ public class TdChoixNiveau extends StateJeu
 		
 		lvl_list_ = new List<String>(values_.get_Skin());
 		lst = new Array<String>();
-		FileHandle dirHandle = Gdx.files.internal("../android/assets/map");
+		
+		FileHandle dirHandle;
+		if(Gdx.app.getType() == ApplicationType.Android)
+			dirHandle = Gdx.files.internal("map/");
+		else
+			dirHandle = Gdx.files.internal("../android/assets/map");
+			
 		for (FileHandle entry: dirHandle.list()) 
 		{
 			lst.add(entry.path());
