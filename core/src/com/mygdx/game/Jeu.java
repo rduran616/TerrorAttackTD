@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import Utilitaires.FingerZoom;
 import Utilitaires.TickHorloge;
 
 public class Jeu extends StateMenu  implements ApplicationListener,InputProcessor
@@ -24,6 +25,9 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	StateJeuEnum etat_jeu_;
 	boolean touche_activer_;
 	TickHorloge tick_;		//gestion des ticks pour attente passive
+	
+	//Zoom
+	FingerZoom finger;
 	
 	//HUD
 	
@@ -79,6 +83,7 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 
 		
 		tick_ = new TickHorloge(30); //30fps max
+		finger = new FingerZoom(0.01);
 	}
 
 	@Override
@@ -190,8 +195,10 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 
 
 	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) 
+	{
+		finger.finger_touch(screenX, screenY, pointer);
+		
 		return false;
 	}
 
@@ -199,27 +206,14 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) 
 	{
-		double range=0.1;
-		//System.out.println("toucher");
-		//if(Gdx.input.justTouched()== true)
-		
-		if(tick_.tick())
-		{
-			double ecartX = Gdx.input.getDeltaX(0) - Gdx.input.getDeltaX(1);
-			double ecartY = Gdx.input.getDeltaY(0) - Gdx.input.getDeltaY(1);
-			
-			if(ecartX > 0 || ecartY >0)
-				values_.zoom(range);
-			else
-				values_.zoom(-range);
-		}
-
+		finger.finger_Up(screenX, screenY, pointer);
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
+
+		finger.finger_zoom(screenX, screenY, pointer);
 		return false;
 	}
 

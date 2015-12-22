@@ -265,4 +265,5 @@ public final class GlobalValues
 			return ErrorEnum.UNINITIALIZED;
 		}
 	}
+
 }
