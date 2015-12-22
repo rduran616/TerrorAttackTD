@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import Utilitaires.FingerZoom;
+import Utilitaires.FingerTransformMap;
 import Utilitaires.TickHorloge;
 
 public class Jeu extends StateMenu  implements ApplicationListener,InputProcessor
@@ -27,7 +27,7 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	TickHorloge tick_;		//gestion des ticks pour attente passive
 	
 	//Zoom
-	FingerZoom finger;
+	FingerTransformMap finger;
 	
 	//HUD
 	
@@ -81,9 +81,10 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		
 		stage_game_.addActor(main_table_game_);
 
+		Gdx.input.setCatchBackKey(true);
 		
 		tick_ = new TickHorloge(30); //30fps max
-		finger = new FingerZoom(0.01);
+		finger = new FingerTransformMap(0.01);
 	}
 
 	@Override
@@ -164,8 +165,13 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	}
 
 	@Override
-	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
+	public boolean keyDown(int keycode) 
+	{
+		if(keycode == Keys.BACK)
+		{
+			etat_jeu_ = StateJeuEnum.CHOIX;
+			selection_ = StateMEnuEnum.MENU;
+	    }
 		return false;
 	}
 
@@ -197,7 +203,7 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) 
 	{
-		finger.finger_touch(screenX, screenY, pointer);
+		finger.finger_Touch(screenX, screenY, pointer);
 		
 		return false;
 	}
@@ -213,7 +219,8 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 
-		finger.finger_zoom(screenX, screenY, pointer);
+		finger.finger_Zoom(screenX, screenY, pointer);
+		finger.finger_Move(screenX, screenY, pointer);
 		return false;
 	}
 
