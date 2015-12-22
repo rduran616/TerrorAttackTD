@@ -69,7 +69,12 @@ public class TdChoixNiveau extends StateJeu
 			
 		for (FileHandle entry: dirHandle.list()) 
 		{
-			lst.add(entry.path());
+			String file = entry.path();
+			String[] str_extension_file = file.split("\\.");
+			if(str_extension_file[str_extension_file.length-1].toString().equals("tmx") == true)
+			{
+				lst.add(entry.path());
+			}
 		}
 		
 			
