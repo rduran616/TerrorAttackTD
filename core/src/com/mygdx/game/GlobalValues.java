@@ -247,4 +247,9 @@ public final class GlobalValues
 		return ErrorEnum.UNINITIALIZED;
 	}
 
+	public void zoom(double d)
+	{
+		if(camera_!=null)
+			camera_.zoom+=d;
+	}
 }

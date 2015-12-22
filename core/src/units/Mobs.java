@@ -23,8 +23,8 @@ public class Mobs {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("coucou");
-		MobsAir a = new MobsAir(100, 2, new Matrix3(), 10000);
-		System.out.println(a._life);
-		System.out.println(a.getSprite());
+		//MobsAir a = new MobsAir(100, 2, new Matrix3(), 10000);
+	//	System.out.println(a._life);
+	//	System.out.println(a.getSprite());
 	}
 }

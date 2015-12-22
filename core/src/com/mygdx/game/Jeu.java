@@ -67,10 +67,7 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		main_table_game_		= new Table();
 		stage_game_				= new Stage(new ScreenViewport());
 		
-		
-		
-		
-		
+
 		main_table_game_.add(layout_table_tower_);
 		main_table_game_.add(Layout_table_upgrade_);
 		main_table_game_.add(Layout_table_bonus_);
@@ -162,6 +159,8 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		return false;
 	}
 
+	
+	//only desktop
 	@Override
 	public boolean keyUp(int keycode) 
 	{
@@ -177,11 +176,13 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
         return false;
 	}
 
+	//only desktop
 	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -189,9 +190,22 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		return false;
 	}
 
+	
 	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) 
+	{
+		double range=0.1;
+		//System.out.println("toucher");
+		//if(Gdx.input.justTouched()== true)
+		
+		double ecartX = Gdx.input.getDeltaX(0) - Gdx.input.getDeltaX(1);
+		double ecartY = Gdx.input.getDeltaY(0) - Gdx.input.getDeltaY(1);
+		
+		if(ecartX > 0 || ecartY >0)
+			values_.zoom(range);
+		else
+			values_.zoom(-range);
+
 		return false;
 	}
 
@@ -201,12 +215,14 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		return false;
 	}
 
+	//only desktop
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	//only desktop
 	@Override
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
