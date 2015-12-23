@@ -1,15 +1,14 @@
- <?xml version="1.0" encoding="UTF-8"?>
  <units>
      <tower id="0" value="4">
-	      <Air>air</Air>
-	      <Base>base</Base>
-	      <Slow>slow</Slow>
-	      <Zone>zone</Zone>
+      <Air>air</Air>
+      <Base>base</Base>
+      <Slow>slow</Slow>
+      <Zone>zone</Zone>
      </tower>
      <mobs id="1" value="4">
-	       <Air>air</Air>
-	       <Basic>basic</Basic>
-	       <Boss>boss</Boss>
-	       <Lourd>lours</Lourd>   
+       <Air>air</Air>
+       <Basic>basic</Basic>
+       <Boss>boss</Boss>
+       <Lourd>lours</Lourd>   
      </mobs>
  </units>

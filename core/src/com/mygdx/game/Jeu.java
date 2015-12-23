@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import Utilitaires.FingerTransformMap;
+import Utilitaires.ReadXml;
 import Utilitaires.TickHorloge;
 
 public class Jeu extends StateMenu  implements ApplicationListener,InputProcessor
@@ -24,7 +26,12 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	StateJeu jeu_[];
 	StateJeuEnum etat_jeu_;
 	boolean touche_activer_;
-	TickHorloge tick_;		//gestion des ticks pour attente passive
+	TickHorloge tick_;			//gestion des ticks pour attente passive
+	ReadXml xml_unit_file_;		//fichier xml avec toutes les unitées
+	
+	//enemies:
+	int nb_mobs_; 	//nombre d'unité differente (typeenemi)
+	int nb_towers_; //nombre de toxer differente (typetower)  utile pour le hud jeu
 	
 	//Zoom
 	FingerTransformMap finger;
@@ -67,6 +74,15 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		
 		//initialisation des huds
 		
+		//recup nombre de type de tour existant pour creation des boutons
+		if(Gdx.app.getType() == ApplicationType.Android)
+			xml_unit_file_ = new ReadXml("assets/units.xml");
+		else
+			xml_unit_file_ = new ReadXml("../android/assets/units.xml");
+			
+		nb_mobs_ 	= xml_unit_file_.node_Item_Child_Number("mobs");
+		nb_towers_ 	= xml_unit_file_.node_Item_Child_Number("tower");
+		
 		//hud jeu:
 		layout_table_tower_ 	= new Table();
 		Layout_table_upgrade_	= new Table();
@@ -85,6 +101,8 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		
 		tick_ = new TickHorloge(30); //30fps max
 		finger = new FingerTransformMap(0.01);
+		
+		
 	}
 
 	@Override
