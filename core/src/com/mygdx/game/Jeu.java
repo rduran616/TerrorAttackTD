@@ -108,8 +108,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		Pixmap pm1 = new Pixmap(1, 1, Format.RGB565);
 		pm1.setColor(Color.YELLOW);
 		pm1.fill();
-		
-		
+				
 		main_table_game_ 	= new Table();
 		main_table_game_.setSize(values_.get_width()*size_hud_/100,values_.get_height());
 		//layout_table_tower_.setPosition(0,0);
@@ -119,7 +118,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		main_table_game_.add(label_tour_);
 		main_table_game_.row();
-		creation_Hud_Tower(main_table_game_,2,1,(values_.get_width()*size_hud_/100/2) -2,20);
+		creation_Hud_Objects(main_table_game_,2,1,(values_.get_width()*size_hud_/100/2) -2,20);
 		
 		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
 		stage_game_.addActor(main_table_game_);
@@ -288,8 +287,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 		return false;
 	}
 
-	
-	private void creation_Hud_Tower(Table table, int column, int pad, float w,float h )
+	//placement du hud pour les objets
+	private void creation_Hud_Objects(Table table, int column, int pad, float w,float h )
 	{
 		int cpt=0;
 		for(int i=0;i<nb_towers_;i++)
@@ -302,9 +301,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 			
 			if(cpt%column==0)
 				table.row();
-			
 		}
 	}
 	
-
 }
