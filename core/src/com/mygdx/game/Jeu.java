@@ -75,13 +75,13 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		//initialisation des huds
 		
 		//recup nombre de type de tour existant pour creation des boutons
-		if(Gdx.app.getType() == ApplicationType.Android)
-			xml_unit_file_ = new ReadXml("assets/units.xml");
+		if(Gdx.app.getType() == ApplicationType.Android) //test plateforme
+			xml_unit_file_ = new ReadXml("/units.xml");
 		else
 			xml_unit_file_ = new ReadXml("../android/assets/units.xml");
 			
-		nb_mobs_ 	= xml_unit_file_.node_Item_Child_Number("mobs");
 		nb_towers_ 	= xml_unit_file_.node_Item_Child_Number("tower");
+		
 		
 		//hud jeu:
 		layout_table_tower_ 	= new Table();
@@ -90,7 +90,9 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		main_table_game_		= new Table();
 		stage_game_				= new Stage(new ScreenViewport());
 		
-
+		creation_Hud_Tower(layout_table_tower_);
+		
+		
 		main_table_game_.add(layout_table_tower_);
 		main_table_game_.add(Layout_table_upgrade_);
 		main_table_game_.add(Layout_table_bonus_);
@@ -294,4 +296,14 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		
 	}
 
+	
+	
+	private void creation_Hud_Tower(Table table)
+	{
+		for(int i=0;i<nb_towers_;i++)
+		{
+			System.err.println(xml_unit_file_.get_Sub_Node_Item(i,"tower","src_android"));
+		}
+	}
+	
 }

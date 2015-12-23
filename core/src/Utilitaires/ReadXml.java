@@ -106,6 +106,39 @@ public class ReadXml
 		return null;
 	}
 	
+	public String get_Sub_Node_Item(int index, String node, String value)
+	{
+		int cpt=0;
+		if(doc_ != null)
+		{
+			NodeList node_list = doc_.getElementsByTagName(node);
+			if(node_list != null)
+			{
+				for(int i=0; i<node_list.getLength(); i++)
+				{
+					Node elem = node_list.item(0).getFirstChild();
+					while(elem != null)
+					{
+						if(elem.getNodeType()== Node.ELEMENT_NODE )
+						{
+							if(index==cpt)
+							{
+								Element e = (Element) elem;
+								return e.getAttribute(value);
+							}
+							cpt++;
+						}
+						
+						elem = elem.getNextSibling();
+					}
+				}
+
+			}
+		}
+		return null;
+	}
+	
+	
 	//test
 	 public static void main(String argv[]) 
 	 {
