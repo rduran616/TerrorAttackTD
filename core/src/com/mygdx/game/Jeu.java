@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
@@ -62,9 +63,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 	Stage stage_game_;				//stage du jeu
 	Layout main_layout_game_;		//layout du hud du jeu
 	Table main_table_game_;			//layout principale du hud du jeu
-	Table layout_table_tower_;		//layout table pour le choix de l'unité
-	Table Layout_table_upgrade_;	//layout table pour les boutons upgrade d'unité
-	Table Layout_table_bonus_;		//layout table pour l'achat des bonus
+	Label label_tour_;				//label pour placement tour
 	
 	//hud pause
 	
@@ -105,39 +104,31 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		//hud jeu:
 		
-		//couleur jaune pour le background
+		//couleur jaune pour le background du hud
 		Pixmap pm1 = new Pixmap(1, 1, Format.RGB565);
 		pm1.setColor(Color.YELLOW);
 		pm1.fill();
 		
 		
-		layout_table_tower_ 	= new Table();
-		layout_table_tower_.setSize(values_.get_width()*size_hud_/100,values_.get_height());
+		main_table_game_ 	= new Table();
+		main_table_game_.setSize(values_.get_width()*size_hud_/100,values_.get_height());
 		//layout_table_tower_.setPosition(0,0);
 		
-		Layout_table_upgrade_	= new Table();
-		Layout_table_bonus_		= new Table();
-		main_table_game_		= new Table();
+		label_tour_				= new Label("Tours :", values_.get_Skin());
 		stage_game_				= new Stage(new ScreenViewport());
 		
-		creation_Hud_Tower(layout_table_tower_,2,1,(values_.get_width()*size_hud_/100/2) -2,20);
-		layout_table_tower_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
-		Layout_table_bonus_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
-		Layout_table_upgrade_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
-		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		main_table_game_.add(label_tour_);
+		main_table_game_.row();
+		creation_Hud_Tower(main_table_game_,2,1,(values_.get_width()*size_hud_/100/2) -2,20);
 		
-		main_table_game_.setSize(values_.get_width(), values_.get_height());
-		main_table_game_.add(layout_table_tower_);
-		main_table_game_.add(Layout_table_upgrade_);
-		main_table_game_.add(Layout_table_bonus_);
-		stage_game_.addActor(layout_table_tower_);
+		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		stage_game_.addActor(main_table_game_);
 
 		multiplexer.addProcessor(stage_game_);
 		multiplexer.addProcessor(this);
 		
 		//boutton retour
 		Gdx.input.setCatchBackKey(true);
-		
 		
 		tick_ = new TickHorloge(30); //30fps max
 		finger = new FingerTransformMap(0.01);
