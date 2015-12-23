@@ -7,13 +7,22 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -48,6 +57,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 	//HUD
 	
 	//hud jeu
+
 	int size_hud_ = 20;			//valeur en % de la taille du hud par rapport a l'ecran
 	Stage stage_game_;				//stage du jeu
 	Layout main_layout_game_;		//layout du hud du jeu
@@ -94,23 +104,32 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		
 		//hud jeu:
+		
+		//couleur jaune pour le background
+		Pixmap pm1 = new Pixmap(1, 1, Format.RGB565);
+		pm1.setColor(Color.YELLOW);
+		pm1.fill();
+		
+		
 		layout_table_tower_ 	= new Table();
 		layout_table_tower_.setSize(values_.get_width()*size_hud_/100,values_.get_height());
-		layout_table_tower_.setPosition(0,0);
+		//layout_table_tower_.setPosition(0,0);
 		
 		Layout_table_upgrade_	= new Table();
-		Layout_table_bonus_	= new Table();
+		Layout_table_bonus_		= new Table();
 		main_table_game_		= new Table();
 		stage_game_				= new Stage(new ScreenViewport());
 		
 		creation_Hud_Tower(layout_table_tower_,2,1,(values_.get_width()*size_hud_/100/2) -2,20);
-
-		//layout_table_tower_.setPosition(0,0);
+		layout_table_tower_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		Layout_table_bonus_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		Layout_table_upgrade_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		
 		main_table_game_.setSize(values_.get_width(), values_.get_height());
 		main_table_game_.add(layout_table_tower_);
 		main_table_game_.add(Layout_table_upgrade_);
 		main_table_game_.add(Layout_table_bonus_);
-
 		stage_game_.addActor(layout_table_tower_);
 
 		multiplexer.addProcessor(stage_game_);
@@ -134,7 +153,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
 		{
 			//viewport de la map
-			 //Gdx.gl.glViewport( values_.get_width()*size_hud_/100,0,values_.get_width(),values_.get_height());
+			//Gdx.gl.glViewport( values_.get_width()*size_hud_/100,0,values_.get_width(),values_.get_height());
 
 			//dessin de la carte
 			if(values_.camera_Update() != ErrorEnum.OK)
@@ -296,4 +315,5 @@ public class Jeu extends StateMenu  implements InputProcessor
 		}
 	}
 	
+
 }
