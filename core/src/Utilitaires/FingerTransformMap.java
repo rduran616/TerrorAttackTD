@@ -1,5 +1,6 @@
 package Utilitaires;
 
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GlobalValues;
 
@@ -26,6 +27,7 @@ public class FingerTransformMap
 	 Vector3 fingerOne = new Vector3();		// coordonée du doigt 0
 	 Vector3 fingerTwo = new Vector3();		//coordonnée du doigt 1
 	 GlobalValues values_;					//valeur globale + camera
+	 MapProperties map_prop_;				//propriété de la carte
 	 
 	 double factor_ = 0.1;					//Facteur de zoom
 	 
@@ -33,13 +35,29 @@ public class FingerTransformMap
 	 {
 		 values_ = GlobalValues.getInstance();
 		 factor_=1;
+		 map_prop_ = values_.map_Properties();
 	 }
 	 
 	 public FingerTransformMap(double f)
 	 {
 		 values_ = GlobalValues.getInstance();
 		 factor(f);
+		 map_prop_ = values_.map_Properties();
+		 
+	/*	 if(map_prop_ != null)
+		 {
+			 //values_.size_m();
+			 
+			 x_min_ = map_prop_;
+			 x_max_ = map_prop_;
+			 y_min_ = map_prop_;
+			 y_max_ = map_prop_;
+
+			 zoom_max = map_prop_;
+			 zoom_min =map_prop_; 
+		 }*/
 	 }
+	 
 	 
 	 //enregistrement des coordonées des doigts sur l'ecran
 	 public void finger_Touch(int x, int y,int pointer)
@@ -108,7 +126,6 @@ public class FingerTransformMap
 			 numberOfFingers = 0;
 		lastDistance = 0;
 	 }
-	 //sdfsdf
 	 
 	 public void finger_Move(int x, int y,int pointer)
 	 {

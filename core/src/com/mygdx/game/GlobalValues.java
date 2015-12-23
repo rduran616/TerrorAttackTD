@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -92,6 +93,7 @@ public final class GlobalValues
 	Texture img_;  						//texture carte
     TiledMap tiledMap_; 				//carte
     TiledMapRenderer tiledMapRenderer_;	//rendu de la carte
+    MapProperties prop_;				//propriétés de la carte
     
     //gestion de la caméra
     OrthographicCamera camera_;			//camera
@@ -188,13 +190,20 @@ public final class GlobalValues
 			return ErrorEnum.UNINITIALIZED;
 	}
 
-	public void init_tile_map(String name)
+	public ErrorEnum init_tile_map(String name)
 	{
 		camera_ = new OrthographicCamera();
 		camera_.setToOrtho(false,width_,height_);
         camera_.update();
 		tiledMap_ = new TmxMapLoader().load(name);
         tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
+        
+        if(tiledMap_ != null)
+        	prop_ = tiledMap_.getProperties();
+        else
+        	return ErrorEnum.UNINITIALIZED;
+        
+        return ErrorEnum.OK;
 	}
 	
 	public void init_tile_map()
@@ -266,4 +275,14 @@ public final class GlobalValues
 		}
 	}
 
+	public MapProperties map_Properties(){ return prop_;}
+	
+
+	public void size_Px(int px){size_px_=px;}
+	public void size_n(int n){size_n_=n;}
+	public void size_m(int m){size_m_=m;}
+	public int size_Px(){return size_px_;}
+	public int size_n(){return size_n_;}
+	public int size_m(){return size_m_;}
+	
 }
