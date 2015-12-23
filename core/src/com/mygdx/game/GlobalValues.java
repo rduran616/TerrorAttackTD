@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapProperties;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.SerializationException;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import units.Mobs;
 import units.Tower;
@@ -96,7 +98,7 @@ public final class GlobalValues
     MapProperties prop_;				//propriétés de la carte
     
     //gestion de la caméra
-    OrthographicCamera camera_;			//camera
+    OrthographicCamera camera_;			//camera principale
     double zoom_max_ =1000;				//control du zoom max
     double zoom_min_ = 0;				//control du zoom min
 
@@ -192,9 +194,6 @@ public final class GlobalValues
 
 	public ErrorEnum init_tile_map(String name)
 	{
-		camera_ = new OrthographicCamera();
-		camera_.setToOrtho(false,width_,height_);
-        camera_.update();
 		tiledMap_ = new TmxMapLoader().load(name);
         tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
         
@@ -208,7 +207,7 @@ public final class GlobalValues
 	
 	public void init_tile_map()
 	{
-		float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
+		//float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 		
         try 
         {
@@ -220,7 +219,7 @@ public final class GlobalValues
         	//camera_ = new OrthographicCamera(25 * aspectRatio ,25);
     		camera_.setToOrtho(false,width_,height_);
     		//camera_.position.set(960/2,640/2,0);
-    		camera_.translate(camera_.viewportWidth/2,camera_.viewportHeight/2);
+    		camera_.translate(camera_.viewportWidth/2,camera_.viewportHeight/2); //se mettre au milieu de la map
             camera_.update();
             
             
@@ -242,11 +241,21 @@ public final class GlobalValues
 		}
 	}
 	
-	public void camera_Init()
+	public void camera_Init(float w, float h)
 	{
-		
+		camera_ = new OrthographicCamera();
+		camera_.setToOrtho(false,w,h);
+        camera_.update();
 	}
 	
+	public void camera_Position(float x, float y)
+	{
+		camera_.position.set(x,y,0);
+	}
+	
+	public OrthographicCamera camera(){return camera_;} 
+	
+
 	public ErrorEnum camera_Translate(float x, float y)
 	{
 		if(camera_!=null)

@@ -4,20 +4,29 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import Utilitaires.FingerTransformMap;
 import Utilitaires.ReadXml;
 import Utilitaires.TickHorloge;
 
-public class Jeu extends StateMenu  implements ApplicationListener,InputProcessor
+public class Jeu extends StateMenu  implements InputProcessor
 { 
+	//multiplexer de stage -> avoir plusieur stage en 1 ( interaction monde et hud)
+	InputMultiplexer multiplexer = new InputMultiplexer();
+
 	//var global
 	GlobalValues values_;		
 	StateMEnuEnum selection_;
@@ -39,6 +48,7 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 	//HUD
 	
 	//hud jeu
+	int size_hud_ = 20;			//valeur en % de la taille du hud par rapport a l'ecran
 	Stage stage_game_;				//stage du jeu
 	Layout main_layout_game_;		//layout du hud du jeu
 	Table main_table_game_;			//layout principale du hud du jeu
@@ -85,38 +95,47 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		
 		//hud jeu:
 		layout_table_tower_ 	= new Table();
+		layout_table_tower_.setSize(values_.get_width()*size_hud_/100,values_.get_height());
+		layout_table_tower_.setPosition(0,0);
+		
 		Layout_table_upgrade_	= new Table();
-		Layout_table_bonus_		= new Table();
+		Layout_table_bonus_	= new Table();
 		main_table_game_		= new Table();
 		stage_game_				= new Stage(new ScreenViewport());
 		
-		creation_Hud_Tower(layout_table_tower_);
-		
-		
+		creation_Hud_Tower(layout_table_tower_,2,1,(values_.get_width()*size_hud_/100/2) -2,20);
+
+		//layout_table_tower_.setPosition(0,0);
+		main_table_game_.setSize(values_.get_width(), values_.get_height());
 		main_table_game_.add(layout_table_tower_);
 		main_table_game_.add(Layout_table_upgrade_);
 		main_table_game_.add(Layout_table_bonus_);
-		
-		stage_game_.addActor(main_table_game_);
 
+		stage_game_.addActor(layout_table_tower_);
+
+		multiplexer.addProcessor(stage_game_);
+		multiplexer.addProcessor(this);
+		
+		//boutton retour
 		Gdx.input.setCatchBackKey(true);
+		
 		
 		tick_ = new TickHorloge(30); //30fps max
 		finger = new FingerTransformMap(0.01);
-		
-		
 	}
 
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
-
 		// choix de l'etat et action en fonction de l'état du jeu
 		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia
 
 		//dessin du jeu
 		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
 		{
+			//viewport de la map
+			 //Gdx.gl.glViewport( values_.get_width()*size_hud_/100,0,values_.get_width(),values_.get_height());
+
 			//dessin de la carte
 			if(values_.camera_Update() != ErrorEnum.OK)
 			{	
@@ -143,6 +162,7 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 			 if(etat_jeu_ == StateJeuEnum.JEU )
 			 {
 				//dessin uid
+				// Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth()*size_hud_/100,Gdx.graphics.getHeight());//viewport du hud interactif
 				 stage_game_.draw();
 			 }
 			 else if(etat_jeu_ == StateJeuEnum.PAUSE)
@@ -161,7 +181,7 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 			 //Activation touche si pas deja fait
 			 if(touche_activer_ == false)
 			 {
-				 Gdx.input.setInputProcessor(this);
+				 Gdx.input.setInputProcessor(multiplexer);
 				 touche_activer_ = true;
 			 }
 		}
@@ -258,51 +278,21 @@ public class Jeu extends StateMenu  implements ApplicationListener,InputProcesso
 		return false;
 	}
 
-	@Override
-	public void create() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
-	
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void render() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-	
-	private void creation_Hud_Tower(Table table)
+	private void creation_Hud_Tower(Table table, int column, int pad, float w,float h )
 	{
+		int cpt=0;
 		for(int i=0;i<nb_towers_;i++)
 		{
-			System.err.println(xml_unit_file_.get_Sub_Node_Item(i,"tower","src_android"));
+			//recuperation des chemins (ou autre, à voir) d'image pour icone bouttons
+			//System.err.println(xml_unit_file_.get_Sub_Node_Item(i,"tower","src_android"));
+			TextButton button = new TextButton(Integer.toString(i),values_.get_Skin());
+			table.add(button).pad(pad).height(h).width(w);
+			cpt++;
+			
+			if(cpt%column==0)
+				table.row();
+			
 		}
 	}
 	

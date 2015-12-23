@@ -106,6 +106,7 @@ public class ReadXml
 		return null;
 	}
 	
+	//methode qui retourne la valeur value du ieme enfant du noeud node
 	public String get_Sub_Node_Item(int index, String node, String value)
 	{
 		int cpt=0;
