@@ -34,22 +34,24 @@ import units.TowerZone;
 
 public class HudGame 
 {
-	GlobalValues values_;
-	ReadXml xml_unit_file_;		//fichier xml avec toutes les unitées
+	private GlobalValues values_;
+	private ReadXml xml_unit_file_;		//fichier xml avec toutes les unitées
 	
 	//enemies:
-	int nb_mobs_; 	//nombre d'unité differente (typeenemi)
-	int nb_towers_; //nombre de tower differente (typetower)  utile pour le hud jeu
-	int nb_bonus_;	//nombre de bonus different
+	private int nb_mobs_; 	//nombre d'unité differente (typeenemi)
+	private int nb_towers_; //nombre de tower differente (typetower)  utile pour le hud jeu
+	private int nb_bonus_;	//nombre de bonus different
 	
 	
-	int size_hud_ = 20;			//valeur en % de la taille du hud par rapport a l'ecran
-	Stage stage_game_;				//stage du jeu
-	Layout main_layout_game_;		//layout du hud du jeu
-	Table main_table_game_;			//layout principale du hud du jeu
-	Label label_tour_;				//label pour placement tour
-	Label label_bonus_;				//label pour placement tour
-	Label label_amelioration_;		//label pour amelioratin générale des tours
+	private int size_hud_ = 20;			//valeur en % de la taille du hud par rapport a l'ecran
+	private Stage stage_game_;				//stage du jeu
+	private Layout main_layout_game_;		//layout du hud du jeu
+	private Table main_table_game_;			//layout principale du hud du jeu
+	private Label label_tour_;				//label pour placement tour
+	private Label label_bonus_;				//label pour placement tour
+	private Label label_amelioration_;		//label pour amelioratin générale des tours
+	private Label vie_;
+	private Label argent_;
 	
 	
 	public HudGame()
@@ -106,7 +108,20 @@ public class HudGame
 		
 		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
 		stage_game_.addActor(main_table_game_);
+		
+		
+		vie_ = new Label("Vie :", values_.get_Skin());
+		vie_.setPosition(0, values_.get_height()-20);
+		argent_ = new Label("Argent :", values_.get_Skin());
+		argent_.setPosition(0, values_.get_height()-40);
+		
+		stage_game_.addActor(argent_);
+		stage_game_.addActor(vie_);
 	}
+	
+	
+	public void argent(){argent_.setText("Argent :"+Integer.toString(values_.argent()));}
+	public void vie(){vie_.setText("Vie :"+Integer.toString(values_.vie()));}
 	
 	
 	public Stage stage(){return stage_game_;} 

@@ -66,7 +66,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		multiplexer.addProcessor(this);
 		
 		//boutton retour
-		Gdx.input.setCatchBackKey(true);
+	//	Gdx.input.setCatchBackKey(true);
 		
 		tick_ = new TickHorloge(30); //30fps max
 		finger = new FingerTransformMap(0.01);
@@ -75,6 +75,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
+	//	Gdx.input.setCatchBackKey(true);
+		
 		// choix de l'etat et action en fonction de l'état du jeu
 		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia
 
@@ -111,6 +113,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 			 {
 				//dessin uid
 				// Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth()*size_hud_/100,Gdx.graphics.getHeight());//viewport du hud interactif
+				 hud_game_.argent();
+				 hud_game_.vie();
 				 hud_game_.stage().draw();
 			 }
 			 else if(etat_jeu_ == StateJeuEnum.PAUSE)
@@ -157,6 +161,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 	{
 		if(keycode == Keys.BACK)
 		{
+			System.err.println("test");
+		//	Gdx.input.setCatchBackKey(false);
 			etat_jeu_ = StateJeuEnum.CHOIX;
 			selection_ = StateMEnuEnum.MENU;
 	    }

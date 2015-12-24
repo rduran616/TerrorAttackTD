@@ -55,6 +55,8 @@ public final class GlobalValues
 		
 		liste_mobs = new Mobs[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
 
+		argent_ = 100;
+		vie_ = 100;
 	}
 
 	
@@ -77,35 +79,35 @@ public final class GlobalValues
 	/**** Attributs *****/
 	
 	//général
-	int height_	= 0; 			//resolution en w et h en px
-	int width_	= 0;			
-	int size_px_ = 32;			//Taille en px d'un carreaux de la carte
+	private int height_	= 0; 			//resolution en w et h en px
+	private int width_	= 0;			
+	private int size_px_ = 32;			//Taille en px d'un carreaux de la carte
 	
 	//decors	
-	Skin skin_bouton_;			//peau des boutons
+	private Skin skin_bouton_;			//peau des boutons
 	
 	//carte
-	int ennemi_max_=1000;		//nombre max d'ennemi
-	int size_n_ = 20;			//nombre de carreaux de la carte en width
-	int size_m_ = 30;			//nombre de carreaux de la carte en height
-	TypeObjet carte_[];			//une carte ( à enlever? )
-	Vector<TowerType> liste_tours;		//liste des tours placées
-	Mobs liste_mobs[];			//liste des mobs à afficher
-	String carte_name_;			//nom ou chemin de la carte
+	private int ennemi_max_=1000;		//nombre max d'ennemi
+	private int size_n_ = 20;			//nombre de carreaux de la carte en width
+	private int size_m_ = 30;			//nombre de carreaux de la carte en height
+	private TypeObjet carte_[];			//une carte ( à enlever? )
+	private Vector<TowerType> liste_tours;		//liste des tours placées
+	private Mobs liste_mobs[];			//liste des mobs à afficher
+	private String carte_name_;			//nom ou chemin de la carte
 	
-	Texture img_;  						//texture carte
-    TiledMap tiledMap_; 				//carte
-    TiledMapRenderer tiledMapRenderer_;	//rendu de la carte
-    MapProperties prop_;				//propriétés de la carte
+	private Texture img_;  						//texture carte
+	private TiledMap tiledMap_; 				//carte
+	private TiledMapRenderer tiledMapRenderer_;	//rendu de la carte
+	private MapProperties prop_;				//propriétés de la carte
     
     //gestion de la caméra
-    OrthographicCamera camera_;			//camera principale
-    double zoom_max_ =1000;				//control du zoom max
-    double zoom_min_ = 0;				//control du zoom min
+	private OrthographicCamera camera_;			//camera principale
+	private double zoom_max_ =1000;				//control du zoom max
+	private double zoom_min_ = 0;				//control du zoom min
     
     //gestion de la boucle du jeu
-    int argent_;
-    int vie_;
+	private int argent_;
+	private int vie_;
 
 		
 	/**** Méthodes *****/

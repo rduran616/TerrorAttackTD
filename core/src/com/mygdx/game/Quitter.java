@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class Quitter extends StateMenu
+public class Quitter extends StateMenu implements InputProcessor
 {
 
 	GlobalValues values_;		//Variables globales
@@ -22,6 +24,7 @@ public class Quitter extends StateMenu
 	TextButton non_bouton;
 	StateMEnuEnum selection_;
 	Label label_quitter ;
+	InputMultiplexer multiplexer = new InputMultiplexer();
 	
 	public Quitter()
 	{
@@ -68,12 +71,15 @@ public class Quitter extends StateMenu
 		
 		//activation de la zone
 		//Gdx.input.setInputProcessor(stage);
+		multiplexer.addProcessor(this);
+		multiplexer.addProcessor(stage);
 	}
 	
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
-		Gdx.input.setInputProcessor(stage);
+		//Gdx.input.setInputProcessor(stage);
+		Gdx.input.setInputProcessor(multiplexer);
 		stage.draw();
 
 		//Changer de menu
@@ -85,6 +91,60 @@ public class Quitter extends StateMenu
 		}
 		else
 			return selection_;
+	}
+
+	@Override
+	public boolean keyDown(int keycode) 
+	{
+		if(keycode == Keys.BACK)
+		{
+			System.err.println("option");
+			//Gdx.input.setCatchBackKey(false);
+			selection_ = StateMEnuEnum.MENU;
+	    }
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

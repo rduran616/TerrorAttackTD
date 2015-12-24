@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -20,7 +23,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 
 
-public class Menu extends StateMenu
+public class Menu extends StateMenu implements InputProcessor
 {
 	/****** Attributs *******/
 	
@@ -35,6 +38,9 @@ public class Menu extends StateMenu
     int height_ 	= 0;		// taille de l'ecran
     GlobalValues values_;		// valeurs global
     StateMEnuEnum selection_;	// Etats
+    
+    InputMultiplexer multiplexer = new InputMultiplexer();
+    
 
     /****** Constructeur *******/
     
@@ -111,21 +117,28 @@ public class Menu extends StateMenu
 		menu_stage.addActor(layout_menu);
 
 		//activation de la zone
-		Gdx.input.setInputProcessor(menu_stage);
+		multiplexer.addProcessor(this);
+		multiplexer.addProcessor(menu_stage);
+		
+		//Gdx.input.setInputProcessor(menu_stage);
+		//Gdx.input.setCatchBackKey(true);
 	}
 	
 	
 	/****** Méthodes *******/
-	
+	  
+
 	//changement d'etat 
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
 		
-		if(Gdx.input.getInputProcessor() != menu_stage)
-		{
-			Gdx.input.setInputProcessor(menu_stage);
-		}
+		//if(Gdx.input.getInputProcessor() != menu_stage)
+		//{
+			//Gdx.input.setCatchBackKey(true);
+			//Gdx.input.setInputProcessor(menu_stage);
+			 Gdx.input.setInputProcessor(multiplexer);
+		//}
 
 		//affichage menu
 		menu_stage.act();
@@ -133,6 +146,7 @@ public class Menu extends StateMenu
 
 		if(selection_ != StateMEnuEnum.MENU)
 		{
+			//Gdx.input.setCatchBackKey(false);
 			StateMEnuEnum tps = selection_;
 			selection_ = StateMEnuEnum.MENU;
 			return  tps;
@@ -141,4 +155,64 @@ public class Menu extends StateMenu
 			return selection_;
 	}
 
+
+	@Override
+	public boolean keyDown(int keycode) {
+		
+		if(keycode == Keys.BACK)
+		{
+			Gdx.input.setCatchBackKey(false);
+			selection_ = StateMEnuEnum.QUITTER;
+	    }
+		return false;
+	}
+
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
