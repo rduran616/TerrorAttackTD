@@ -1,9 +1,9 @@
  <units>
      <tower id="0" value="4">
-      <Air  src_android="assets/unit/unit1" >air</Air>
-      <Base src_android="assets/unit/unit2" >base</Base>
-      <Slow src_android="assets/unit/unit3" >slow</Slow>
-      <Zone src_android="assets/unit/unit4" >zone</Zone>
+	     <Air  name="air" 	src_android="assets/unit/unit1" ></Air>
+	     <Base name="base"  src_android="assets/unit/unit2" ></Base>
+	     <Slow name="slow"  src_android="assets/unit/unit3" ></Slow>
+	     <Zone name="zone" 	src_android="assets/unit/unit4" ></Zone>
      </tower>
      <mobs id="1" value="4">
        <Air>air</Air>

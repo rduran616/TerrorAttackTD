@@ -138,6 +138,8 @@ public class ReadXml
 		return null;
 	}
 	
+	//methode qui verifie si xml est ouvert ou pas. Si ouvert return false
+	public boolean isEmpty(){if(xml_file_ != null)return false; else return true;}
 	
 	//test
 	 public static void main(String argv[]) 

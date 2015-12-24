@@ -8,10 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  * Structure de donnée pour la configuration des boutons du hud
  * 
  * @author Florian
+ * 
  *
  */
 
-public class ConfigHud 
+public class ConfigHud<T> 
 {
 	Table table_;
 	ReadXml file_;
@@ -21,6 +22,7 @@ public class ConfigHud
 	int pad_;
 	float width_;
 	float height_;
+	int other_;		//variable poubelle (on met ce qu'on veux , sa valeur depend du contexte)
 	
 	
 	public ConfigHud()
@@ -37,7 +39,8 @@ public class ConfigHud
 	
 	public int nb_button(){return nb_button_;} 
 	public int column(){return column_;} 
-	public int pad(){return pad_;} 
+	public int pad(){return pad_;}
+	public int other(){return other_;} 
 	public float width(){return width_;} 
 	public float height(){return height_;}
 	public String node(){return node_;}
@@ -45,7 +48,8 @@ public class ConfigHud
 	
 	public void nb_button(int nb ){nb_button_ =nb;} 
 	public void column(int c){ column_=c;} 
-	public void pad(int p){pad_=p;} 
+	public void pad(int p){pad_=p;}
+	public void other(int o){other_=o;} 
 	public void width(float w){width_=w;} 
 	public void height(float h){height_=h;} 
 	public void node(String n){node_ =n;}

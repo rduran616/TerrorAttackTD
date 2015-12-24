@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,8 +19,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import Utilitaires.ConfigHud;
 import Utilitaires.ReadXml;
-import units.Tower;
 import units.TowerAir;
+import units.TowerZone;
 
 public class HudGame 
 {
@@ -73,24 +72,28 @@ public class HudGame
 		stage_game_				= new Stage(new ScreenViewport());
 		
 		
+		@SuppressWarnings("rawtypes")
 		ConfigHud hud = new ConfigHud();
 		hud.column(2);
 		hud.height(20);
 		hud.width((values_.get_width()*size_hud_/100/2) -2);
 		hud.nb_button(nb_towers_);
 		hud.pad(2);
-		hud.xml();
+		hud.xml(xml_unit_file_);
 		hud.table(main_table_game_);
-		hud.node();
 		
 		main_table_game_.add(label_tour_);
 		main_table_game_.row();
+		hud.node("tower");
 		creation_Hud_Objects(hud);
 		main_table_game_.add(label_amelioration_);
 		main_table_game_.row();
+		hud.node("upgrade");
 		creation_Hud_Objects(hud);
 		main_table_game_.add(label_bonus_);
 		main_table_game_.row();
+		hud.node("bonus");
+		hud.nb_button(nb_bonus_);
 		creation_Hud_Objects(hud);
 		
 		
@@ -102,30 +105,49 @@ public class HudGame
 	public Stage stage(){return stage_game_;} 
 	
 	//placement des boutons pour les objets (methode temporaire)
-	private void creation_Hud_Objects(ConfigHud hud)
+	private void creation_Hud_Objects(@SuppressWarnings("rawtypes") ConfigHud hud)
 	{
 		int cpt=0;
+		hud.other(0);
 		for(int i=0;i<hud.nb_button();i++)
 		{
 			//recuperation des chemins (ou autre, à voir) d'image pour icone bouton
 			TextButton button = new TextButton(Integer.toString(i),values_.get_Skin());
-			button.addListener(new ClickListener()
-			{
-			       @Override
-			       public void clicked(InputEvent event, float x, float y) 
-			       {
-			    	   //creation d'une tower air
-			    	  /* switch(value)
-			    	   {
-			    	   		case '0':*/
-			    	   			values_.tower().add(new TowerAir());
-			    	   			//System.out.println("creation");
-			    	   /*		break;
-			    	   }*/
-			       }
-			 });
+			if(hud.xml().isEmpty() == false)
+	    	{
+				String name = hud.xml().get_Sub_Node_Item(hud.other(), hud.node(),"name");
+				if(name!=null)
+				{
+					if(name.equals("air"))
+					{
+						button.addListener(new ClickListener()
+						{
+						       @Override
+						       public void clicked(InputEvent event, float x, float y) 
+						       {
+						    	   System.out.println("air");
+						    	   values_.tower().add(new TowerAir());
+						       }
+						 });
+					}
+					else if(name.equals("zone"))
+					{
+						button.addListener(new ClickListener()
+						{
+						       @Override
+						       public void clicked(InputEvent event, float x, float y) 
+						       {
+						    	   System.out.println("TowerZone");
+						    	   values_.tower().add(new TowerZone());
+						       }
+						 });
+					}
+				}
+			}
+
 			hud.table().add(button).pad(hud.pad()).height(hud.height()).width(hud.width());
 			cpt++;
+			hud.other(cpt);
 			
 			if(cpt%hud.column()==0)
 				hud.table().row();
