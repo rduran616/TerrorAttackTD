@@ -95,7 +95,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		//recup nombre de type de tour existant pour creation des boutons
 		if(Gdx.app.getType() == ApplicationType.Android) //test plateforme
-			xml_unit_file_ = new ReadXml("/units.xml");
+			xml_unit_file_ = new ReadXml("units.xml");
 		else
 			xml_unit_file_ = new ReadXml("../android/assets/units.xml");
 			
@@ -294,7 +294,6 @@ public class Jeu extends StateMenu  implements InputProcessor
 		for(int i=0;i<nb_towers_;i++)
 		{
 			//recuperation des chemins (ou autre, à voir) d'image pour icone bouttons
-			//System.err.println(xml_unit_file_.get_Sub_Node_Item(i,"tower","src_android"));
 			TextButton button = new TextButton(Integer.toString(i),values_.get_Skin());
 			table.add(button).pad(pad).height(h).width(w);
 			cpt++;
