@@ -102,18 +102,28 @@ public final class GlobalValues
     OrthographicCamera camera_;			//camera principale
     double zoom_max_ =1000;				//control du zoom max
     double zoom_min_ = 0;				//control du zoom min
+    
+    //gestion de la boucle du jeu
+    int argent_;
+    int vie_;
 
 		
 	/**** Méthodes *****/
 	
-	Skin get_Skin(){return skin_bouton_;}
+    public int argent(){return argent_;}
+    public void argent(int argent){argent_=argent;}
+    public int vie(){return vie_;}
+    public void vie(int v){vie_=v;}
+    public boolean is_Alive(){if(vie_>0 )return true; else return false;}
+    
+    public Skin get_Skin(){return skin_bouton_;}
 	
-	int get_height(){return height_;}
-	int get_width(){return width_;}
-	void set_height(int h){height_ = h;}
-	void set_width(int w){ width_ = w;}
-	void map_name(String n){carte_name_=n;}
-	String map_name()
+    public int get_height(){return height_;}
+    public int get_width(){return width_;}
+    public void set_height(int h){height_ = h;}
+    public void set_width(int w){ width_ = w;}
+    public void map_name(String n){carte_name_=n;}
+	public String map_name()
 	{
 		if(!carte_name_.isEmpty())
 			return carte_name_; 
@@ -121,8 +131,8 @@ public final class GlobalValues
 			return null;
 	}
 	
-	TypeObjet[] carte(){return carte_;}
-	void carte_init()
+	public TypeObjet[] carte(){return carte_;}
+	public void carte_init()
 	{
 		String name = carte_name_;
 		FileHandle file = Gdx.files.internal(name);
@@ -155,7 +165,7 @@ public final class GlobalValues
 			}
 		}
 	}
-	Vector<TowerType> tower()
+	public Vector<TowerType> tower()
 	{
 		if(liste_tours == null)
 			liste_tours = new Vector<TowerType>();
@@ -163,9 +173,8 @@ public final class GlobalValues
 		return liste_tours;
 	}
 	
-	Mobs[] mobs(){return liste_mobs;}
+	public Mobs[] mobs(){return liste_mobs;}
 
-	
 
 	public ErrorEnum camera_Update()
 	{

@@ -16,6 +16,7 @@ public class TowerSlow extends TowerType {
 	float _zone = 1;  //(petite = 1, s'améliore aussi?)
 	boolean _air = false;
 	
+	public TowerSlow(){}
 	
 	public TowerSlow(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {
 		super(texture, bulletTexture, bulletSize, x, y);

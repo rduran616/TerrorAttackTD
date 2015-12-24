@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import Utilitaires.ConfigHud;
 import Utilitaires.ReadXml;
 import units.TowerAir;
+import units.TowerBase;
+import units.TowerSlow;
 import units.TowerZone;
 
 
@@ -76,8 +78,7 @@ public class HudGame
 		label_bonus_			= new Label("Bonus :", values_.get_Skin());
 		label_amelioration_		= new Label("Upgra :", values_.get_Skin());
 		stage_game_				= new Stage(new ScreenViewport());
-		
-		
+				
 		@SuppressWarnings("rawtypes")
 		ConfigHud hud = new ConfigHud();
 		hud.column(2);
@@ -132,6 +133,8 @@ public class HudGame
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
 						    	   System.err.println("TowerAir");
+						    	   
+						    	   //creation de la tour
 						    	   values_.tower().add(new TowerAir());
 						       }
 						 });
@@ -145,6 +148,30 @@ public class HudGame
 						       {
 						    	   System.err.println("TowerZone");
 						    	   values_.tower().add(new TowerZone());
+						       }
+						 });
+					}
+					else if(name.equals("slow"))
+					{
+						button.addListener(new ClickListener()
+						{
+						       @Override
+						       public void clicked(InputEvent event, float x, float y) 
+						       {
+						    	   System.err.println("TowerSlow");
+						    	   values_.tower().add(new TowerSlow());
+						       }
+						 });
+					}
+					else if(name.equals("base"))
+					{
+						button.addListener(new ClickListener()
+						{
+						       @Override
+						       public void clicked(InputEvent event, float x, float y) 
+						       {
+						    	   System.err.println("TowerBase");
+						    	   values_.tower().add(new TowerBase());
 						       }
 						 });
 					}
