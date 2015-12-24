@@ -134,8 +134,9 @@ public class HudGame
 						       {
 						    	   System.err.println("TowerAir");
 						    	   
-						    	   //creation de la tour
+						    	   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
 						    	   values_.tower().add(new TowerAir());
+						    	   
 						       }
 						 });
 					}
