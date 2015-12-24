@@ -22,6 +22,14 @@ import Utilitaires.ReadXml;
 import units.TowerAir;
 import units.TowerZone;
 
+
+/**
+ * 
+ * @author Florian
+ *
+ *	Class spécialmenet prevu pour la creation du hud jeux, via un fichier xml
+ */
+
 public class HudGame 
 {
 	GlobalValues values_;
@@ -54,8 +62,6 @@ public class HudGame
 			
 		nb_towers_ 	= xml_unit_file_.node_Item_Child_Number("tower");
 		nb_bonus_	= xml_unit_file_.node_Item_Child_Number("bonus");
-		
-		//hud jeu:
 		
 		//couleur jaune pour le background du hud
 		Pixmap pm1 = new Pixmap(1, 1, Format.RGB565);
@@ -104,7 +110,7 @@ public class HudGame
 	
 	public Stage stage(){return stage_game_;} 
 	
-	//placement des boutons pour les objets (methode temporaire)
+	//création des boutons de l'ui 
 	private void creation_Hud_Objects(@SuppressWarnings("rawtypes") ConfigHud hud)
 	{
 		int cpt=0;
@@ -125,7 +131,7 @@ public class HudGame
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
-						    	   System.out.println("air");
+						    	   System.err.println("TowerAir");
 						    	   values_.tower().add(new TowerAir());
 						       }
 						 });
@@ -137,7 +143,7 @@ public class HudGame
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
-						    	   System.out.println("TowerZone");
+						    	   System.err.println("TowerZone");
 						    	   values_.tower().add(new TowerZone());
 						       }
 						 });
