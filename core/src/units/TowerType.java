@@ -16,9 +16,10 @@ public abstract class TowerType {
 	
 	private String texture; //lien vers l'image
 	private String bulletTexture;
-	public final Vector2 bulletSize;
+	public  Vector2 bulletSize;
 	int[][] coords;
 	
+	public TowerType(){}
 	
 	
 	public TowerType(String texture, String bulletTexture, Vector2 bulletSize, int x, int y)

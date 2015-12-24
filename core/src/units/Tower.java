@@ -15,11 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 
 
-
-
-
-
-
 public class Tower extends Group implements EventListener {
 
 	public static final int STATUT_VALIDER = 1;
@@ -53,7 +48,7 @@ public class Tower extends Group implements EventListener {
 	
 	public void setState(int statut)
 	{
-		statut=statut; //Ambigüe? mdr
+		this.statut=statut; //Ambigüe? mdr
 	}
 	
 	@Override

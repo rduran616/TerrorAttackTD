@@ -1,8 +1,10 @@
 package com.mygdx.game;
 
+
+import java.util.Vector;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapProperties;
@@ -12,10 +14,10 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.SerializationException;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import units.Mobs;
 import units.Tower;
+import units.TowerType;
 
 /*
  * Classe singleton contenant toutes les variables global et accessible par tous et partout
@@ -40,8 +42,7 @@ public final class GlobalValues
 		super();
 		height_ = Gdx.graphics.getHeight();
 		width_ 	= Gdx.graphics.getWidth();
-		
-		
+			
 		//creation d'un skin ( fond des boutons )
 		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
 		
@@ -49,7 +50,7 @@ public final class GlobalValues
 		if(size_n_ > 0 && size_m_ > 0 )
 		{
 			carte_ = new TypeObjet[size_n_ * size_m_]; //nombre de case total de la carte
-			liste_tours = new Tower[size_n_ * size_m_ - 2]; //nombre de tour possibles - 2 car point de dépar et arrivée 
+			//liste_tours = new Tower[size_n_ * size_m_ - 2]; //nombre de tour possibles - 2 car point de dépar et arrivée 
 		}
 		
 		liste_mobs = new Mobs[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
@@ -88,7 +89,7 @@ public final class GlobalValues
 	int size_n_ = 20;			//nombre de carreaux de la carte en width
 	int size_m_ = 30;			//nombre de carreaux de la carte en height
 	TypeObjet carte_[];			//une carte ( à enlever? )
-	Tower liste_tours[];		//liste des tours placées
+	Vector<TowerType> liste_tours;		//liste des tours placées
 	Mobs liste_mobs[];			//liste des mobs à afficher
 	String carte_name_;			//nom ou chemin de la carte
 	
@@ -154,10 +155,18 @@ public final class GlobalValues
 			}
 		}
 	}
-	Tower[] tower(){return liste_tours;}
+	Vector<TowerType> tower()
+	{
+		if(liste_tours == null)
+			liste_tours = new Vector<TowerType>();
+		
+		return liste_tours;
+	}
+	
 	Mobs[] mobs(){return liste_mobs;}
 
 	
+
 	public ErrorEnum camera_Update()
 	{
 		if(camera_ != null)

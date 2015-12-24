@@ -17,9 +17,15 @@ public class TowerAir extends TowerType {
 	boolean _air = true;
 	
 	
+	public TowerAir()
+	{
+		
+	}
 	
-	public TowerAir(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {
-		super(texture, bulletTexture, bulletSize, x, y);
+	public TowerAir(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) 
+	{
+			super(texture, bulletTexture, bulletSize, x, y);
+
 		// TODO Auto-generated constructor stub
 	}
 	

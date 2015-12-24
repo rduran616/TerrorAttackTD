@@ -1,35 +1,13 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.Layout;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import Utilitaires.FingerTransformMap;
-import Utilitaires.ReadXml;
 import Utilitaires.TickHorloge;
 
 public class Jeu extends StateMenu  implements InputProcessor
@@ -46,24 +24,14 @@ public class Jeu extends StateMenu  implements InputProcessor
 	StateJeuEnum etat_jeu_;
 	boolean touche_activer_;
 	TickHorloge tick_;			//gestion des ticks pour attente passive
-	ReadXml xml_unit_file_;		//fichier xml avec toutes les unitées
-	
-	//enemies:
-	int nb_mobs_; 	//nombre d'unité differente (typeenemi)
-	int nb_towers_; //nombre de toxer differente (typetower)  utile pour le hud jeu
-	
+
 	//Zoom
 	FingerTransformMap finger;
 	
 	//HUD
 	
 	//hud jeu
-
-	int size_hud_ = 20;			//valeur en % de la taille du hud par rapport a l'ecran
-	Stage stage_game_;				//stage du jeu
-	Layout main_layout_game_;		//layout du hud du jeu
-	Table main_table_game_;			//layout principale du hud du jeu
-	Label label_tour_;				//label pour placement tour
+	HudGame hud_game_;
 	
 	//hud pause
 	
@@ -93,37 +61,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		//initialisation des huds
 		
-		//recup nombre de type de tour existant pour creation des boutons
-		if(Gdx.app.getType() == ApplicationType.Android) //test plateforme
-			xml_unit_file_ = new ReadXml("units.xml");
-		else
-			xml_unit_file_ = new ReadXml("../android/assets/units.xml");
-			
-		nb_towers_ 	= xml_unit_file_.node_Item_Child_Number("tower");
-		
-		
-		//hud jeu:
-		
-		//couleur jaune pour le background du hud
-		Pixmap pm1 = new Pixmap(1, 1, Format.RGB565);
-		pm1.setColor(Color.YELLOW);
-		pm1.fill();
-				
-		main_table_game_ 	= new Table();
-		main_table_game_.setSize(values_.get_width()*size_hud_/100,values_.get_height());
-		//layout_table_tower_.setPosition(0,0);
-		
-		label_tour_				= new Label("Tours :", values_.get_Skin());
-		stage_game_				= new Stage(new ScreenViewport());
-		
-		main_table_game_.add(label_tour_);
-		main_table_game_.row();
-		creation_Hud_Objects(main_table_game_,2,1,(values_.get_width()*size_hud_/100/2) -2,20);
-		
-		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
-		stage_game_.addActor(main_table_game_);
-
-		multiplexer.addProcessor(stage_game_);
+		hud_game_ = new HudGame();
+		multiplexer.addProcessor(hud_game_.stage());
 		multiplexer.addProcessor(this);
 		
 		//boutton retour
@@ -172,7 +111,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 			 {
 				//dessin uid
 				// Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth()*size_hud_/100,Gdx.graphics.getHeight());//viewport du hud interactif
-				 stage_game_.draw();
+				 hud_game_.stage().draw();
 			 }
 			 else if(etat_jeu_ == StateJeuEnum.PAUSE)
 			 {
@@ -234,9 +173,9 @@ public class Jeu extends StateMenu  implements InputProcessor
         if(keycode == Input.Keys.RIGHT)
         	values_.camera_Translate(32,0);
         if(keycode == Input.Keys.UP)
-        	values_.camera_Translate(0,-32);
-        if(keycode == Input.Keys.DOWN)
         	values_.camera_Translate(0,32);
+        if(keycode == Input.Keys.DOWN)
+        	values_.camera_Translate(0,-32);
         
         return false;
 	}
@@ -287,20 +226,4 @@ public class Jeu extends StateMenu  implements InputProcessor
 		return false;
 	}
 
-	//placement du hud pour les objets
-	private void creation_Hud_Objects(Table table, int column, int pad, float w,float h )
-	{
-		int cpt=0;
-		for(int i=0;i<nb_towers_;i++)
-		{
-			//recuperation des chemins (ou autre, à voir) d'image pour icone bouttons
-			TextButton button = new TextButton(Integer.toString(i),values_.get_Skin());
-			table.add(button).pad(pad).height(h).width(w);
-			cpt++;
-			
-			if(cpt%column==0)
-				table.row();
-		}
-	}
-	
 }

@@ -11,4 +11,12 @@
        <Boss>boss</Boss>
        <Lourd>lours</Lourd>   
      </mobs>
+     <bonus id="2" values="5">
+         <pauseActive name="Pause active"></pauseActive>
+         <slowIA name="Vitesse ia --"></slowIA>
+         <megaKill name="Mega kill"></megaKill>
+         <puissanceBonus name="Puissance ++"></puissanceBonus>
+         <rapideShootBonus name="Vitesse ++"></rapideShootBonus>
+     </bonus>
+     
  </units>

@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Application;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
