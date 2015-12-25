@@ -66,7 +66,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		multiplexer.addProcessor(this);
 		
 		//boutton retour
-	//	Gdx.input.setCatchBackKey(true);
+		Gdx.input.setCatchBackKey(true);
 		
 		tick_ = new TickHorloge(30); //30fps max
 		finger = new FingerTransformMap(0.01);
@@ -75,7 +75,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
-	//	Gdx.input.setCatchBackKey(true);
+		Gdx.input.setCatchBackKey(true);
 		
 		// choix de l'etat et action en fonction de l'état du jeu
 		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia
