@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.GL20;
 
 public class MyGdxGame extends ApplicationAdapter 
@@ -15,6 +16,8 @@ public class MyGdxGame extends ApplicationAdapter
 	@Override
 	public void create () 
 	{
+		System.err.println("create");
+		
 		//batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");
 		
@@ -26,6 +29,14 @@ public class MyGdxGame extends ApplicationAdapter
 		main_menu[4] = new Quitter();
 		
 		menu_en_cours = StateMEnuEnum.MENU;
+		
+		
+		//rechargement des valeurs critiques en cas de relance du pgm ( android )
+		if(Gdx.app.getType() == ApplicationType.Android)
+		{
+			GlobalValues values = GlobalValues.getInstance();
+			values.reload();
+		}
 	}
 
 	@Override
@@ -41,5 +52,30 @@ public class MyGdxGame extends ApplicationAdapter
 		/*batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();*/
+	}
+	
+	@Override
+	public void resize (int width, int height)
+	{
+		System.err.println("resize");
+	}
+
+	@Override
+	public void pause()
+	{
+		System.err.println("pause");
+	}
+
+	@Override
+	public void resume()
+	{
+		System.err.println("resume");
+		GlobalValues.getInstance().reload();
+	}
+
+	@Override
+	public void dispose()
+	{
+		System.err.println("dispose");
 	}
 }

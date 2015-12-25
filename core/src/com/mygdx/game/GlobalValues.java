@@ -40,23 +40,7 @@ public final class GlobalValues
 	private GlobalValues() 
 	{
 		super();
-		height_ = Gdx.graphics.getHeight();
-		width_ 	= Gdx.graphics.getWidth();
-			
-		//creation d'un skin ( fond des boutons )
-		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
-		
-		//creation carte de base et des conteneurs d'objets
-		if(size_n_ > 0 && size_m_ > 0 )
-		{
-			carte_ = new TypeObjet[size_n_ * size_m_]; //nombre de case total de la carte
-			//liste_tours = new Tower[size_n_ * size_m_ - 2]; //nombre de tour possibles - 2 car point de dépar et arrivée 
-		}
-		
-		liste_mobs = new Mobs[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
-
-		argent_ = 100;
-		vie_ = 100;
+		reload();
 	}
 
 	
@@ -307,6 +291,33 @@ public final class GlobalValues
 	public MapProperties map_Properties(){ return prop_;}
 	
 
+	public ErrorEnum reload()
+	{
+		System.err.println("reload");
+		
+		height_ = Gdx.graphics.getHeight();
+		width_ 	= Gdx.graphics.getWidth();
+			
+		//creation d'un skin ( fond des boutons )
+		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
+		
+		//creation carte de base et des conteneurs d'objets
+		if(size_n_ > 0 && size_m_ > 0 )
+		{
+			carte_ = new TypeObjet[size_n_ * size_m_]; //nombre de case total de la carte
+			//liste_tours = new Tower[size_n_ * size_m_ - 2]; //nombre de tour possibles - 2 car point de dépar et arrivée 
+		}
+		
+		liste_mobs = new Mobs[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
+
+		argent_ = 100;
+		vie_ = 100;
+		
+		return ErrorEnum.OK;
+	}
+	
+	
+	
 	public void size_Px(int px){size_px_=px;}
 	public void size_n(int n){size_n_=n;}
 	public void size_m(int m){size_m_=m;}
