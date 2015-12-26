@@ -8,8 +8,6 @@ public abstract class TowerType {
 	 * classe mère de toutes les tours!
 	 * 
 	 * Gestion des images de chaque tour ainsi que des positions 
-	 * + mise en place dans un tableau de coordonnées 
-	 * 	-> hein? il sert à quoi ce tableau? 
 	 */
 	
 	int a = 0;
@@ -19,7 +17,6 @@ public abstract class TowerType {
 	private String texture_; //lien vers l'image
 	private String bulletTexture_;
 	public  Vector2 bulletSize_;
-	int[][] coords_; // a quoi il sert?
 	
 	public TowerType()
 	{
@@ -33,7 +30,6 @@ public abstract class TowerType {
 		this.texture_ = texture; //lien vers l'image
 		this.setBulletTexture(bulletTexture);
 		this.bulletSize_ = bulletSize;
-		coords_[x][y]=1;
 	}
 	
 	 public String getTexture() {
