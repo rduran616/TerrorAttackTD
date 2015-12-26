@@ -99,6 +99,7 @@ public class TdChoixNiveau extends StateJeu
 			layout_menu.add(jouer_).pad(10);
 		}
 		
+		
 		layout_menu.row();
 		layout_menu.add(retour_).pad(10);
 		menu_stage.addActor(layout_menu);
