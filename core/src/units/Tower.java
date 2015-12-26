@@ -42,7 +42,7 @@ public class Tower extends ApplicationAdapter implements InputProcessor {
 	        camera = new OrthographicCamera();
 	        camera.setToOrtho(false,w,h);
 	        camera.update();
-	        tiledMap = new TmxMapLoader().load("MyCrappyMap.tmx");
+	        tiledMap = new TmxMapLoader().load("faut trouver ici un tiledmap lol");
 	        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	        Gdx.input.setInputProcessor(this);
 
