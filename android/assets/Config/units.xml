@@ -9,7 +9,7 @@
        <Air>air</Air>
        <Basic>basic</Basic>
        <Boss>boss</Boss>
-       <Lourd>lours</Lourd>   
+       <Lourd>lourd</Lourd>   
      </mobs>
      <bonus id="2" values="5">
          <pauseActive name="Pause active"></pauseActive>

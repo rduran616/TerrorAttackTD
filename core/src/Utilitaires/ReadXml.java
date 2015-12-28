@@ -13,10 +13,10 @@ import java.io.File;
 
 public class ReadXml 
 {
-	File xml_file_;// = new File("/Users/mkyong/staff.xml");
-	DocumentBuilderFactory doc_builder_factory_;// = DocumentBuilderFactory.newInstance();
-	DocumentBuilder doc_builder_;// = dbFactory.newDocumentBuilder();
-	Document doc_;// = dBuilder.parse(fXmlFile);
+	File xml_file_;
+	DocumentBuilderFactory doc_builder_factory_;
+	DocumentBuilder doc_builder_;
+	Document doc_;
 	
 	public ReadXml(String path)
 	{

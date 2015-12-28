@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  *
  */
 
-public class ConfigHud<T> 
+public class ConfigHud
 {
 	Table table_;
 	ReadXml file_;
