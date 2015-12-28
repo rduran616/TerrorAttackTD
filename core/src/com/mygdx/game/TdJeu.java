@@ -38,8 +38,9 @@ public class TdJeu extends StateJeu
 				if(sb_!=null)
 				{ 
 					sb_.begin();
-					if(t.position()!=null)
-						values_.tower_sprite(0).setPosition(t.position().x,t.position().y);
+					//if(t.position()!=null)
+					values_.tower_sprite(0).setPosition(t.position().x,t.position().y);
+					//t.box().show();
 					values_.tower_sprite(0).draw(sb_);
 					sb_.end();
 				}

@@ -2,11 +2,11 @@ package units;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Shape;
+
 
 import Utilitaires.CollisionBox;
 
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+
 /*
  * classe mère de toutes les tours!
  * 
@@ -79,12 +79,21 @@ public abstract class TowerType
 
 		
 		public Vector2 position(){return position_;}
-		public void position(Vector2 position){position_=position;}
-		public void position(float x, float y){position_=new Vector2(x,y);}
-		public void position(int x, int y){position_=new Vector2(x,y);}
+		public void position(Vector2 position){position_=position; maj_box();}
+		public void position(float x, float y){position_=new Vector2(x,y);maj_box();}
+		public void position(int x, int y){position_=new Vector2(x,y);maj_box();}
+		public void position_add(int x, int y){position_.x+=x;position_.y+=y;maj_box();} 
 
+		private void maj_box()
+		{
+			bbox_.set_X((int)position_.x);
+			bbox_.set_Y((int)position_.y);
+		}
+		
 		public CollisionBox box(){return bbox_;}
 		public void CollisionBox (CollisionBox  s){bbox_ = s;}
+		public boolean collision(int x, int y){return bbox_.collision(x, y);}
+		public boolean collision(CollisionBox  b){return bbox_.collision(b);}
 		
 		public String nom() 
 		{	

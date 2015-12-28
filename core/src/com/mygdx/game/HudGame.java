@@ -213,7 +213,9 @@ public class HudGame
 						    		   values_.argent(values_.argent()-values_.t_air_modele_().cout());
 						    		   System.err.println("TowerAir");
 						    		   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
-						    		   values_.tower().add(new TowerAir(values_.t_air_modele_()));
+						    		   values_.tower().add(new TowerAir(values_.t_air_modele_()));				    		   
+						    		   values_.last_tower().box().set_Collision_box(values_.get_width()/2, values_.get_height()/2, 64,64);
+						    		   values_.last_tower().position(values_.get_width()/2, values_.get_height()/2);
 						    		   values_.status(Status.NON_POSITIONNE);
 						    	   }
 						       }

@@ -394,7 +394,7 @@ public final class GlobalValues
 			mobs_sprite_  = new SpriteConteneur("../android/assets/Config/units.xml", "mobs", "src_desk");
 			tower_sprite_ = new SpriteConteneur("../android/assets/Config/units.xml", "tower","src_desk");
 			CollisionBox bbox = new CollisionBox(0,0,Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","w")),Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","h")));
-			
+			bbox.show();
 
 			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
 			{

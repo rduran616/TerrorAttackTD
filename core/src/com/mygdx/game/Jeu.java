@@ -203,6 +203,27 @@ public class Jeu extends StateMenu  implements InputProcessor
 	{
 		finger.finger_Touch(screenX, screenY, pointer);
 		
+		if(values_.status()== Status.NON_POSITIONNE)
+		{
+			//repasse dans le bon repere
+			if(values_.last_tower().collision(screenX, values_.get_height()-screenY) == true)
+			{
+				int Tx = Gdx.input.getDeltaX(0);
+				int Ty = Gdx.input.getDeltaY(0);
+				values_.last_tower().position_add(Tx, -Ty);
+			}
+			else
+			{
+				//finger.finger_Zoom(screenX, screenY, pointer);
+				//finger.finger_Move(screenX, screenY, pointer);
+			}
+		}
+		else if(values_.status()== Status.POSITIONNE)
+		{
+		//	finger.finger_Zoom(screenX, screenY, pointer);
+			//finger.finger_Move(screenX, screenY, pointer);
+		}
+
 		return false;
 	}
 
@@ -215,18 +236,28 @@ public class Jeu extends StateMenu  implements InputProcessor
 	}
 
 	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-		finger.finger_Zoom(screenX, screenY, pointer);
-		finger.finger_Move(screenX, screenY, pointer);
-		
+	public boolean touchDragged(int screenX, int screenY, int pointer) 
+	{
 		if(values_.status()== Status.NON_POSITIONNE)
 		{
-			TowerType t = values_.last_tower();
-			//if(screenX)
-			
+			//repasse dans le bon repere
+			if(values_.last_tower().collision(screenX, values_.get_height()-screenY) == true)
+			{
+				int Tx = Gdx.input.getDeltaX(0);
+				int Ty = Gdx.input.getDeltaY(0);
+				values_.last_tower().position_add(Tx, -Ty);
+			}
+			else
+			{
+				//finger.finger_Zoom(screenX, screenY, pointer);
+				//finger.finger_Move(screenX, screenY, pointer);
+			}
 		}
-		
+		else if(values_.status()== Status.POSITIONNE)
+		{
+		//	finger.finger_Zoom(screenX, screenY, pointer);
+			//finger.finger_Move(screenX, screenY, pointer);
+		}
 		
 		return false;
 	}
