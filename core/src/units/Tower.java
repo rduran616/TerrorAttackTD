@@ -26,7 +26,7 @@ public class Tower extends ApplicationAdapter implements InputProcessor {
 	
 	Texture img;
     TiledMap tiledMap;
-    OrthographicCamera camera;
+    //OrthographicCamera camera;
     TiledMapRenderer tiledMapRenderer;
     SpriteBatch sb;
     Texture texture;
@@ -39,9 +39,9 @@ public class Tower extends ApplicationAdapter implements InputProcessor {
 	        float w = Gdx.graphics.getWidth();
 	        float h = Gdx.graphics.getHeight();
 
-	        camera = new OrthographicCamera();
-	        camera.setToOrtho(false,w,h);
-	        camera.update();
+	        //camera = new OrthographicCamera();
+	       // camera.setToOrtho(false,w,h);
+	       // camera.update();
 	        tiledMap = new TmxMapLoader().load("faut trouver ici un tiledmap lol");
 	        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	        Gdx.input.setInputProcessor(this);
@@ -55,10 +55,10 @@ public class Tower extends ApplicationAdapter implements InputProcessor {
 		    Gdx.gl.glClearColor(1, 0, 0, 1);
 		    Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		    camera.update();
-		    tiledMapRenderer.setView(camera);
-		    tiledMapRenderer.render();
-		    sb.setProjectionMatrix(camera.combined);
+		 //   camera.update();
+		 //   tiledMapRenderer.setView(camera);
+		  //  tiledMapRenderer.render();
+		 //   sb.setProjectionMatrix(camera.combined);
 		    sb.begin();
 		    sprite.draw(sb);
 		    sb.end();
@@ -76,8 +76,8 @@ public class Tower extends ApplicationAdapter implements InputProcessor {
 	
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 	    Vector3 clickCoordinates = new Vector3(screenX,screenY,0);
-	    Vector3 position = camera.unproject(clickCoordinates);
-	    sprite.setPosition(position.x, position.y);
+	 //   Vector3 position = camera.unproject(clickCoordinates);
+	//    sprite.setPosition(position.x, position.y);
 	    return true;
 	}
 

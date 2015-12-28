@@ -2,7 +2,8 @@ package units;
 
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class TowerType {
+public abstract class TowerType 
+{
 	
 	/*
 	 * classe mère de toutes les tours!
@@ -11,6 +12,12 @@ public abstract class TowerType {
 	 */
 	
 	int a = 0;
+	public String _nom = "Tour Anti-Air";
+	int _cout = 50;
+	float _attspeed = 2;
+	float _range = 5;
+	int _damage = 10;
+	boolean _air = true;
 	
 	Status status_; //est positionnée ou n'est pas pas possitioner -> permettra de savoir si on doit la positioner ou pas
 	

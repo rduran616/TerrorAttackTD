@@ -76,9 +76,6 @@ public class Jeu extends StateMenu  implements InputProcessor
 	public StateMEnuEnum changer_Etat() 
 	{
 		Gdx.input.setCatchBackKey(true);
-		
-		// choix de l'etat et action en fonction de l'état du jeu
-		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia
 
 		//dessin du jeu
 		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
@@ -136,6 +133,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 				 Gdx.input.setInputProcessor(multiplexer);
 				 touche_activer_ = true;
 			 }
+			 
 		}
 		else if(etat_jeu_ == StateJeuEnum.RETOUR)
 		{
@@ -143,6 +141,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 			selection_ = StateMEnuEnum.MENU;
 		}
 
+		// choix de l'etat et action en fonction de l'état du jeu
+		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia
 		
 		//Changer de menu
 		if(selection_ != StateMEnuEnum.JEU)

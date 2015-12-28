@@ -8,10 +8,11 @@ public class MobsBasic extends Mobs{
 	
 	private static Sprite sprite;
 
-	public MobsBasic(int life, int speed, Vector2 mat, int money) {
-		super(life, sprite, speed, mat, money);
-		// TODO Auto-generated constructor stub
+	public MobsBasic(int life, int speed, int money, int degat) 
+	{
+		super(life,speed,money,degat);
 	}
+	
 	
 	public Sprite getSprite()
 	{

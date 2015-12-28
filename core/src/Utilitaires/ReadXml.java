@@ -31,7 +31,7 @@ public class ReadXml
 			}
 			catch(Exception e)
 			{
-				System.err.println("Erreur chargement xml file");
+				System.err.println("Erreur chargement xml file: "+path);
 			}
 		}
 	}
@@ -145,9 +145,11 @@ public class ReadXml
 	 public static void main(String argv[]) 
 	 {
 		 
-		 ReadXml file = new ReadXml("../android/assets/units.xml");
+		 ReadXml file = new ReadXml("../android/assets/Config/units.xml");
 		 System.out.println(file.node_Item_Child_Number("tower"));
 		 System.out.println(file.node_Item_Child_Number("mobs"));
+		 
+		 System.out.println(file.get_Sub_Node_Item(3,"tower", "src_andro"));
 	 }
 
 }

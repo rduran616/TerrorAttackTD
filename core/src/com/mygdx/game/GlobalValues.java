@@ -3,10 +3,12 @@ package com.mygdx.game;
 
 import java.util.Vector;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -15,9 +17,18 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.SerializationException;
 
+import Utilitaires.ReadXml;
 import units.Mobs;
+import units.MobsAir;
+import units.MobsBasic;
+import units.MobsBoss;
+import units.MobsLourd;
 import units.Tower;
+import units.TowerAir;
+import units.TowerBase;
+import units.TowerSlow;
 import units.TowerType;
+import units.TowerZone;
 
 /*
  * Classe singleton contenant toutes les variables global et accessible par tous et partout
@@ -70,14 +81,29 @@ public final class GlobalValues
 	//decors	
 	private Skin skin_bouton_;			//peau des boutons
 	
+	//sprites
+	private SpriteConteneur mobs_sprite_;		//images des mobs
+	private SpriteConteneur tower_sprite_;		//images des tours
+
+	//modele d'ennemi et de tour
+	private TowerAir t_air_modele_;
+	private TowerBase t_base_modele_;
+	private TowerZone t_zone_modele_;
+	private TowerSlow t_slow_modele_;
+	
+	private MobsAir m_air_modele_;
+	private MobsBasic m_basic_modele_;
+	private MobsBoss m_boss_modele_;
+	private MobsLourd m_lourd_modele_;
+	
 	//carte
-	private int ennemi_max_=1000;		//nombre max d'ennemi
-	private int size_n_ = 20;			//nombre de carreaux de la carte en width
-	private int size_m_ = 30;			//nombre de carreaux de la carte en height
-	private TypeObjet carte_[];			//une carte ( à enlever? )
+	private int ennemi_max_=1000;				//nombre max d'ennemi
+	private int size_n_ = 20;					//nombre de carreaux de la carte en width
+	private int size_m_ = 30;					//nombre de carreaux de la carte en height
+	private TypeObjet carte_[];					//une carte ( à enlever? )
 	private Vector<TowerType> liste_tours;		//liste des tours placées
-	private Mobs liste_mobs[];			//liste des mobs à afficher
-	private String carte_name_;			//nom ou chemin de la carte
+	private Mobs liste_mobs[];					//liste des mobs à afficher
+	private String carte_name_;					//nom ou chemin de la carte
 	
 	private Texture img_;  						//texture carte
 	private TiledMap tiledMap_; 				//carte
@@ -160,7 +186,6 @@ public final class GlobalValues
 	}
 	
 	public Mobs[] mobs(){return liste_mobs;}
-
 
 	public ErrorEnum camera_Update()
 	{
@@ -258,7 +283,6 @@ public final class GlobalValues
 	}
 	
 	public OrthographicCamera camera(){return camera_;} 
-	
 
 	public ErrorEnum camera_Translate(float x, float y)
 	{
@@ -290,7 +314,8 @@ public final class GlobalValues
 
 	public MapProperties map_Properties(){ return prop_;}
 	
-
+	
+	//chargement/rechargement des ellements visuel du jeux
 	public ErrorEnum reload()
 	{
 		System.err.println("reload");
@@ -313,8 +338,110 @@ public final class GlobalValues
 		argent_ = 100;
 		vie_ = 100;
 		
+		
+		if(Gdx.app.getType() == ApplicationType.Android)
+		{
+			
+			mobs_sprite_  = new SpriteConteneur("Config/units.xml", "mobs", "src_andro");
+			tower_sprite_ = new SpriteConteneur("Config/units.xml", "tower", "src_andro");
+			
+			ReadXml xml = new ReadXml("Config/units.xml");
+			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
+			{
+				String n =xml.get_Sub_Node_Item(i, "mobs", "name");
+				int vit= Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "vit"));
+				int money=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "money"));
+				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "power"));
+				int vie=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "range"));
+				if(n.equals("air"))
+					m_air_modele_= new MobsAir(vie, vit, money, power);
+				else if(n.equals("basic"))
+					m_basic_modele_= new MobsBasic(vie, vit, money, power);
+				else if(n.equals("boss"))
+					m_lourd_modele_= new MobsLourd(vie, vit, money, power);
+				else if(n.equals("lourd"))
+					m_boss_modele_= new MobsBoss(vie, vit, money, power);
+				
+			} 
+			
+			for(int i=0; i < xml.node_Item_Child_Number("tower"); i++)
+			{
+				String n =xml.get_Sub_Node_Item(i, "tower", "name");
+				int vit= Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "vit"));
+				int money=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "money"));
+				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "power"));
+				int range=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "range"));
+				if(n.equals("air"))
+					t_air_modele_ = new TowerAir(vit,money,power,range,"air");
+				else if(n.equals("base"))
+					t_base_modele_ = new TowerBase();
+				else if(n.equals("slow"))
+					t_slow_modele_ = new TowerSlow();
+				else if(n.equals("zone"))
+					t_zone_modele_ = new TowerZone();
+				
+			} 
+		}
+		else
+		{
+			ReadXml xml = new ReadXml("../android/assets/Config/units.xml");
+			mobs_sprite_  = new SpriteConteneur("../android/assets/Config/units.xml", "mobs", "src_desk");
+			tower_sprite_ = new SpriteConteneur("../android/assets/Config/units.xml", "tower","src_desk");
+
+			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
+			{
+				String n =xml.get_Sub_Node_Item(i, "mobs", "name");
+				int vit= Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "vit"));
+				int money=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "money"));
+				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "power"));
+				int vie=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "vie"));
+				if(n.equals("air"))
+					m_air_modele_= new MobsAir(vie, vit, money, power);
+				else if(n.equals("basic"))
+					m_basic_modele_= new MobsBasic(vie, vit, money, power);
+				else if(n.equals("boss"))
+					m_lourd_modele_= new MobsLourd(vie, vit, money, power);
+				else if(n.equals("lourd"))
+					m_boss_modele_= new MobsBoss(vie, vit, money, power);
+				
+			} 
+			
+			for(int i=0; i < xml.node_Item_Child_Number("tower"); i++)
+			{
+				String n =xml.get_Sub_Node_Item(i, "tower", "name");
+				int vit= Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "vit"));
+				int money=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "money"));
+				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "power"));
+				int range=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "range"));
+				if(n.equals("air"))
+					t_air_modele_ = new TowerAir(vit,money,power,range,"air");
+				else if(n.equals("base"))
+					t_base_modele_ = new TowerBase();
+				else if(n.equals("slow"))
+					t_slow_modele_ = new TowerSlow();
+				else if(n.equals("zone"))
+					t_zone_modele_ = new TowerZone();
+				
+			} 
+		}
+
+		
 		return ErrorEnum.OK;
 	}
+
+	public Sprite tower_sprite(int index){return tower_sprite_.sprite(index);}
+	public Sprite mob_sprite(int index){return mobs_sprite_.sprite(index);}
+
+	public TowerAir t_air_modele_(){return t_air_modele_;}
+	public TowerBase t_base_modele_(){return t_base_modele_;}
+	public TowerZone t_zone_modele_(){return t_zone_modele_;}
+	public TowerSlow t_slow_modele_(){return t_slow_modele_;}
+	
+	public MobsAir m_air_modele_(){return m_air_modele_;}
+	public MobsBasic m_basic_modele_(){return m_basic_modele_;}
+	public MobsBoss m_boss_modele_(){return m_boss_modele_;}
+	public MobsLourd m_lourd_modele_(){return m_lourd_modele_;}
+
 	
 	
 	

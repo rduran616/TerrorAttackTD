@@ -16,47 +16,52 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Mobs extends ApplicationAdapter {
+public abstract class Mobs
+{
 
-	int _life;
-	Sprite mobSprite;
-	int _speed;
-	Vector2 mat;
-	Vector2 currentPosition;
-	int _money;
-	SpriteBatch batch;
-    Sprite sprite;
-    Texture img;
-    World world;
-    Body body;
+	private int _life;
+	//Sprite mobSprite;
+	private int _speed;
+	private int _money;
+	private int degat_;
+	
+	private Vector2 mat;
+	private Vector2 currentPosition;
+
+	//SpriteBatch batch;
+    //Sprite sprite;
+   // Texture img;
+   // World world;
+	private Body body;
 
 	
-	public Mobs(int life, Sprite sprite, int speed, Vector2 mat2, int money)
+	public Mobs(int vie, int vitesse, int money, int degat)
 	{
-		this._life=life;
-		this.mobSprite=sprite;
-		this._speed=speed;
-		this.mat=mat2;
+		this._life=vie;
+		//this.mobSprite=sprite;
+		this._speed=vitesse;
+		//this.mat=mat2;
 		this._money=money;
+		this.degat_ =degat;
 		
 	
-		batch = new SpriteBatch();
-	    img = new Texture("un fichier img de base qui ressemble a un petit personnage?? ^^ ");
-	    mobSprite = new Sprite(img); // ici faudra adapter avec les sprite envoyés en parametre ou autrement
+		//batch = new SpriteBatch();
+	   // img = new Texture("un fichier img de base qui ressemble a un petit personnage?? ^^ ");
+	  //  mobSprite = new Sprite(img); // ici faudra adapter avec les sprite envoyés en parametre ou autrement
 	   //
-	    sprite.setPosition(Gdx.graphics.getWidth() / 2 - sprite.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-	    world = new World(new Vector2(0, -98f), true);
+	   // sprite.setPosition(Gdx.graphics.getWidth() / 2 - sprite.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+	   // world = new World(new Vector2(0, -98f), true);
 	    // un mob centré sur la map, à tester
 
-	    BodyDef bodyDef = new BodyDef();
+	 /*   BodyDef bodyDef = new BodyDef();
 	    bodyDef.type = BodyDef.BodyType.DynamicBody;
-	    bodyDef.position.set(sprite.getX(), sprite.getY());
+	    bodyDef.position.set(sprite.getX(), sprite.getY());*/
 	
 	    // pour l'afficher sur la map
-	    body = world.createBody(bodyDef);
+	  //  body = world.createBody(bodyDef);
 	
 	    // paramétrage de la dimension de l'affichage
-	    PolygonShape shape = new PolygonShape();
+	/*    PolygonShape shape = new PolygonShape();
 	    shape.setAsBox(sprite.getWidth()/2, sprite.getHeight()/2);
 	    
 	    // fixtdef c'est les propriétés physiques des images
@@ -67,25 +72,7 @@ public class Mobs extends ApplicationAdapter {
 	    Fixture fixture = body.createFixture(fixtureDef);
 	
 	    // Shape is the only disposable of the lot, so get rid of it
-	    shape.dispose();
+	    shape.dispose();*/
 	}
-	
-	@Override
-	public void render() {
-	
-	    // déplacement en fct du temps, à ne pas faire pour le jeu, juste pour tester
-	    world.step(Gdx.graphics.getDeltaTime(), 6, 2);
-	    sprite.setPosition(body.getPosition().x, body.getPosition().y);
-	    Gdx.gl.glClearColor(1, 1, 1, 1);
-	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-	    batch.begin();
-	    batch.draw(sprite, sprite.getX(), sprite.getY());
-	    batch.end();
-	}
-	
-	@Override
-	public void dispose() {
-	    img.dispose();
-	    world.dispose();
-	}
+
 }

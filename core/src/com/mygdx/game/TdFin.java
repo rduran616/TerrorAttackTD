@@ -1,9 +1,12 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class TdFin extends StateJeu
 {
 	GlobalValues values_;
 	StateJeuEnum selection_;
+	
 	
 	public TdFin()
 	{

@@ -1,15 +1,15 @@
  <units>
      <tower id="0" value="4">
-	     <Air  name="air" 	src_android="assets/unit/unit1" ></Air>
-	     <Base name="base"  src_android="assets/unit/unit2" ></Base>
-	     <Slow name="slow"  src_android="assets/unit/unit3" ></Slow>
-	     <Zone name="zone" 	src_android="assets/unit/unit4" ></Zone>
+	     <Air  vit="2" money="150" power="10"  range="2" name="air"   src_desk="../android/assets/units/tower/image.png" src_andro="assets/units/tower/steampunk_f8.png" ></Air>
+	     <Base vit="2" money="25"  power="10"  range="2" name="base"  src_desk="../android/assets/units/tower/image.png" src_andro="assets/units/tower/steampunk_f8.png" ></Base>
+	     <Slow vit="1" money="75"  power="20"  range="2" name="slow"  src_desk="../android/assets/units/tower/image.png" src_andro="assets/units/tower/steampunk_f8.png" ></Slow>
+	     <Zone vit="2" money="50"  power="20"  range="4" name="zone"  src_desk="../android/assets/units/tower/image.png" src_andro="assets/units/tower/steampunk_f8.png" ></Zone>
      </tower>
-     <mobs id="1" value="4">
-       <Air>air</Air>
-       <Basic>basic</Basic>
-       <Boss>boss</Boss>
-       <Lourd>lourd</Lourd>   
+     <mobs id="1" value="4">  
+       <Air   vie="50" vit="3" money="150" power="10" name="air"   src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Air>
+       <Basic vie="20" vit="2" money="25" power="10" name="base"  src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Basic>
+	   <Boss  vie="100" vit="2" money="75"  power="20" name="boss"  src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Boss>
+	   <Lourd vie="150" vit="1" money="50" power="20" name="lourd" src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Lourd>
      </mobs>
      <bonus id="2" values="5">
          <pauseActive name="Pause active"></pauseActive>

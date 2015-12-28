@@ -81,6 +81,7 @@ public class HudGame
 		label_amelioration_		= new Label("Upgra :", values_.get_Skin());
 		stage_game_				= new Stage(new ScreenViewport());
 				
+		//placement des boutons
 		@SuppressWarnings("rawtypes")
 		ConfigHud hud = new ConfigHud();
 		hud.column(2);
@@ -105,11 +106,11 @@ public class HudGame
 		hud.nb_button(nb_bonus_);
 		creation_Hud_Objects(hud);
 		
-		
+		//background jaune
 		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
 		stage_game_.addActor(main_table_game_);
 		
-		
+		//autre informations
 		vie_ = new Label("Vie :", values_.get_Skin());
 		vie_.setPosition(0, values_.get_height()-20);
 		argent_ = new Label("Argent :", values_.get_Skin());
@@ -150,7 +151,7 @@ public class HudGame
 						    	   System.err.println("TowerAir");
 						    	   
 						    	   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
-						    	   values_.tower().add(new TowerAir());
+						    	   values_.tower().add(new TowerAir(values_.t_air_modele_()));
 						    	   
 						       }
 						 });
@@ -163,7 +164,7 @@ public class HudGame
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
 						    	   System.err.println("TowerZone");
-						    	   values_.tower().add(new TowerZone());
+						    	  // values_.tower().add(new TowerAir(values_.t_zone_modele_()));
 						       }
 						 });
 					}
@@ -175,7 +176,7 @@ public class HudGame
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
 						    	   System.err.println("TowerSlow");
-						    	   values_.tower().add(new TowerSlow());
+						    	   //values_.tower().add(new TowerAir(values_.t_slow_modele_());
 						       }
 						 });
 					}
@@ -187,7 +188,7 @@ public class HudGame
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
 						    	   System.err.println("TowerBase");
-						    	   values_.tower().add(new TowerBase());
+						    	   //values_.tower().add(new TowerAir(values_.t_base_modele_()));
 						       }
 						 });
 					}
