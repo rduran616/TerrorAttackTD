@@ -19,9 +19,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import Utilitaires.ConfigHud;
 import Utilitaires.ReadXml;
+import units.Status;
 import units.TowerAir;
 import units.TowerBase;
 import units.TowerSlow;
+import units.TowerType;
 import units.TowerZone;
 
 
@@ -43,15 +45,24 @@ public class HudGame
 	private int nb_bonus_;	//nombre de bonus different
 	
 	
-	private int size_hud_ = 20;			//valeur en % de la taille du hud par rapport a l'ecran
-	private Stage stage_game_;				//stage du jeu
-	private Layout main_layout_game_;		//layout du hud du jeu
+	private int size_hud_ = 20;				//valeur en % de la taille du hud par rapport a l'ecran
+	
+	private Stage stage_game_;				//stage du jeu qd on est spectateur
+	private Layout main_layout_game_;		//layout du hud du jeu ( layout du mode jeu)
 	private Table main_table_game_;			//layout principale du hud du jeu
 	private Label label_tour_;				//label pour placement tour
 	private Label label_bonus_;				//label pour placement tour
 	private Label label_amelioration_;		//label pour amelioratin générale des tours
 	private Label vie_;
 	private Label argent_;
+	
+	private Stage stage_game_2;				//stage du jeu qd on place un objet
+	private Table main_layout_game_2;		//layout du mode placement 
+	private Label txt_info_;
+	private TextButton validate_;
+	private TextButton cancel_;
+	
+	private int argent_temp;
 	
 	
 	public HudGame()
@@ -118,6 +129,45 @@ public class HudGame
 		
 		stage_game_.addActor(argent_);
 		stage_game_.addActor(vie_);
+		
+		
+		//deuxieme hud
+		stage_game_2 = new Stage();				
+		main_layout_game_2 = new Table();		
+		txt_info_ = new Label("Placement :", values_.get_Skin());
+		validate_ = new TextButton("Valider", values_.get_Skin());
+		cancel_ = new TextButton("Annuler", values_.get_Skin());
+		
+		validate_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       { 
+		    	   //enregistrement de la position
+		    	   //TowerType t = values_.tower().get(values_.tower().size()-1).po);
+		    	   values_.status(Status.POSITIONNE);
+		       }
+		 });
+		
+		
+		cancel_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       { 
+		    	   values_.argent(argent_temp);
+		    	   values_.status(Status.POSITIONNE);
+		    	   values_.tower().remove(values_.tower().size()-1); 
+		       }
+		 });
+		
+		main_layout_game_2.setSize(values_.get_width()*size_hud_/100,values_.get_height());
+		main_layout_game_2.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		main_layout_game_2.add(txt_info_).pad(10).row();
+		main_layout_game_2.add(validate_).pad(10).row();
+		main_layout_game_2.add(cancel_).pad(10).row();
+		
+		stage_game_2.addActor(main_layout_game_2);
 	}
 	
 	
@@ -125,7 +175,16 @@ public class HudGame
 	public void vie(){vie_.setText("Vie :"+Integer.toString(values_.vie()));}
 	
 	
-	public Stage stage(){return stage_game_;} 
+	public Stage stage()
+	{
+		if(values_.status() == Status.POSITIONNE)
+			return stage_game_;
+		else
+			return stage_game_2;
+	} 
+	public Stage stage2(){return stage_game_2;}
+
+	
 	
 	//création des boutons de l'ui 
 	private void creation_Hud_Objects(@SuppressWarnings("rawtypes") ConfigHud hud)
@@ -147,12 +206,16 @@ public class HudGame
 						{
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
-						       {
-						    	   System.err.println("TowerAir");
-						    	   
-						    	   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
-						    	   values_.tower().add(new TowerAir(values_.t_air_modele_()));
-						    	   
+						       { 
+						    	   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= values_.t_air_modele_().cout())
+						    	   {
+						    		   argent_temp = values_.argent();
+						    		   values_.argent(values_.argent()-values_.t_air_modele_().cout());
+						    		   System.err.println("TowerAir");
+						    		   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
+						    		   values_.tower().add(new TowerAir(values_.t_air_modele_()));
+						    		   values_.status(Status.NON_POSITIONNE);
+						    	   }
 						       }
 						 });
 					}
@@ -164,7 +227,11 @@ public class HudGame
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
 						    	   System.err.println("TowerZone");
-						    	  // values_.tower().add(new TowerAir(values_.t_zone_modele_()));
+						    	   /*if(values_.status() != Status.NON_POSITIONNE)
+						    	   {
+						    		   // values_.tower().add(new TowerAir(values_.t_zone_modele_()));
+							    	   values_.status(Status.NON_POSITIONNE);
+						    	   }*/
 						       }
 						 });
 					}

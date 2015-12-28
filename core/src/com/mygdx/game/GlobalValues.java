@@ -17,12 +17,14 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.SerializationException;
 
+import Utilitaires.CollisionBox;
 import Utilitaires.ReadXml;
 import units.Mobs;
 import units.MobsAir;
 import units.MobsBasic;
 import units.MobsBoss;
 import units.MobsLourd;
+import units.Status;
 import units.Tower;
 import units.TowerAir;
 import units.TowerBase;
@@ -96,6 +98,7 @@ public final class GlobalValues
 	private MobsBoss m_boss_modele_;
 	private MobsLourd m_lourd_modele_;
 	
+	
 	//carte
 	private int ennemi_max_=1000;				//nombre max d'ennemi
 	private int size_n_ = 20;					//nombre de carreaux de la carte en width
@@ -118,6 +121,7 @@ public final class GlobalValues
     //gestion de la boucle du jeu
 	private int argent_;
 	private int vie_;
+	private Status status_; //status indiquant si on peux créé ou non un objet
 
 		
 	/**** Méthodes *****/
@@ -337,6 +341,7 @@ public final class GlobalValues
 
 		argent_ = 100;
 		vie_ = 100;
+		status_ = Status.POSITIONNE;
 		
 		
 		if(Gdx.app.getType() == ApplicationType.Android)
@@ -346,6 +351,7 @@ public final class GlobalValues
 			tower_sprite_ = new SpriteConteneur("Config/units.xml", "tower", "src_andro");
 			
 			ReadXml xml = new ReadXml("Config/units.xml");
+			CollisionBox bbox = new CollisionBox(0,0,Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","w")),Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","h")));
 			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
 			{
 				String n =xml.get_Sub_Node_Item(i, "mobs", "name");
@@ -372,7 +378,7 @@ public final class GlobalValues
 				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "power"));
 				int range=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "range"));
 				if(n.equals("air"))
-					t_air_modele_ = new TowerAir(vit,money,power,range,"air");
+					t_air_modele_ = new TowerAir(vit,money,power,range,"air",bbox );
 				else if(n.equals("base"))
 					t_base_modele_ = new TowerBase();
 				else if(n.equals("slow"))
@@ -387,6 +393,8 @@ public final class GlobalValues
 			ReadXml xml = new ReadXml("../android/assets/Config/units.xml");
 			mobs_sprite_  = new SpriteConteneur("../android/assets/Config/units.xml", "mobs", "src_desk");
 			tower_sprite_ = new SpriteConteneur("../android/assets/Config/units.xml", "tower","src_desk");
+			CollisionBox bbox = new CollisionBox(0,0,Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","w")),Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","h")));
+			
 
 			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
 			{
@@ -414,7 +422,7 @@ public final class GlobalValues
 				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "power"));
 				int range=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "range"));
 				if(n.equals("air"))
-					t_air_modele_ = new TowerAir(vit,money,power,range,"air");
+					t_air_modele_ = new TowerAir(vit,money,power,range,"air",bbox);
 				else if(n.equals("base"))
 					t_base_modele_ = new TowerBase();
 				else if(n.equals("slow"))
@@ -442,8 +450,10 @@ public final class GlobalValues
 	public MobsBoss m_boss_modele_(){return m_boss_modele_;}
 	public MobsLourd m_lourd_modele_(){return m_lourd_modele_;}
 
+	public Status status(){return status_;}
+	public void status(Status s){status_=s;}
 	
-	
+	public TowerType last_tower(){return liste_tours.lastElement();}
 	
 	public void size_Px(int px){size_px_=px;}
 	public void size_n(int n){size_n_=n;}

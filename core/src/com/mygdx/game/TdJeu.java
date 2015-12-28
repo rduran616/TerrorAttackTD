@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import units.TowerType;
+
 public class TdJeu extends StateJeu
 {
 
@@ -27,17 +29,17 @@ public class TdJeu extends StateJeu
 		//mise à jour des ia
 		
 		
-		//mise à jour des tour
-		//afficher image
+		//dessin des images
 		for(int i=0;i < values_.tower().size();i++)
 		{
-			String n = values_.tower().get(i)._nom;
-			if(n.equals("air"))
+			TowerType t = values_.tower().get(i);
+			if(t.nom().equals("air"))
 			{
 				if(sb_!=null)
 				{ 
 					sb_.begin();
-					values_.tower_sprite(0).setPosition(values_.get_width()/2, values_.get_height()/2);
+					if(t.position()!=null)
+						values_.tower_sprite(0).setPosition(t.position().x,t.position().y);
 					values_.tower_sprite(0).draw(sb_);
 					sb_.end();
 				}

@@ -9,6 +9,8 @@ import com.badlogic.gdx.InputProcessor;
 
 import Utilitaires.FingerTransformMap;
 import Utilitaires.TickHorloge;
+import units.Status;
+import units.TowerType;
 
 public class Jeu extends StateMenu  implements InputProcessor
 { 
@@ -63,6 +65,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		hud_game_ = new HudGame();
 		multiplexer.addProcessor(hud_game_.stage());
+		multiplexer.addProcessor(hud_game_.stage2());
 		multiplexer.addProcessor(this);
 		
 		//boutton retour
@@ -109,10 +112,11 @@ public class Jeu extends StateMenu  implements InputProcessor
 			 if(etat_jeu_ == StateJeuEnum.JEU )
 			 {
 				//dessin uid
-				// Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth()*size_hud_/100,Gdx.graphics.getHeight());//viewport du hud interactif
+				// Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth()*size_hud_/100,Gdx.graphics.getHeight());//viewport du hud interactif			 
 				 hud_game_.argent();
 				 hud_game_.vie();
 				 hud_game_.stage().draw();
+
 			 }
 			 else if(etat_jeu_ == StateJeuEnum.PAUSE)
 			 {
@@ -215,6 +219,15 @@ public class Jeu extends StateMenu  implements InputProcessor
 
 		finger.finger_Zoom(screenX, screenY, pointer);
 		finger.finger_Move(screenX, screenY, pointer);
+		
+		if(values_.status()== Status.NON_POSITIONNE)
+		{
+			TowerType t = values_.last_tower();
+			//if(screenX)
+			
+		}
+		
+		
 		return false;
 	}
 
