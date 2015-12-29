@@ -203,34 +203,6 @@ public class Jeu extends StateMenu  implements InputProcessor
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) 
 	{
-		finger.finger_Touch(screenX, screenY, pointer);
-		
-		if(values_.status()== Status.NON_POSITIONNE)
-		{
-			//repasse dans le bon repere
-			//repasse dans le  repere monde	
-			Vector3 pos = new Vector3(screenX,screenY,0);
-			values_.camera().unproject(pos);
-			
-		//	System.err.println(pos);
-			
-			if(values_.last_tower().collision((int)pos.x,(int)pos.y) == true)
-			{
-				int Tx = Gdx.input.getDeltaX(0);
-				int Ty = Gdx.input.getDeltaY(0);
-				values_.last_tower().position_add(Tx, -Ty);
-			}
-			else
-			{
-				finger.finger_Zoom(screenX, screenY, pointer);
-				finger.finger_Move(screenX, screenY, pointer);
-			}
-		}
-		else if(values_.status()== Status.POSITIONNE)
-		{
-			finger.finger_Zoom(screenX, screenY, pointer);
-			finger.finger_Move(screenX, screenY, pointer);
-		}
 
 		return false;
 	}
@@ -285,7 +257,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 	@Override
 	public boolean scrolled(int amount)
 	{
-		values_.zoom(amount);
+		values_.zoom(amount*0.1);
 		return false;
 	}
 

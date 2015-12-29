@@ -7,8 +7,10 @@ public class TowerAir extends TowerType
 {
 
 
-	public TowerAir(int cout, int att_speed,int damage, int range, String nom, CollisionBox box )
+	public TowerAir(int cout, int att_speed,int damage, int range,int h, int w, String nom, CollisionBox box )
 	{
+		this.size_H(h);
+		this.size_W(w);
 		this.nom(nom);
 		_cout = cout;
 		_attspeed = att_speed;
@@ -16,6 +18,7 @@ public class TowerAir extends TowerType
 		_damage = damage;
 		_air = true;
 		this.CollisionBox(box);
+		
 	}
 	
 	public TowerAir(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) 
@@ -35,5 +38,6 @@ public class TowerAir extends TowerType
 	 }
 	 
 	 public int cout(){return _cout;}
+	 
 	
 }

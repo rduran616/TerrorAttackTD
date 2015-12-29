@@ -17,6 +17,8 @@ public abstract class TowerType
 {
 	private Vector2 position_;
 	private CollisionBox  bbox_;
+	private int size_h_;
+	private int size_w_;
 	
 	
 	int a = 0;
@@ -78,6 +80,11 @@ public abstract class TowerType
 		}
 
 		
+		public int size_H(){return size_h_;}
+		public int size_W(){return size_w_;}
+		public void size_H(int h){size_h_ = h;}
+		public void size_W(int w){size_w_ = w;}
+		
 		public Vector2 position(){return position_;}
 		public Vector3 position3(){return new Vector3(position_.x,position_.y,0);}
 		public void position(Vector2 position){position_=position; maj_box();}
@@ -102,10 +109,7 @@ public abstract class TowerType
 		{	
 			return _nom;
 		}
-		public void nom(String n) 
-		{	
-			 _nom=n;
-		}
+		public void nom(String n) { _nom=n;}
 		
 		
 	
