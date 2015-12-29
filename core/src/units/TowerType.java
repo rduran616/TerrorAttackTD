@@ -10,7 +10,7 @@ import Utilitaires.CollisionBox;
 /*
  * classe mère de toutes les tours!
  * 
- * Gestion des images de chaque tour ainsi que des positions 
+ * Gestion des principale caracteristiques de chaque tour
  */
 
 public abstract class TowerType 
