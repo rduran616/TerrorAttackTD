@@ -271,8 +271,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 
 	//only desktop
 	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
+	public boolean scrolled(int amount)
+	{
+		values_.zoom(amount);
 		return false;
 	}
 

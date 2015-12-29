@@ -2,7 +2,7 @@ package units;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-
+import com.badlogic.gdx.math.Vector3;
 
 import Utilitaires.CollisionBox;
 
@@ -83,6 +83,8 @@ public abstract class TowerType
 		public void position(float x, float y){position_=new Vector2(x,y);maj_box();}
 		public void position(int x, int y){position_=new Vector2(x,y);maj_box();}
 		public void position_add(int x, int y){position_.x+=x;position_.y+=y;maj_box();} 
+		public void position(Vector3 pos){position_.x=pos.x; position_.y=pos.y;}
+
 
 		private void maj_box()
 		{

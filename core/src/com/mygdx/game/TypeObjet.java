@@ -7,5 +7,6 @@ public enum TypeObjet
 	TOUR, //2
 	OBSTACLE, //3
 	DEPART, //4
-	ARRIVEE; //5
+	ARRIVEE, //5
+	CHEMIN; //6
 }

@@ -30,6 +30,9 @@ public class TdJeu extends StateJeu
 		
 		
 		//dessin des images
+		values_.camera_Update();
+		//mise a jour de lamatrice de projection du batch pour redimentionnement des sprites
+		sb_.setProjectionMatrix(values_.camera().projection);
 		for(int i=0;i < values_.tower().size();i++)
 		{
 			TowerType t = values_.tower().get(i);
@@ -37,6 +40,7 @@ public class TdJeu extends StateJeu
 			{
 				if(sb_!=null)
 				{ 
+					
 					sb_.begin();
 					//if(t.position()!=null)
 					values_.tower_sprite(0).setPosition(t.position().x,t.position().y);

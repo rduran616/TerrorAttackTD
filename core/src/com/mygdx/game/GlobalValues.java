@@ -174,10 +174,13 @@ public final class GlobalValues
 			  case '5':
 				  carte_[i- saut]=TypeObjet.ARRIVEE;
 			  break;
+			  
+			  case '6':
+				  carte_[i- saut]=TypeObjet.CHEMIN;
+			  break;
 
 			  default:
-				  saut++;
-				  
+				  saut++; 
 			}
 		}
 	}
@@ -188,7 +191,6 @@ public final class GlobalValues
 		
 		return liste_tours;
 	}
-	
 	public Mobs[] mobs(){return liste_mobs;}
 
 	public ErrorEnum camera_Update()
@@ -345,7 +347,14 @@ public final class GlobalValues
 		vie_ = 100;
 		status_ = Status.POSITIONNE;
 		
+		get_Units_Model();
 		
+		return ErrorEnum.OK;
+	}
+
+	private void get_Units_Model()
+	{
+
 		if(Gdx.app.getType() == ApplicationType.Android)
 		{
 			
@@ -434,11 +443,8 @@ public final class GlobalValues
 				
 			} 
 		}
-
-		
-		return ErrorEnum.OK;
 	}
-
+	
 	public Sprite tower_sprite(int index){return tower_sprite_.sprite(index);}
 	public Sprite mob_sprite(int index){return mobs_sprite_.sprite(index);}
 

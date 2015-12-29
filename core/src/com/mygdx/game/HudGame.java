@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -156,8 +158,20 @@ public class HudGame
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       { 
-		    	   //enregistrement de la position
-		    	   //TowerType t = values_.tower().get(values_.tower().size()-1).po);
+		    	   //Vector3 pos = new Vector3(x, y, 0);
+		    	 /*  Vector2 pos2 = values_.last_tower().position();
+		    	   Vector3 pos = new Vector3(pos2.x, pos2.y, 0);
+		    	   values_.camera().project(pos);
+		    	   System.err.println("world X Coordinate: " + pos.x + " world Y Coordinate: " + pos.y);
+		    	   values_.camera().project(pos);*/
+		    	   
+		    	/* Vector2 pos2 = values_.tower().lastElement().position();
+		    	   Vector3 clickCoordinates = new Vector3(pos2.x, pos2.y, 0);
+		    	  // Vector3 clickCoordinates = new Vector3(screenX,screenY,0);
+		           Vector3 position = values_.camera().unproject(clickCoordinates);*/
+
+		    	   //enregistrement de la position dans le repere carte
+		    	  // values_.tower().lastElement().position(position);
 		    	   //values_.test_Position();
 		    	   values_.status(Status.POSITIONNE);
 		       }
