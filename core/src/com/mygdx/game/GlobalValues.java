@@ -148,7 +148,7 @@ public final class GlobalValues
 	}
 	
 	public TypeObjet[] carte(){return carte_;}
-	public void carte_init()
+	private void carte_init()
 	{
 		String name = carte_name_;
 		FileHandle file = Gdx.files.internal(name);
@@ -254,6 +254,8 @@ public final class GlobalValues
     		//camera_.position.set(960/2,640/2,0);
     		camera_.translate(camera_.viewportWidth/2,camera_.viewportHeight/2); //se mettre au milieu de la map
             camera_.update();
+            
+            
             
             
         }catch(SerializationException e) 

@@ -249,14 +249,14 @@ public class Jeu extends StateMenu  implements InputProcessor
 			}
 			else
 			{
-				//finger.finger_Zoom(screenX, screenY, pointer);
-				//finger.finger_Move(screenX, screenY, pointer);
+				finger.finger_Zoom(screenX, screenY, pointer);
+				finger.finger_Move(screenX, screenY, pointer);
 			}
 		}
 		else if(values_.status()== Status.POSITIONNE)
 		{
-		//	finger.finger_Zoom(screenX, screenY, pointer);
-			//finger.finger_Move(screenX, screenY, pointer);
+			finger.finger_Zoom(screenX, screenY, pointer);
+			finger.finger_Move(screenX, screenY, pointer);
 		}
 		
 		return false;

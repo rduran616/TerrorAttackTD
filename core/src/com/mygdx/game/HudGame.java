@@ -60,6 +60,7 @@ public class HudGame
 	private Table main_layout_game_2;		//layout du mode placement 
 	private Label txt_info_;
 	private TextButton validate_;
+	private TextButton validate_2;
 	private TextButton cancel_;
 	
 	private int argent_temp;
@@ -135,20 +136,9 @@ public class HudGame
 		stage_game_2 = new Stage();				
 		main_layout_game_2 = new Table();		
 		txt_info_ = new Label("Placement :", values_.get_Skin());
-		validate_ = new TextButton("Valider", values_.get_Skin());
 		cancel_ = new TextButton("Annuler", values_.get_Skin());
-		
-		validate_.addListener(new ClickListener()
-		{
-		       @Override
-		       public void clicked(InputEvent event, float x, float y) 
-		       { 
-		    	   //enregistrement de la position
-		    	   //TowerType t = values_.tower().get(values_.tower().size()-1).po);
-		    	   values_.status(Status.POSITIONNE);
-		       }
-		 });
-		
+		validate_ = new TextButton("Valider", values_.get_Skin());
+		//validate_2= new TextButton("Valider2", values_.get_Skin());
 		
 		cancel_.addListener(new ClickListener()
 		{
@@ -161,10 +151,35 @@ public class HudGame
 		       }
 		 });
 		
+		validate_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       { 
+		    	   //enregistrement de la position
+		    	   //TowerType t = values_.tower().get(values_.tower().size()-1).po);
+		    	   //values_.test_Position();
+		    	   values_.status(Status.POSITIONNE);
+		       }
+		 });
+		
+	/*	validate_2.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       { 
+		    	   System.err.println("test");
+		    	   //enregistrement de la position
+		    	   //TowerType t = values_.tower().get(values_.tower().size()-1).po);
+		    	   values_.status(Status.POSITIONNE);
+		       }
+		 });*/
+		
 		main_layout_game_2.setSize(values_.get_width()*size_hud_/100,values_.get_height());
 		main_layout_game_2.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
 		main_layout_game_2.add(txt_info_).pad(10).row();
 		main_layout_game_2.add(validate_).pad(10).row();
+		//main_layout_game_2.add(validate_2).pad(10).row();
 		main_layout_game_2.add(cancel_).pad(10).row();
 		
 		stage_game_2.addActor(main_layout_game_2);

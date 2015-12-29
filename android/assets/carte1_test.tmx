@@ -3,19 +3,39 @@
  <tileset firstgid="1" name="default" tilewidth="32" tileheight="32" tilecount="256">
   <image source="tileset.png" trans="ffffff" width="512" height="512"/>
  </tileset>
- <layer name="main_terrain" width="32" height="32">
+ <layer name="terrain" width="32" height="32">
+  <properties>
+   <property name="height" value="32"/>
+   <property name="size" value="32"/>
+   <property name="width" value="32"/>
+  </properties>
   <data encoding="base64" compression="zlib">
-   eJylV0FuwzAM831P6LAP9Cvrmh8k/3/FEiACOI6U5GQAgbVVTJlkLXcZYyyT+NzxseN7x2vHz/n6y9S/E2wXcPA/iP9x8qt61c9a9JXh4H8S//PkX0/OqFUarMCP/2dYAV393fPBtySfK2zA7/TPONGP4Od+uvlz+s9mGfuM/tC7TSDjV/UOrifOA3up/Mf8dXxU6yrfuA/nP+df+Y5g/12PKq93/Of9Z7lQz1X5U3tF8Pquzum23dw/A/1wOZjhr/bPWmTnj+sr46/yjGtz/oKv6qs6/zM+9t/lMXu263+l/SLWRs1dBhW/mr/OC+yB1+7Moiv6u1nEZ5vTvLr/3Jk/rE323Q/9HX/2nAJ/zzv3gbvzx/Ft478/bv88f+L+o+q78//O/S/4XdYr/XHvV/If/DPa4zn0pver+9fM/b8zdzq+B2b9V3A5QF2u+D87e9X+O/rP/P5xGOPv3Knqo3Zm/uK6vI9BNe5cxIxW+eOcu7s88nfuDNhfpj/XZr4OwaNmFKPz+7OD4+8XfsI9ZA==
+   eJydV8GNwzAMy/9G6CELdJhmg2T/Ke4KVADBkpSch4CiUUyZpGXl2LbtWIzf//gRsZv8V4jrRrzxHx/MB8Ru8lU9Z1NXijf+k2p4fvDPD2blKg5OwMffKU4I5L/2rvh37xfeEZ6ruAAfcZH/hIl6FD7XM/VfYVcU/6texjqrPtTuEqH8V/gq34Wrif3AWvL+2X8THdW6Sjeug/3n/K90x2D9XY3Kr4Wvzl+nN+8/+UK9p/rfiv68vstzvF1b1n/V/6iH84HCf97cP3OR+o+rC/svn7/Oz7g2+6/wurq6/p/wWH/nx/Qu47v+13F/iLWRc+dBtX91/zotsAZee3IXpf1P+p/r9YlzNf/c6T9pNsLeqXhH/h1+ek8Fn/PJPID4fP6m/Cu8a/vWx+2fvVfzj8qf3v935j/Gd17v+Me9r/of8Ve4xz70ov+7+Yv1T/P/5N6Z6F6h5s+kvwrnA+Sl07+bv1fO/6TvIP8r3z+JA7x3uvzKTf2XucJ105zFz9U6iO++P9nnbpZ3OOnbhflnD+4it9N1ckdxpPlneoYK/w8VsikU
   </data>
  </layer>
- <layer name="objects" width="32" height="32">
+ <layer name="chemin" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztlEEKwjAQRXPDSnXfop7CS+kNdFM9gboKulFXurPuxC9MIARCkjYJSufBg3z620IzTSmEGMMJLAPXS7iiHHqvWk/hDM47rNdwQ7nrc3wp4IhUnOAZLoxeYfRiUMGa/CLpvUqp9Sqtl4q7IzNxaeAW7ihL47q09GKxhwd4pGzbf7MXiwu8wlukXihP2MIXZdv3N3upGNr/5zvXuebftv+55t+2/7nmv2/v3+Dzl89fnaGfvzz//Xqh8Pz/Fg9HTs3bkX35AMruk6o=
+   eJztzcENADAIAzEGhO4/DoyAytcn5RtH/Jezmr3DxyU+n8/n8/l8Pp/P5/P5uxociRzh
   </data>
  </layer>
- <layer name="object2" width="32" height="32">
+ <layer name="personnages" width="32" height="32">
+  <properties>
+   <property name="height" value="32"/>
+   <property name="size" value="32"/>
+   <property name="width" value="32"/>
+  </properties>
   <data encoding="base64" compression="zlib">
-   eJztltENgCAMRNl/EhnKEdzBXz56pcU7wISXkKCWXlukWso/ucF8Fg+YK6lJW29E16PryHovpqyPjDby1fNh2XzVzWBps/QjtbT2W5E/qnMFcwVon633nq0VtW1juZrhEbHz9hXlztAfPYMMsn2HHUPWn6oOnl7kHtN/+0zdd3v6GXs2yr7f00L6Kkb+PVbpK7+BO7JLzqtj2KUOh4OaF/lTTNA=
+   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
+  </data>
+ </layer>
+ <layer name="decoration" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztlD0OwjAMRsMVW05AuWdZgBMAUwRLYYIN2BDf4KGyZOWnTgSqn/SkOLVcqXbdOOdauIRN4rmHG7LNrLOCHVxnnM/wQnaZdWJZjEy904DX9ezOF34/5x6IDV22cAf3FHv23At5WhzgEZ4olvrP87QY4BXelPJSecIXfFMsfX+eV4q5/X+xc11r/qX+15p/qf+15n9q3r9h+9f275i571+b/2l5qdj8/xaPQFyaTyCO5QtKtY1H
+  </data>
+ </layer>
+ <layer name="decoration_florale" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztlksOgCAMROH+F5FbumXRKS3OSBdMQuKn9PWj1dY46iQ/O7xegP+HRtLWW9H96Dyy34sp6yPDRr5WPiybr9yMLDaLH6ml1W9F/qjOAxwrhPpsPfdsVtR2juWZlqeInddXlDuDv/sOMpSdO+wYsv5UdfB4kWtM//M99dxd8TP2bCnn/oqF+Crt/Huc4iu/gRVVJefTMVSpw9WVWi+mCElC
   </data>
  </layer>
 </map>
