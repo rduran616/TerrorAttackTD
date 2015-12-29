@@ -28,6 +28,20 @@
    eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
   </data>
  </layer>
+ <objectgroup name="point_d_interet">
+  <properties>
+   <property name="height" value="32"/>
+   <property name="size" value="32"/>
+   <property name="width" value="32"/>
+  </properties>
+ </objectgroup>
+ <objectgroup name="units">
+  <properties>
+   <property name="height" value="32"/>
+   <property name="size" value="32"/>
+   <property name="width" value="32"/>
+  </properties>
+ </objectgroup>
  <layer name="decoration" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJztlD0OwjAMRsMVW05AuWdZgBMAUwRLYYIN2BDf4KGyZOWnTgSqn/SkOLVcqXbdOOdauIRN4rmHG7LNrLOCHVxnnM/wQnaZdWJZjEy904DX9ezOF34/5x6IDV22cAf3FHv23At5WhzgEZ4olvrP87QY4BXelPJSecIXfFMsfX+eV4q5/X+xc11r/qX+15p/qf+15n9q3r9h+9f275i571+b/2l5qdj8/xaPQFyaTyCO5QtKtY1H
