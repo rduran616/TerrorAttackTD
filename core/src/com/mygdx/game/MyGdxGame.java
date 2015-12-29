@@ -47,11 +47,6 @@ public class MyGdxGame extends ApplicationAdapter
 		
 		//rendu du menu
 		menu_en_cours = main_menu[menu_en_cours.ordinal()].changer_Etat();
-
-
-		/*batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();*/
 	}
 	
 	@Override

@@ -6,6 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import Utilitaires.FingerTransformMap;
 import Utilitaires.TickHorloge;
@@ -206,7 +208,13 @@ public class Jeu extends StateMenu  implements InputProcessor
 		if(values_.status()== Status.NON_POSITIONNE)
 		{
 			//repasse dans le bon repere
-			if(values_.last_tower().collision(screenX, values_.get_height()-screenY) == true)
+			//repasse dans le  repere monde	
+			Vector3 pos = new Vector3(screenX,screenY,0);
+			values_.camera().unproject(pos);
+			
+		//	System.err.println(pos);
+			
+			if(values_.last_tower().collision((int)pos.x,(int)pos.y) == true)
 			{
 				int Tx = Gdx.input.getDeltaX(0);
 				int Ty = Gdx.input.getDeltaY(0);
@@ -214,14 +222,14 @@ public class Jeu extends StateMenu  implements InputProcessor
 			}
 			else
 			{
-				//finger.finger_Zoom(screenX, screenY, pointer);
-				//finger.finger_Move(screenX, screenY, pointer);
+				finger.finger_Zoom(screenX, screenY, pointer);
+				finger.finger_Move(screenX, screenY, pointer);
 			}
 		}
 		else if(values_.status()== Status.POSITIONNE)
 		{
-		//	finger.finger_Zoom(screenX, screenY, pointer);
-			//finger.finger_Move(screenX, screenY, pointer);
+			finger.finger_Zoom(screenX, screenY, pointer);
+			finger.finger_Move(screenX, screenY, pointer);
 		}
 
 		return false;
@@ -240,11 +248,15 @@ public class Jeu extends StateMenu  implements InputProcessor
 	{
 		if(values_.status()== Status.NON_POSITIONNE)
 		{
-			//repasse dans le bon repere
-			if(values_.last_tower().collision(screenX, values_.get_height()-screenY) == true)
+			//repasse dans le  repere monde	
+			Vector3 pos = new Vector3(screenX,screenY,0);
+			values_.camera().unproject(pos);
+			
+			if(values_.last_tower().collision((int)pos.x,(int)pos.y) == true)
 			{
 				int Tx = Gdx.input.getDeltaX(0);
 				int Ty = Gdx.input.getDeltaY(0);
+
 				values_.last_tower().position_add(Tx, -Ty);
 			}
 			else

@@ -43,8 +43,13 @@ public final class CollisionBox
 	
 	public boolean collision(int curseur_x, int curseur_y)
 	{
+		System.err.println(x_+"  "+y_);
+		
 	   if (curseur_x >= x_ && curseur_x < x_ + w_  && curseur_y >= y_ && curseur_y < y_ + h_)
+	   {
+		 System.err.println("collision");
 		 return true;
+	   }
 	   else
 	      return false;
 	}

@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import com.badlogic.gdx.Application.ApplicationType;
@@ -101,8 +102,8 @@ public final class GlobalValues
 	
 	//carte
 	private int ennemi_max_=1000;				//nombre max d'ennemi
-	private int size_n_ = 20;					//nombre de carreaux de la carte en width
-	private int size_m_ = 30;					//nombre de carreaux de la carte en height
+	private int size_n_ = 32;					//nombre de carreaux de la carte en width
+	private int size_m_ = 32;					//nombre de carreaux de la carte en height
 	private TypeObjet carte_[];					//une carte ( à enlever? )
 	private Vector<TowerType> liste_tours;		//liste des tours placées
 	private Mobs liste_mobs[];					//liste des mobs à afficher
@@ -243,22 +244,19 @@ public final class GlobalValues
 	public void init_tile_map()
 	{
 		//float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
-		
         try 
         {
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
             tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
-            
-            		
+
+            size_px_	= tiledMap_.getProperties().get("tileheight",Integer.class);
+    		size_n_		= tiledMap_.getProperties().get("height",Integer.class);
+			size_m_		= tiledMap_.getProperties().get("width",Integer.class);
+	
     		camera_ = new OrthographicCamera();
         	//camera_ = new OrthographicCamera(25 * aspectRatio ,25);
     		camera_.setToOrtho(false,width_,height_);
-    		//camera_.position.set(960/2,640/2,0);
-    		camera_.translate(camera_.viewportWidth/2,camera_.viewportHeight/2); //se mettre au milieu de la map
             camera_.update();
-            
-            
-            
             
         }catch(SerializationException e) 
         {
@@ -282,11 +280,12 @@ public final class GlobalValues
 	{
 		camera_ = new OrthographicCamera();
 		camera_.setToOrtho(false,w,h);
-        camera_.update();
+        camera_.update(); 
 	}
 	
 	public void camera_Position(float x, float y)
 	{
+		System.err.println("position");
 		camera_.position.set(x,y,0);
 	}
 	
@@ -335,11 +334,11 @@ public final class GlobalValues
 		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
 		
 		//creation carte de base et des conteneurs d'objets
-		if(size_n_ > 0 && size_m_ > 0 )
+	/*	if(size_n_ > 0 && size_m_ > 0 )
 		{
 			carte_ = new TypeObjet[size_n_ * size_m_]; //nombre de case total de la carte
 			//liste_tours = new Tower[size_n_ * size_m_ - 2]; //nombre de tour possibles - 2 car point de dépar et arrivée 
-		}
+		}*/
 		
 		liste_mobs = new Mobs[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
 

@@ -79,12 +79,13 @@ public abstract class TowerType
 
 		
 		public Vector2 position(){return position_;}
+		public Vector3 position3(){return new Vector3(position_.x,position_.y,0);}
 		public void position(Vector2 position){position_=position; maj_box();}
 		public void position(float x, float y){position_=new Vector2(x,y);maj_box();}
 		public void position(int x, int y){position_=new Vector2(x,y);maj_box();}
 		public void position_add(int x, int y){position_.x+=x;position_.y+=y;maj_box();} 
 		public void position(Vector3 pos){position_.x=pos.x; position_.y=pos.y;}
-
+		
 
 		private void maj_box()
 		{

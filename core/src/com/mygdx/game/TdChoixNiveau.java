@@ -61,6 +61,7 @@ public class TdChoixNiveau extends StateJeu
 		lvl_list_ = new List<String>(values_.get_Skin());
 		lst = new Array<String>();
 		
+		//recherche des cartes
 		FileHandle dirHandle;
 		if(Gdx.app.getType() == ApplicationType.Android)
 			dirHandle = Gdx.files.internal("map/");
@@ -87,8 +88,6 @@ public class TdChoixNiveau extends StateJeu
 		{
 			lvl_list_.setItems(lst);
 			layout_menu.add(lvl_list_);
-			//layout_menu.add(jouer_).pad(10);
-			//layout_menu.add(retour_).pad(10);
 		}
 		
 		layout_menu.row();

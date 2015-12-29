@@ -165,29 +165,23 @@ public class HudGame
 		    	   System.err.println("world X Coordinate: " + pos.x + " world Y Coordinate: " + pos.y);
 		    	   values_.camera().project(pos);*/
 		    	   
-		    	/* Vector2 pos2 = values_.tower().lastElement().position();
-		    	   Vector3 clickCoordinates = new Vector3(pos2.x, pos2.y, 0);
-		    	  // Vector3 clickCoordinates = new Vector3(screenX,screenY,0);
-		           Vector3 position = values_.camera().unproject(clickCoordinates);*/
+		    	//   Vector2 pos2 = values_.tower().lastElement().position();
+		    	//  Vector3 clickCoordinates = new Vector3(pos2.x, pos2.y, 0);
+		           //Vector3 position = values_.camera().unproject(clickCoordinates);
+		    	   
+		    	  // values_.camera().p
 
 		    	   //enregistrement de la position dans le repere carte
-		    	  // values_.tower().lastElement().position(position);
+		    	   
+		    	   
+		    	 //  values_.tower().lastElement().position(position);
 		    	   //values_.test_Position();
+		    	   
+		    	 //  values_.tower().lastElement().position(position);
 		    	   values_.status(Status.POSITIONNE);
 		       }
 		 });
-		
-	/*	validate_2.addListener(new ClickListener()
-		{
-		       @Override
-		       public void clicked(InputEvent event, float x, float y) 
-		       { 
-		    	   System.err.println("test");
-		    	   //enregistrement de la position
-		    	   //TowerType t = values_.tower().get(values_.tower().size()-1).po);
-		    	   values_.status(Status.POSITIONNE);
-		       }
-		 });*/
+
 		
 		main_layout_game_2.setSize(values_.get_width()*size_hud_/100,values_.get_height());
 		main_layout_game_2.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
@@ -242,9 +236,14 @@ public class HudGame
 						    		   values_.argent(values_.argent()-values_.t_air_modele_().cout());
 						    		   System.err.println("TowerAir");
 						    		   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
-						    		   values_.tower().add(new TowerAir(values_.t_air_modele_()));				    		   
-						    		   values_.last_tower().box().set_Collision_box(values_.get_width()/2, values_.get_height()/2, 64,64);
-						    		   values_.last_tower().position(values_.get_width()/2, values_.get_height()/2);
+						    		   values_.tower().add(new TowerAir(values_.t_air_modele_()));	
+						    		   
+						    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
+						    		   values_.camera().unproject(pos); //screen to world
+						    		      
+						    		   values_.last_tower().box().set_Collision_box((int)pos.x, (int)pos.x, 64,64);
+						    		   values_.last_tower().position(pos.x, pos.y);
+
 						    		   values_.status(Status.NON_POSITIONNE);
 						    	   }
 						       }
