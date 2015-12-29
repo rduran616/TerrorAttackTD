@@ -5,26 +5,15 @@ import Utilitaires.CollisionBox;
 
 public class TowerAir extends TowerType 
 {
-
-
-	public TowerAir(int cout, int att_speed,int damage, int range,int h, int w, String nom, CollisionBox box )
+	public TowerAir(int cout, int att_speed,int damage, int range,int h, int w,int air, String nom, CollisionBox box )
 	{
-		this.size_H(h);
-		this.size_W(w);
-		this.nom(nom);
-		_cout = cout;
-		_attspeed = att_speed;
-		_range = range;
-		_damage = damage;
-		_air = true;
-		this.CollisionBox(box);
-		
+		super(cout,att_speed,damage,range,h,w,air,nom,box);
 	}
 	
-	public TowerAir(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) 
+	/*public TowerAir(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) 
 	{
 		super(texture, bulletTexture, bulletSize, x, y);
-	}
+	}*/
 	
 	
 	 public TowerAir(TowerAir another) 
@@ -38,6 +27,15 @@ public class TowerAir extends TowerType
 	 }
 	 
 	 public int cout(){return _cout;}
+
+	 
+	 //ia
+	 
+	@Override
+	public void onExecute() {
+		// TODO Auto-generated method stub
+		
+	}
 	 
 	
 }

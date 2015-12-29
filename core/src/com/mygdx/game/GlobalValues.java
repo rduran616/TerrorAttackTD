@@ -389,8 +389,9 @@ public final class GlobalValues
 				int range=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "range"));
 				int h=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "h"));
 				int w=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "w"));
+				int air=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "air"));
 				if(n.equals("air"))
-					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,"air",bbox );
+					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n,bbox);
 				else if(n.equals("base"))
 					t_base_modele_ = new TowerBase();
 				else if(n.equals("slow"))
@@ -435,8 +436,9 @@ public final class GlobalValues
 				int range=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "range"));
 				int h=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "h"));
 				int w=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "w"));
+				int air=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "air"));
 				if(n.equals("air"))
-					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,"air",bbox );
+					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n,bbox);
 				else if(n.equals("base"))
 					t_base_modele_ = new TowerBase();
 				else if(n.equals("slow"))
