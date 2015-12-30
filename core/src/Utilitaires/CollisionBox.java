@@ -23,10 +23,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public final class CollisionBox 
 {
-	private int x_;
-	private int y_;
-	private int w_;
-	private int h_;
+	private int x_; //position en x
+	private int y_; //position en y
+	private int w_; //taille en width
+	private int h_; //taille en height
 	
 	public CollisionBox()
 	{
@@ -106,6 +106,21 @@ public final class CollisionBox
 	private int y(){return y_;}
 	private int h(){return h_;}
 	private int w(){return w_;}
+	
+	
+	public static void main(String [ ] args)
+	{
+	      CollisionBox box1;
+	      CollisionBox box2;
+	      
+	      box1 = new CollisionBox(10,10,32,32);
+	      box2 = new CollisionBox(41,41,32,32);
+	      
+	      if(box1.collision(box2)==true)
+	    	  System.err.println("collision");
+	      else
+	    	  System.err.println("no collision");
+	}
 	
 
 }

@@ -178,7 +178,7 @@ public class HudGame
 		    			   }
 			    	    }
 	
-			    	   if(en_collision == true)
+			    	   if(en_collision == false)
 			    	   {
 				    	   //placement sur la carte
 				    	   values_.carte()[cellule].add_Unit(values_.tower().size()-1);
