@@ -8,9 +8,9 @@ public class TowerSlow extends TowerType {
 
 	public TowerSlow(){}
 	
-	public TowerSlow(int cout, int att_speed,int damage, int range,int h, int w,int air, String nom, CollisionBox box )
+	public TowerSlow(int cout, int att_speed,int damage, int range,int h, int w,int air, int n_txt, String nom, CollisionBox box )
 	{
-		super(cout,att_speed,damage,range,h,w,air,nom,box);
+		super(cout,att_speed,damage,range,h,w,air,n_txt,nom,box);
 	}
 	
 

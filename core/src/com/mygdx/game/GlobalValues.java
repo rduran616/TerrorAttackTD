@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -37,6 +38,8 @@ import units.TowerZone;
  * Classe singleton contenant toutes les variables global et accessible par tous et partout
  * Possibilité d'ajouter des fonctions
  *
+ *
+ * A faire: implémenter un assetManager ( creer une classe ) pour le chargement des images et modifier la methode reload 
  *
  * Attention au chemin
  */
@@ -105,7 +108,7 @@ public final class GlobalValues
 	private int size_n_ = 32;					//nombre de carreaux de la carte en width
 	private int size_m_ = 32;					//nombre de carreaux de la carte en height
 	private TypeObjet carte_[];					//une carte ( à enlever? )
-	private Vector<TowerType> liste_tours;		//liste des tours placées
+	private ArrayList<TowerType> liste_tours;		//liste des tours placées
 	private Mobs liste_mobs[];					//liste des mobs à afficher
 	private String carte_name_;					//nom ou chemin de la carte
 	
@@ -185,13 +188,14 @@ public final class GlobalValues
 			}
 		}
 	}
-	public Vector<TowerType> tower()
+	public ArrayList<TowerType> tower()
 	{
 		if(liste_tours == null)
-			liste_tours = new Vector<TowerType>();
+			liste_tours = new ArrayList<TowerType>();
 		
 		return liste_tours;
 	}
+	
 	public Mobs[] mobs(){return liste_mobs;}
 
 	public ErrorEnum camera_Update()
@@ -390,8 +394,9 @@ public final class GlobalValues
 				int h=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "h"));
 				int w=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "w"));
 				int air=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "air"));
+				int n_txt=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "n_texture"));
 				if(n.equals("air"))
-					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n,bbox);
+					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("base"))
 					t_base_modele_ = new TowerBase();
 				else if(n.equals("slow"))
@@ -437,8 +442,9 @@ public final class GlobalValues
 				int h=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "h"));
 				int w=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "w"));
 				int air=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "air"));
+				int n_txt=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "n_texture"));
 				if(n.equals("air"))
-					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n,bbox);
+					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("base"))
 					t_base_modele_ = new TowerBase();
 				else if(n.equals("slow"))
@@ -466,7 +472,7 @@ public final class GlobalValues
 	public Status status(){return status_;}
 	public void status(Status s){status_=s;}
 	
-	public TowerType last_tower(){return liste_tours.lastElement();}
+	public TowerType last_tower(){return liste_tours.get(liste_tours.size()-1);}
 	
 	public void size_Px(int px){size_px_=px;}
 	public void size_n(int n){size_n_=n;}

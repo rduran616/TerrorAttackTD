@@ -9,9 +9,9 @@ public class TowerBase extends TowerType
 
 	public TowerBase(){}
 	
-	public TowerBase(int cout, int att_speed,int damage, int range,int h, int w,int air, String nom, CollisionBox box )
+	public TowerBase(int cout, int att_speed,int damage, int range,int h, int w,int air, int n_txt, String nom, CollisionBox box )
 	{
-		super(cout,att_speed,damage,range,h,w,air,nom,box);
+		super(cout,att_speed,damage,range,h,w,air,n_txt,nom,box);
 	}
 	
 	@Override

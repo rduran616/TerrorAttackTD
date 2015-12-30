@@ -21,6 +21,7 @@ public abstract class TowerType
 	private int size_h_;		 	//taille du sprite en height
 	private int size_w_; 			//taille du sprite en width
 	
+	private int num_texture_;	//numéro de la texture -> on accepte que le tableau de texture est parfaitement ordonnée
 	private String _nom; 		//nom de la tour
 	protected int _cout; 			//son cout
 	protected float _attspeed; 	//vitesse d'attaque
@@ -41,7 +42,7 @@ public abstract class TowerType
 	}
 	
 	
-	public TowerType(int cout, int att_speed,int damage, int range,int h, int w,int air, String nom, CollisionBox box )
+	public TowerType(int cout, int att_speed,int damage, int range,int h, int w,int air,int num_txt, String nom, CollisionBox box )
 	{
 		position_= new Vector2(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
 		
@@ -89,11 +90,16 @@ public abstract class TowerType
 			_air = true;
 		else
 			_air = false;
+		
+		if(num_txt >=0)
+			num_texture_ = num_txt;
+		else
+			num_texture_ =0;		
 	}
 	
 	
 	
-	//methode appeler pour tirer sur les mobs (implémenté par les classes filles)
+	//methode appelée pour tireer sur les mobs (implémentée par les classes filles)
 	public abstract void onExecute();
 
 	//ascesseurs (get et set)
@@ -101,6 +107,9 @@ public abstract class TowerType
 	public int size_W(){return size_w_;}
 	public void size_H(int h){size_h_ = h;}
 	public void size_W(int w){size_w_ = w;}
+	
+	public void num_Texture(int n){num_texture_=n;}
+	public int num_Texture(){return num_texture_;}
 	
 	public Vector2 position(){return position_;}
 	public Vector3 position3(){return new Vector3(position_.x,position_.y,0);}
@@ -126,7 +135,5 @@ public abstract class TowerType
 		return _nom;
 	}
 	public void nom(String n) { _nom=n;}
-		
-		
-	
+
 }
