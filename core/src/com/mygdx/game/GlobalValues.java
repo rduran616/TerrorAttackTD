@@ -107,12 +107,12 @@ public final class GlobalValues
 	private int ennemi_max_=1000;				//nombre max d'ennemi
 	private int size_n_ = 32;					//nombre de carreaux de la carte en width
 	private int size_m_ = 32;					//nombre de carreaux de la carte en height
-	private TypeObjet carte_[];					//une carte ( à enlever? )
-	private ArrayList<TowerType> liste_tours;		//liste des tours placées
+	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
+	private ArrayList<TowerType> liste_tours;	//liste des tours placées
 	private Mobs liste_mobs[];					//liste des mobs à afficher
 	private String carte_name_;					//nom ou chemin de la carte
 	
-	private Texture img_;  						//texture carte
+	//private Texture img_;  						//texture carte
 	private TiledMap tiledMap_; 				//carte
 	private TiledMapRenderer tiledMapRenderer_;	//rendu de la carte
 	private MapProperties prop_;				//propriétés de la carte
@@ -151,43 +151,7 @@ public final class GlobalValues
 			return null;
 	}
 	
-	public TypeObjet[] carte(){return carte_;}
-	private void carte_init()
-	{
-		String name = carte_name_;
-		FileHandle file = Gdx.files.internal(name);
-		String map = file.readString();
-		int saut =0;
-		for(int i=0;i<map.length();i++)
-		{
-			char aChar = map.charAt(i);
-			switch (aChar)
-			{
-		 	  case '0':
-				  carte_[i- saut]=TypeObjet.VIDE;
-			  break;
-			
-			  case '3':
-				  carte_[i- saut]=TypeObjet.OBSTACLE;
-			  break;  
-			  
-			  case '4':
-				  carte_[i- saut]=TypeObjet.DEPART;
-			  break;
-				  
-			  case '5':
-				  carte_[i- saut]=TypeObjet.ARRIVEE;
-			  break;
-			  
-			  case '6':
-				  carte_[i- saut]=TypeObjet.CHEMIN;
-			  break;
-
-			  default:
-				  saut++; 
-			}
-		}
-	}
+	public CellMap[] carte(){return carte_;}
 	public ArrayList<TowerType> tower()
 	{
 		if(liste_tours == null)
@@ -195,6 +159,53 @@ public final class GlobalValues
 		
 		return liste_tours;
 	}
+	public TowerType tower(int i)
+	{
+		return liste_tours.get(i);
+	}
+	
+	public void carte_Init()
+	{
+		carte_ = new CellMap[size_n_ * size_m_];
+		for(int i =0;i<size_n_ * size_m_;i++)
+			carte_[i] = new CellMap(i, 0, size_n_, null, null, null);
+	}
+	public void placer_Object(int celulle,int index,TypeObjet type)
+	{
+		switch(type)
+		{
+			case ARRIVEE:
+			break;
+			
+			case CHEMIN:
+				carte_[celulle].add_Chemin(index);
+			break;
+			
+			case DEPART:
+			break;
+			
+			case ENNEMI:
+			break;
+			
+			case OBSTACLE:
+				carte_[celulle].add_Obstacle(index);
+			break;
+			
+			case TOUR:
+				carte_[celulle].add_Unit(index);
+			break;
+			
+			case VIDE:
+			break;
+			
+			default:
+			break;
+		
+		}
+	}
+	
+	
+	
 	
 	public Mobs[] mobs(){return liste_mobs;}
 
@@ -269,7 +280,7 @@ public final class GlobalValues
 
 	}
 	
-	public void print_carte() 
+	/*public void print_carte() 
 	{
 		for(int i=0;i<carte_.length;i++)
 		{
@@ -278,7 +289,7 @@ public final class GlobalValues
 			else
 				System.out.print(carte_[i].ordinal());
 		}
-	}
+	}*/
 	
 	public void camera_Init(float w, float h)
 	{
@@ -324,6 +335,12 @@ public final class GlobalValues
 	}
 
 	public MapProperties map_Properties(){ return prop_;}
+	
+	private void generation_Map_Tower()
+	{
+		
+	}
+	
 	
 	
 	//chargement/rechargement des ellements visuel du jeux

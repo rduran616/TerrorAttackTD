@@ -140,7 +140,7 @@ public class TdChoixNiveau extends StateJeu
 		{
 			selection_ = StateJeuEnum.INTRO;
 			values_.map_name(lst.get(0));
-			//values_.carte_init();		
+			values_.carte_Init();		
 			values_.init_tile_map();
 		}
 		

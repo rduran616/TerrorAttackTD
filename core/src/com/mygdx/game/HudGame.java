@@ -153,32 +153,54 @@ public class HudGame
 		       }
 		 });
 		
+		//placement definitif de la tour et mise en route de celle ci
 		validate_.addListener(new ClickListener()
 		{
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       { 
-		    	   //Vector3 pos = new Vector3(x, y, 0);
-		    	 /*  Vector2 pos2 = values_.last_tower().position();
-		    	   Vector3 pos = new Vector3(pos2.x, pos2.y, 0);
-		    	   values_.camera().project(pos);
-		    	   System.err.println("world X Coordinate: " + pos.x + " world Y Coordinate: " + pos.y);
-		    	   values_.camera().project(pos);*/
-		    	   
-		    	//   Vector2 pos2 = values_.tower().lastElement().position();
-		    	//  Vector3 clickCoordinates = new Vector3(pos2.x, pos2.y, 0);
-		           //Vector3 position = values_.camera().unproject(clickCoordinates);
-		    	   
-		    	  // values_.camera().p
-
 		    	   //enregistrement de la position dans le repere carte
 		    	   
 		    	   
-		    	 //  values_.tower().lastElement().position(position);
-		    	   //values_.test_Position();
+		    	   //recuperation de la cellule correspondante a la position
+		    	   int cellule = values_.last_tower().get_Index_Cellule_Mono(values_.size_Px(), values_.size_Px(),  values_.size_n());
+		    	   //verification collision avec autre objet
 		    	   
-		    	 //  values_.tower().lastElement().position(position);
-		    	   values_.status(Status.POSITIONNE);
+		    	   boolean en_collision = false;
+		    	   if(values_.carte()[cellule].getUnits_size_()>0)//si il y a qqun
+				   {
+						for(int i=0;i< values_.carte()[cellule].getUnits_().size();i++)
+			    	    {
+			    		   if(values_.last_tower().collision(values_.tower().get(values_.carte()[cellule].index_Units(i)).box())==true)
+		    			   {
+		    			   		en_collision =true;
+		    			   		break;
+		    			   }
+			    	    }
+	
+			    	   if(en_collision == true)
+			    	   {
+				    	   //placement sur la carte
+				    	   values_.carte()[cellule].add_Unit(values_.tower().size()-1);
+				    	   //mise a jour de l'index dans cellule dans towertype ->  index = index dans le units de cellmap
+				    	   values_.last_tower().setIndex( values_.carte()[cellule].getUnits_().size()-1); 
+				    	   //changement d'etat
+				    	   values_.status(Status.POSITIONNE);
+			    	   }
+			    	   else
+			    	   {
+			    		   System.err.println("il y a deja qqun");
+			    	   }
+					}
+					else
+			 	   	{
+				    	   //placement sur la carte
+				    	   values_.carte()[cellule].add_Unit(values_.tower().size()-1);
+				    	   //mise a jour de l'index dans cellule dans towertype ->  index = index dans le units de cellmap
+				    	   values_.last_tower().setIndex( values_.carte()[cellule].getUnits_().size()-1); 
+				    	   //changement d'etat
+				    	   values_.status(Status.POSITIONNE);
+			 	   	}
 		       }
 		 });
 

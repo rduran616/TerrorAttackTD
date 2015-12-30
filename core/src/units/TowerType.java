@@ -20,6 +20,7 @@ public abstract class TowerType
 	private CollisionBox  bbox_; 	//boite de collision
 	private int size_h_;		 	//taille du sprite en height
 	private int size_w_; 			//taille du sprite en width
+	private int index;				//index de la position de l'objet dans la cellule position/taille cellule
 	
 	private int num_texture_;	//numéro de la texture -> on accepte que le tableau de texture est parfaitement ordonnée
 	private String _nom; 		//nom de la tour
@@ -135,5 +136,23 @@ public abstract class TowerType
 		return _nom;
 	}
 	public void nom(String n) { _nom=n;}
+	public int getIndex() {
+		return index;
+	}
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
+	//renvoi l'index de la cellule, correspondante aux coord de position, dans un tableau monodimentionnel
+	//permet de savoir sur quelle cellule on pointe
+	// changer la fonction de place et mettre dans une autre classe?
+	public int get_Index_Cellule_Mono(int size_cellule_n, int size_cellule_m, int nb_case_n)
+	{
+		//calcul coordonnées dans matrice n*m via les coord du monde en px
+		int n = (int) (position_.x / size_cellule_n);
+		int m = (int) (position_.y / size_cellule_m);
+		
+		return (n * nb_case_n) +( m + 1); 
+	}
+	
 }
