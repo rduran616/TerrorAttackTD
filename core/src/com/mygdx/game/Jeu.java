@@ -68,6 +68,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		hud_game_ = new HudGame();
 		multiplexer.addProcessor(hud_game_.stage());
 		multiplexer.addProcessor(hud_game_.stage2());
+		multiplexer.addProcessor(hud_game_.stage3());
 		multiplexer.addProcessor(this);
 		
 		//boutton retour
@@ -204,6 +205,34 @@ public class Jeu extends StateMenu  implements InputProcessor
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) 
 	{
 
+		if(values_.status() == Status.POSITIONNE)
+		{
+			Vector3 pos = new Vector3(screenX,screenY,0);
+			values_.camera().unproject(pos);
+			int x = (int) (pos.x / values_.size_Px());
+			int y= (int) (pos.y / values_.size_Px());
+			int cellule = ((x -1) * values_.size_n()) +  y - 1 ; 
+			
+			if(values_.tower()!=null)
+			if(cellule<values_.size_m()*values_.size_n())
+			if(values_.carte()[cellule].getUnits_size_() >0)
+			{
+				int  max = values_.carte()[cellule].getUnits_size_();
+				for(int i=0; i< max;i++)
+				{
+					int index = values_.carte()[cellule].getUnits_().get(i); // index dans le tableau tower 0... n tour
+					
+					if(values_.tower(index).collision((int)pos.x,(int)pos.y) == true)
+					{
+						values_.status(Status.INFO);
+						values_.setIndex_unit_selection_(index);
+						
+						break;
+					}
+				}
+			}	
+		}
+		
 		return false;
 	}
 

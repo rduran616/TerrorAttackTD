@@ -111,6 +111,7 @@ public final class GlobalValues
 	private ArrayList<TowerType> liste_tours;	//liste des tours placées
 	private Mobs liste_mobs[];					//liste des mobs à afficher
 	private String carte_name_;					//nom ou chemin de la carte
+	private int index_unit_selection_;
 	
 	//private Texture img_;  						//texture carte
 	private TiledMap tiledMap_; 				//carte
@@ -497,5 +498,15 @@ public final class GlobalValues
 	public int size_Px(){return size_px_;}
 	public int size_n(){return size_n_;}
 	public int size_m(){return size_m_;}
+
+
+	public int getIndex_unit_selection_() {
+		return index_unit_selection_;
+	}
+
+
+	public void setIndex_unit_selection_(int index_unit_selection_) {
+		this.index_unit_selection_ = index_unit_selection_;
+	}
 	
 }

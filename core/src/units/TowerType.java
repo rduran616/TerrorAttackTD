@@ -152,7 +152,7 @@ public abstract class TowerType
 		int n = (int) (position_.x / size_cellule_n);
 		int m = (int) (position_.y / size_cellule_m);
 		
-		return (n * nb_case_n) +( m + 1); 
+		return (n * nb_case_n) + m ; 
 	}
 	
 }

@@ -62,8 +62,13 @@ public class HudGame
 	private Table main_layout_game_2;		//layout du mode placement 
 	private Label txt_info_;
 	private TextButton validate_;
-	private TextButton validate_2;
 	private TextButton cancel_;
+	
+	private Stage stage_game_3;				//stage du jeu qd on place un objet
+	private Table main_layout_game_3;		//layout du mode placement 
+	private Label txt_info_2;
+	private TextButton validate_2;
+	private TextButton cancel_2;
 	
 	private int argent_temp;
 	
@@ -186,6 +191,8 @@ public class HudGame
 				    	   values_.last_tower().setIndex( values_.carte()[cellule].getUnits_().size()-1); 
 				    	   //changement d'etat
 				    	   values_.status(Status.POSITIONNE);
+				    	   
+				    	   System.err.println("cellule sprite ="+cellule);
 			    	   }
 			    	   else
 			    	   {
@@ -194,6 +201,7 @@ public class HudGame
 					}
 					else
 			 	   	{
+						System.err.println("cellule sprite ="+cellule);
 				    	   //placement sur la carte
 				    	   values_.carte()[cellule].add_Unit(values_.tower().size()-1);
 				    	   //mise a jour de l'index dans cellule dans towertype ->  index = index dans le units de cellmap
@@ -213,6 +221,45 @@ public class HudGame
 		main_layout_game_2.add(cancel_).pad(10).row();
 		
 		stage_game_2.addActor(main_layout_game_2);
+		
+		
+		//troisième hud
+		stage_game_3 = new Stage();				
+		main_layout_game_3 = new Table();		
+		txt_info_2 = new Label("Vendre?", values_.get_Skin());
+		cancel_2 = new TextButton("Annuler", values_.get_Skin());
+		validate_2 = new TextButton("Valider", values_.get_Skin());
+
+		cancel_2.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y)
+		       {	System.err.println("clicked1");
+		    	   	values_.status(Status.POSITIONNE);
+		       }
+		 });
+		
+		//placement definitif de la tour et mise en route de celle ci
+		validate_2.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       { 
+		    	   //enregistrement de la position dans le repere carte
+		    	   System.err.println("clicked2");
+		    	   values_.status(Status.POSITIONNE);
+		    	 
+		       }
+		 });
+
+		
+		main_layout_game_3.setSize(values_.get_width()*size_hud_/100,values_.get_height());
+		main_layout_game_3.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		main_layout_game_3.add(txt_info_2).row();
+		main_layout_game_3.add(validate_2).row();
+		main_layout_game_3.add(cancel_2).row();
+		
+		stage_game_3.addActor(main_layout_game_3);
 	}
 	
 	
@@ -224,14 +271,16 @@ public class HudGame
 	{
 		if(values_.status() == Status.POSITIONNE)
 			return stage_game_;
-		else
+		else if(values_.status() == Status.NON_POSITIONNE)
 			return stage_game_2;
+		else
+			return stage_game_3;
 	} 
 	public Stage stage2(){return stage_game_2;}
-
+	public Stage stage3(){return stage_game_3;}
 	
 	
-	//création des boutons de l'ui 
+	//création des boutons de l'ui principal
 	private void creation_Hud_Objects(@SuppressWarnings("rawtypes") ConfigHud hud)
 	{
 		int cpt=0;
