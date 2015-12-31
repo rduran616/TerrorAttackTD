@@ -1,5 +1,5 @@
  <units>
-     <tower id="0" value="4">
+     <tower id="0" value="4" w="64" h="64">
 	     <Air n_texture="0" air="1" h="64" w="64" vit="2" money="150" power="10"  range="2" name="air"   src_desk="../android/assets/units/tower/image.png" src_andro="assets/units/tower/steampunk_f8.png" ></Air>
 	     <Base n_texture="1" air="0" h="64" w="64" vit="2" money="25"  power="10"  range="2" name="base"  src_desk="../android/assets/units/tower/image.png" src_andro="assets/units/tower/steampunk_f8.png" ></Base>
 	     <Slow n_texture="2" air="0" h="64" w="64" vit="1" money="75"  power="20"  range="2" name="slow"  src_desk="../android/assets/units/tower/image.png" src_andro="assets/units/tower/steampunk_f8.png" ></Slow>

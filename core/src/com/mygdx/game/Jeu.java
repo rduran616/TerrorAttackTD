@@ -214,7 +214,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 			int cellule = ((x -1) * values_.size_n()) +  y - 1 ; 
 			
 			if(values_.tower()!=null)
-			if(cellule<values_.size_m()*values_.size_n())
+			if(cellule<values_.size_m()*values_.size_n() && cellule>=0)
 			if(values_.carte()[cellule].getUnits_size_() >0)
 			{
 				int  max = values_.carte()[cellule].getUnits_size_();

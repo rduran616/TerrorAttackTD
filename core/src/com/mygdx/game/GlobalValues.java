@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.SerializationException;
 
 import Utilitaires.CollisionBox;
 import Utilitaires.ReadXml;
+import Utilitaires.TypeFlag;
 import units.Mobs;
 import units.MobsAir;
 import units.MobsBasic;
@@ -379,18 +380,18 @@ public final class GlobalValues
 		if(Gdx.app.getType() == ApplicationType.Android)
 		{
 			
-			mobs_sprite_  = new SpriteConteneur("Config/units.xml", "mobs", "src_andro");
-			tower_sprite_ = new SpriteConteneur("Config/units.xml", "tower", "src_andro");
+			mobs_sprite_  = new SpriteConteneur("Config/units.xml", "mobs", "src_andro",TypeFlag.FILEHANDLE_INTERNAL);
+			tower_sprite_ = new SpriteConteneur("Config/units.xml", "tower", "src_andro",TypeFlag.FILEHANDLE_INTERNAL);
 			
-			ReadXml xml = new ReadXml("Config/units.xml");
-			CollisionBox bbox = new CollisionBox(0,0,Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","w")),Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","h")));
-			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
+			ReadInternalXML xml = new ReadInternalXML("Config/units.xml");
+			CollisionBox bbox; 
+			for(int i=0; i < xml.get_Number_Child("mobs"); i++)
 			{
-				String n =xml.get_Sub_Node_Item(i, "mobs", "name");
-				int vit= Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "vit"));
-				int money=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "money"));
-				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "power"));
-				int vie=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "range"));
+				String n =xml.get_Child_Attribute("mobs", "name", i);
+				int vit= Integer.parseInt(xml.get_Child_Attribute("mobs", "vit", i));
+				int money=Integer.parseInt(xml.get_Child_Attribute("mobs", "money", i));
+				int power=Integer.parseInt(xml.get_Child_Attribute("mobs", "power", i));
+				int vie=Integer.parseInt(xml.get_Child_Attribute("mobs", "vie", i));
 				if(n.equals("air"))
 					m_air_modele_= new MobsAir(vie, vit, money, power);
 				else if(n.equals("basic"))
@@ -402,17 +403,21 @@ public final class GlobalValues
 				
 			} 
 			
-			for(int i=0; i < xml.node_Item_Child_Number("tower"); i++)
+			for(int i=0; i < xml.get_Number_Child("tower"); i++)
 			{
-				String n =xml.get_Sub_Node_Item(i, "tower", "name");
-				int vit= Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "vit"));
-				int money=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "money"));
-				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "power"));
-				int range=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "range"));
-				int h=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "h"));
-				int w=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "w"));
-				int air=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "air"));
-				int n_txt=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "n_texture"));
+				String n =xml.get_Child_Attribute("tower", "name", i);
+				int vit= Integer.parseInt(xml.get_Child_Attribute("tower", "vit", i));
+				int money=Integer.parseInt(xml.get_Child_Attribute("tower", "money",  i));
+				int power=Integer.parseInt(xml.get_Child_Attribute("tower", "power",  i));
+				int range=Integer.parseInt(xml.get_Child_Attribute("tower", "range",  i));
+				int h=Integer.parseInt(xml.get_Child_Attribute("tower", "h",  i));
+				int w=Integer.parseInt(xml.get_Child_Attribute("tower", "w",  i));
+				int air=Integer.parseInt(xml.get_Child_Attribute("tower", "air",  i));
+				int n_txt=Integer.parseInt(xml.get_Child_Attribute("tower", "n_texture", i));
+				
+				bbox = new CollisionBox(0,0,w,h);
+
+				
 				if(n.equals("air"))
 					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("base"))
@@ -427,10 +432,9 @@ public final class GlobalValues
 		else
 		{
 			ReadXml xml = new ReadXml("../android/assets/Config/units.xml");
-			mobs_sprite_  = new SpriteConteneur("../android/assets/Config/units.xml", "mobs", "src_desk");
-			tower_sprite_ = new SpriteConteneur("../android/assets/Config/units.xml", "tower","src_desk");
-			CollisionBox bbox = new CollisionBox(0,0,Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","w")),Integer.parseInt(xml.get_Sub_Node_Item(0, "tower","h")));
-			bbox.show();
+			mobs_sprite_  = new SpriteConteneur("../android/assets/Config/units.xml", "mobs", "src_desk",TypeFlag.PATH);
+			tower_sprite_ = new SpriteConteneur("../android/assets/Config/units.xml", "tower","src_desk",TypeFlag.PATH);
+			CollisionBox bbox;
 
 			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
 			{
@@ -461,6 +465,9 @@ public final class GlobalValues
 				int w=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "w"));
 				int air=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "air"));
 				int n_txt=Integer.parseInt(xml.get_Sub_Node_Item(i, "tower", "n_texture"));
+				
+				bbox = new CollisionBox(0,0,w,h);
+				
 				if(n.equals("air"))
 					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("base"))

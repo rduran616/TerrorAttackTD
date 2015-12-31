@@ -63,7 +63,7 @@ public class ReadXml
 		return -1;
 	}
 	
-	//retourne le nombre de sous elemnet du noeud node
+	//retourne le nombre de sous element du noeud node
 	public int node_Item_Child_Number(String node)
 	{
 		int cpt =0;
@@ -105,7 +105,7 @@ public class ReadXml
 		return null;
 	}
 	
-	//methode qui retourne la valeur value du ieme enfant du noeud node
+	//methode qui retourne la valeur value du ieme enfant index du noeud node
 	public String get_Sub_Node_Item(int index, String node, String value)
 	{
 		int cpt=0;

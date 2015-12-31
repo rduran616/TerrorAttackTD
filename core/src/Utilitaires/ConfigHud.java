@@ -1,6 +1,7 @@
 package Utilitaires;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mygdx.game.ReadInternalXML;
 
 
 /**
@@ -16,6 +17,7 @@ public class ConfigHud
 {
 	Table table_;
 	ReadXml file_;
+	ReadInternalXML file_2;
 	String node_;
 	int nb_button_;
 	int column_;
@@ -32,6 +34,8 @@ public class ConfigHud
 		pad_=0;
 		width_=0;
 		height_=0;
+		file_ = null;
+		file_2 = null;
 	}
 	
 	public void table(Table t){table_=t;}
@@ -44,7 +48,8 @@ public class ConfigHud
 	public float width(){return width_;} 
 	public float height(){return height_;}
 	public String node(){return node_;}
-	public ReadXml xml(){return file_;} 
+	public ReadXml xml(){return file_;}
+	public ReadInternalXML xml_Internal(){return file_2;} 
 	
 	public void nb_button(int nb ){nb_button_ =nb;} 
 	public void column(int c){ column_=c;} 
@@ -53,6 +58,15 @@ public class ConfigHud
 	public void width(float w){width_=w;} 
 	public void height(float h){height_=h;} 
 	public void node(String n){node_ =n;}
-	public void xml(ReadXml xml){file_ =xml;} 
+	public void xml(ReadXml xml){file_ =xml;}
+	public void xml(ReadInternalXML xml){file_2 =xml;} 
+	
+	public boolean estInternal()
+	{
+		if(file_2 != null)
+			return true;
+		else
+			return false;
+	}
 	
 }

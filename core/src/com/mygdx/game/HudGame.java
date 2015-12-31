@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,12 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import Utilitaires.ConfigHud;
 import Utilitaires.ReadXml;
+import Utilitaires.TypeFlag;
 import units.Status;
 import units.TowerAir;
 import units.TowerBase;
@@ -40,6 +39,7 @@ public class HudGame
 {
 	private GlobalValues values_;
 	private ReadXml xml_unit_file_;		//fichier xml avec toutes les unitées
+	private ReadInternalXML xml_unit_file_internal_;
 	
 	//enemies:
 	private int nb_mobs_; 	//nombre d'unité differente (typeenemi)
@@ -50,7 +50,7 @@ public class HudGame
 	private int size_hud_ = 20;				//valeur en % de la taille du hud par rapport a l'ecran
 	
 	private Stage stage_game_;				//stage du jeu qd on est spectateur
-	private Layout main_layout_game_;		//layout du hud du jeu ( layout du mode jeu)
+//	private Layout main_layout_game_;		//layout du hud du jeu ( layout du mode jeu)
 	private Table main_table_game_;			//layout principale du hud du jeu
 	private Label label_tour_;				//label pour placement tour
 	private Label label_bonus_;				//label pour placement tour
@@ -58,13 +58,13 @@ public class HudGame
 	private Label vie_;
 	private Label argent_;
 	
-	private Stage stage_game_2;				//stage du jeu qd on place un objet
+//	private Stage stage_game_2;				//stage du jeu qd on place un objet
 	private Table main_layout_game_2;		//layout du mode placement 
 	private Label txt_info_;
 	private TextButton validate_;
 	private TextButton cancel_;
 	
-	private Stage stage_game_3;				//stage du jeu qd on place un objet
+//	private Stage stage_game_3;				//stage du jeu qd on place un objet
 	private Table main_layout_game_3;		//layout du mode placement 
 	private Label txt_info_2;
 	private TextButton validate_2;
@@ -81,12 +81,19 @@ public class HudGame
 		
 		//recup nombre de type de tour existant pour creation des boutons
 		if(Gdx.app.getType() == ApplicationType.Android) //test plateforme
-			xml_unit_file_ = new ReadXml("Config/units.xml"); //erreur chemin  
+		{
+			xml_unit_file_internal_ = new ReadInternalXML("Config/units.xml"); 
+			nb_towers_ = xml_unit_file_internal_.get_Number_Child("tower");
+			nb_bonus_ = xml_unit_file_internal_.get_Number_Child("bonus");
+		}
 		else
+		{
 			xml_unit_file_ = new ReadXml("../android/assets/Config/units.xml");
+			nb_towers_ 	= xml_unit_file_.node_Item_Child_Number("tower");
+			nb_bonus_	= xml_unit_file_.node_Item_Child_Number("bonus");
+		}
 			
-		nb_towers_ 	= xml_unit_file_.node_Item_Child_Number("tower");
-		nb_bonus_	= xml_unit_file_.node_Item_Child_Number("bonus");
+		
 		
 		//couleur jaune pour le background du hud
 		Pixmap pm1 = new Pixmap(1, 1, Format.RGB565);
@@ -103,14 +110,18 @@ public class HudGame
 		stage_game_				= new Stage(new ScreenViewport());
 				
 		//placement des boutons
-		@SuppressWarnings("rawtypes")
 		ConfigHud hud = new ConfigHud();
 		hud.column(2);
 		hud.height(20);
 		hud.width((values_.get_width()*size_hud_/100/2) -2);
 		hud.nb_button(nb_towers_);
 		hud.pad(2);
-		hud.xml(xml_unit_file_);
+		
+		if(Gdx.app.getType() == ApplicationType.Android)
+			hud.xml(xml_unit_file_internal_);
+		else
+			hud.xml(xml_unit_file_);
+			
 		hud.table(main_table_game_);
 		
 		main_table_game_.add(label_tour_);
@@ -129,7 +140,6 @@ public class HudGame
 		
 		//background jaune
 		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
-		//stage_game_.addActor(main_table_game_);
 		
 		//autre informations
 		vie_ = new Label("Vie :", values_.get_Skin());
@@ -138,13 +148,11 @@ public class HudGame
 		argent_.setPosition(0, values_.get_height()-40);
 		
 		
-		//deuxieme hud
-		//stage_game_2 = new Stage();				
+		//deuxieme hud				
 		main_layout_game_2 = new Table();		
 		txt_info_ = new Label("Placement :", values_.get_Skin());
 		cancel_ = new TextButton("Annuler", values_.get_Skin());
 		validate_ = new TextButton("Valider", values_.get_Skin());
-		//validate_2= new TextButton("Valider2", values_.get_Skin());
 		
 		cancel_.addListener(new ClickListener()
 		{
@@ -216,14 +224,11 @@ public class HudGame
 		main_layout_game_2.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
 		main_layout_game_2.add(txt_info_).pad(pad_).row();
 		main_layout_game_2.add(validate_).pad(pad_).row();
-		//main_layout_game_2.add(validate_2).pad(10).row();
 		main_layout_game_2.add(cancel_).pad(pad_).row();
 		
-	//	stage_game_2.addActor(main_layout_game_2);
-		
-		
+
 		//troisième hud
-		stage_game_3 = new Stage();				
+	//	stage_game_3 = new Stage();				
 		main_layout_game_3 = new Table();		
 		txt_info_2 = new Label("Vendre?", values_.get_Skin());
 		cancel_2 = new TextButton("Annuler", values_.get_Skin());
@@ -297,12 +302,12 @@ public class HudGame
 			
 			return stage_game_;
 	} 
-	public Stage stage2(){return stage_game_2;}
-	public Stage stage3(){return stage_game_3;}
+//	public Stage stage2(){return stage_game_2;}
+//	public Stage stage3(){return stage_game_3;}
 	
 	
 	//création des boutons de l'ui principal
-	private void creation_Hud_Objects(@SuppressWarnings("rawtypes") ConfigHud hud)
+	private void creation_Hud_Objects(ConfigHud hud)
 	{
 		int cpt=0;
 		hud.other(0);
@@ -310,9 +315,14 @@ public class HudGame
 		{
 			//recuperation des chemins (ou autre, à voir) d'image pour icone bouton
 			TextButton button = new TextButton(Integer.toString(i),values_.get_Skin());
-			if(hud.xml().isEmpty() == false)
+			if(true)
 	    	{
-				String name = hud.xml().get_Sub_Node_Item(hud.other(), hud.node(),"name");
+				String name;
+				if(hud.estInternal())
+					name = hud.xml_Internal().get_Child_Attribute(hud.node(),"name",hud.other());
+				else
+					name = hud.xml().get_Sub_Node_Item(hud.other(), hud.node(),"name");
+				
 				if(name!=null)
 				{
 					if(name.equals("air"))
@@ -394,4 +404,6 @@ public class HudGame
 	}	
 	
 
+	public float pad(){return pad_;}
+	public void pad(float p){pad_=p;}
 }
