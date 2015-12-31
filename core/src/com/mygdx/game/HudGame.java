@@ -71,10 +71,12 @@ public class HudGame
 	private TextButton cancel_2;
 	
 	private int argent_temp;
+	private float pad_;	//pad des boutons
 	
 	
-	public HudGame()
+	public HudGame(float p)
 	{
+		pad_ = p;
 		values_ = GlobalValues.getInstance();
 		
 		//recup nombre de type de tour existant pour creation des boutons
@@ -127,7 +129,7 @@ public class HudGame
 		
 		//background jaune
 		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
-		stage_game_.addActor(main_table_game_);
+		//stage_game_.addActor(main_table_game_);
 		
 		//autre informations
 		vie_ = new Label("Vie :", values_.get_Skin());
@@ -135,12 +137,9 @@ public class HudGame
 		argent_ = new Label("Argent :", values_.get_Skin());
 		argent_.setPosition(0, values_.get_height()-40);
 		
-		stage_game_.addActor(argent_);
-		stage_game_.addActor(vie_);
-		
 		
 		//deuxieme hud
-		stage_game_2 = new Stage();				
+		//stage_game_2 = new Stage();				
 		main_layout_game_2 = new Table();		
 		txt_info_ = new Label("Placement :", values_.get_Skin());
 		cancel_ = new TextButton("Annuler", values_.get_Skin());
@@ -215,12 +214,12 @@ public class HudGame
 		
 		main_layout_game_2.setSize(values_.get_width()*size_hud_/100,values_.get_height());
 		main_layout_game_2.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
-		main_layout_game_2.add(txt_info_).pad(10).row();
-		main_layout_game_2.add(validate_).pad(10).row();
+		main_layout_game_2.add(txt_info_).pad(pad_).row();
+		main_layout_game_2.add(validate_).pad(pad_).row();
 		//main_layout_game_2.add(validate_2).pad(10).row();
-		main_layout_game_2.add(cancel_).pad(10).row();
+		main_layout_game_2.add(cancel_).pad(pad_).row();
 		
-		stage_game_2.addActor(main_layout_game_2);
+	//	stage_game_2.addActor(main_layout_game_2);
 		
 		
 		//troisième hud
@@ -255,11 +254,17 @@ public class HudGame
 		
 		main_layout_game_3.setSize(values_.get_width()*size_hud_/100,values_.get_height());
 		main_layout_game_3.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
-		main_layout_game_3.add(txt_info_2).row();
-		main_layout_game_3.add(validate_2).row();
-		main_layout_game_3.add(cancel_2).row();
+		main_layout_game_3.add(txt_info_2).pad(pad_).row();
+		main_layout_game_3.add(validate_2).pad(pad_).row();
+		main_layout_game_3.add(cancel_2).pad(pad_).row();
 		
-		stage_game_3.addActor(main_layout_game_3);
+		//stage_game_3.addActor(main_layout_game_3);
+		
+		stage_game_.addActor(argent_);
+		stage_game_.addActor(vie_);
+		stage_game_.addActor(main_table_game_);
+		stage_game_.addActor(main_layout_game_2);
+		stage_game_.addActor(main_layout_game_3);
 	}
 	
 	
@@ -270,11 +275,27 @@ public class HudGame
 	public Stage stage()
 	{
 		if(values_.status() == Status.POSITIONNE)
-			return stage_game_;
+		{
+			main_table_game_.setVisible(true);
+			main_layout_game_2.setVisible(false);
+			main_layout_game_3.setVisible(false);
+			//return stage_game_;
+		}
 		else if(values_.status() == Status.NON_POSITIONNE)
-			return stage_game_2;
+		{
+			main_table_game_.setVisible(false);
+			main_layout_game_2.setVisible(true);
+			main_layout_game_3.setVisible(false);
+			//return stage_game_2;
+		}
 		else
-			return stage_game_3;
+		{
+			main_table_game_.setVisible(false);
+			main_layout_game_2.setVisible(false);
+			main_layout_game_3.setVisible(true);
+		}
+			
+			return stage_game_;
 	} 
 	public Stage stage2(){return stage_game_2;}
 	public Stage stage3(){return stage_game_3;}

@@ -65,10 +65,10 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		//initialisation des huds
 		
-		hud_game_ = new HudGame();
+		hud_game_ = new HudGame(10);
 		multiplexer.addProcessor(hud_game_.stage());
-		multiplexer.addProcessor(hud_game_.stage2());
-		multiplexer.addProcessor(hud_game_.stage3());
+	//	multiplexer.addProcessor(hud_game_.stage2());
+	//	multiplexer.addProcessor(hud_game_.stage3());
 		multiplexer.addProcessor(this);
 		
 		//boutton retour
