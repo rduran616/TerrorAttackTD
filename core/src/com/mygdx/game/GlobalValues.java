@@ -270,7 +270,7 @@ public final class GlobalValues
     		size_n_		= tiledMap_.getProperties().get("height",Integer.class);
 			size_m_		= tiledMap_.getProperties().get("width",Integer.class);
 	
-    		camera_ = new OrthographicCamera();
+    		camera_ = new OrthographicCamera(width_,height_);
         	//camera_ = new OrthographicCamera(25 * aspectRatio ,25);
     		camera_.setToOrtho(false,width_,height_);
             camera_.update();
