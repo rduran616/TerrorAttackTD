@@ -114,7 +114,7 @@ public class HudGame
 		//placement des boutons
 		ConfigHud hud = new ConfigHud();
 		hud.column(2);
-		hud.height(10);
+		hud.height(20);
 		hud.width(((values_.get_width()*size_hud_/100)/2) - 2*pad_ );
 		hud.nb_button(nb_towers_);
 		hud.pad(2);
@@ -148,9 +148,9 @@ public class HudGame
 		
 		//autre informations
 		vie_ = new Label("Vie :", values_.get_Skin());
-		vie_.setPosition(0, values_.get_height()-20);
+		vie_.setPosition(values_.get_width()-vie_.getWidth(), values_.get_height()-20);
 		argent_ = new Label("Argent :", values_.get_Skin());
-		argent_.setPosition(0, values_.get_height()-40);
+		argent_.setPosition(values_.get_width()-argent_.getWidth(), values_.get_height()-40);
 		
 		
 		//deuxieme hud				
@@ -278,8 +278,21 @@ public class HudGame
 	}
 	
 	
-	public void argent(){argent_.setText("Argent :"+Integer.toString(values_.argent()));}
-	public void vie(){vie_.setText("Vie :"+Integer.toString(values_.vie()));}
+
+	
+	public void argent()
+	{
+		argent_.setText("Argent :"+Integer.toString(values_.argent()));
+		argent_.setPosition(values_.get_width()-argent_.getWidth()*2, values_.get_height()-40);
+	}
+	
+	
+	
+	public void vie()
+	{
+		vie_.setText("Vie :"+Integer.toString(values_.vie()));
+		vie_.setPosition(values_.get_width()-argent_.getWidth()*2, values_.get_height()-20);
+	}
 	
 	
 	public Stage stage()
@@ -341,6 +354,7 @@ public class HudGame
 						    	   {
 						    		   argent_temp = values_.argent();
 						    		   values_.argent(values_.argent()-values_.t_air_modele_().cout());
+						    		   
 						    		   System.err.println("TowerAir");
 						    		   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
 						    		   values_.tower().add(new TowerAir(values_.t_air_modele_()));	
