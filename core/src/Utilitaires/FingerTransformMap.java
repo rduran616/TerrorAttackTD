@@ -85,6 +85,7 @@ public class FingerTransformMap
 	 //zoom si deux doigts sur lecran qui se déplace
 	 public void finger_Zoom(int x, int y,int pointer)
 	 {
+		 //System.err.println("finger = "+numberOfFingers);
 		 if(numberOfFingers>=2)
 		 {
 		 
@@ -131,6 +132,7 @@ public class FingerTransformMap
 	 {
 		 if(numberOfFingers==1)
 		 {
+			 
 			 fingerOnePointer = pointer;
 			 Vector3 positon_actuel = new Vector3(fingerOne.x,fingerOne.y,0);
 			 fingerOne.set(x, y, 0);

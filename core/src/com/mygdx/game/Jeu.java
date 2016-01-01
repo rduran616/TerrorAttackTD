@@ -201,8 +201,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) 
-	{
-
+	{		
+		finger.finger_Touch(screenX, screenY, pointer);
+		
 		if(values_.status() == Status.POSITIONNE)
 		{
 			Vector3 pos = new Vector3(screenX,screenY,0);
@@ -229,6 +230,12 @@ public class Jeu extends StateMenu  implements InputProcessor
 					}
 				}
 			}	
+		}
+		else
+		{
+			System.err.println("onche");
+			finger.finger_Zoom(screenX, screenY, pointer);
+			finger.finger_Move(screenX, screenY, pointer);
 		}
 		
 		return false;
@@ -264,7 +271,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 				finger.finger_Move(screenX, screenY, pointer);
 			}
 		}
-		else if(values_.status()== Status.POSITIONNE)
+		else 
 		{
 			finger.finger_Zoom(screenX, screenY, pointer);
 			finger.finger_Move(screenX, screenY, pointer);
