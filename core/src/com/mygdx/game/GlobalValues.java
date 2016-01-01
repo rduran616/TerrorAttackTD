@@ -343,8 +343,6 @@ public final class GlobalValues
 		
 	}
 	
-	
-	
 	//chargement/rechargement des ellements visuel du jeux
 	public ErrorEnum reload()
 	{

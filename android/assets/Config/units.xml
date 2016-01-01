@@ -11,7 +11,7 @@
 	   <Boss  vie="100" vit="2" money="75"  power="20" name="boss"  src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Boss>
 	   <Lourd vie="150" vit="1" money="50" power="20" name="lourd" src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Lourd>
      </mobs>
-     <bonus id="2" values="5">
+     <bonus id="2" value="5">
          <pauseActive name="Pause active"></pauseActive>
          <slowIA name="Vitesse ia --"></slowIA>
          <megaKill name="Mega kill"></megaKill>

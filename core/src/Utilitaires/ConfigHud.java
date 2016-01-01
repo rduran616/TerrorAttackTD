@@ -20,10 +20,10 @@ public class ConfigHud
 	ReadInternalXML file_2;
 	String node_;
 	int nb_button_;
-	int column_;
-	int pad_;
+	int column_;		
+	int pad_;		
 	float width_;
-	float height_;
+	float height_;   
 	int other_;		//variable poubelle (on met ce qu'on veux , sa valeur depend du contexte)
 	
 	

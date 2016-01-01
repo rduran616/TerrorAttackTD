@@ -32,7 +32,7 @@ import units.TowerZone;
  * 
  * @author Florian
  *
- *	Class spécialmenet prevu pour la creation du hud jeux, via un fichier xml
+ *	Class spécialmenet prevu pour la creation du hud jeu, via un fichier xml en fonction de l'environement
  */
 
 public class HudGame 
@@ -83,8 +83,10 @@ public class HudGame
 		if(Gdx.app.getType() == ApplicationType.Android) //test plateforme
 		{
 			xml_unit_file_internal_ = new ReadInternalXML("Config/units.xml"); 
-			nb_towers_ = xml_unit_file_internal_.get_Number_Child("tower");
-			nb_bonus_ = xml_unit_file_internal_.get_Number_Child("bonus");
+			nb_towers_ = Integer.parseInt(xml_unit_file_internal_.get_Attribute("tower", "value"));
+			nb_bonus_ = Integer.parseInt(xml_unit_file_internal_.get_Attribute("bonus", "value"));
+			
+			System.err.println("nb_tower= "+nb_towers_);
 		}
 		else
 		{
@@ -112,10 +114,11 @@ public class HudGame
 		//placement des boutons
 		ConfigHud hud = new ConfigHud();
 		hud.column(2);
-		hud.height(20);
-		hud.width((values_.get_width()*size_hud_/100/2) -2);
+		hud.height(10);
+		hud.width(((values_.get_width()*size_hud_/100)/2) - 2*pad_ );
 		hud.nb_button(nb_towers_);
 		hud.pad(2);
+		
 		
 		if(Gdx.app.getType() == ApplicationType.Android)
 			hud.xml(xml_unit_file_internal_);
@@ -128,10 +131,12 @@ public class HudGame
 		main_table_game_.row();
 		hud.node("tower");
 		creation_Hud_Objects(hud);
+		main_table_game_.row();
 		main_table_game_.add(label_amelioration_);
 		main_table_game_.row();
 		hud.node("upgrade");
 		creation_Hud_Objects(hud);
+		main_table_game_.row();
 		main_table_game_.add(label_bonus_);
 		main_table_game_.row();
 		hud.node("bonus");
