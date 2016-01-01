@@ -260,19 +260,19 @@ public final class GlobalValues
 	
 	public void init_tile_map()
 	{
-		//float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
+		float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
         try 
         {
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
-            tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
+            tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,aspectRatio);
 
             size_px_	= tiledMap_.getProperties().get("tileheight",Integer.class);
     		size_n_		= tiledMap_.getProperties().get("height",Integer.class);
 			size_m_		= tiledMap_.getProperties().get("width",Integer.class);
 	
-    		camera_ = new OrthographicCamera(width_,height_);
+    		camera_ = new OrthographicCamera();
         	//camera_ = new OrthographicCamera(25 * aspectRatio ,25);
-    		camera_.setToOrtho(false,width_,height_);
+    		camera_.setToOrtho(false,width_/aspectRatio,height_/aspectRatio);
             camera_.update();
             
         }catch(SerializationException e) 

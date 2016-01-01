@@ -18,4 +18,10 @@ public class MobsAir extends Mobs
 	{
 		return sprite;
 	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -61,6 +61,12 @@ public abstract class Mobs
 	
 	    // Shape is the only disposable of the lot, so get rid of it
 	    shape.dispose();*/
+		
+		
 	}
+
+	
+	public abstract void execute();
+
 
 }
