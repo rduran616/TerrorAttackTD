@@ -26,20 +26,20 @@ public final class SpriteConteneur
 				if(xml!=null)
 				{
 					int nb_ = xml.get_Number_Child(mainNode); //recup nombre de sous noeud
+					System.err.println(nb_);
 					for(int i=0;i<nb_;i++)//pour chaque noeud recuperer le sprite et le stocker
 					{
-						String path = xml.get_Child_Attribute("mainNode", "value", i);
-						if(path!=null && path != "")
+						String path = xml.get_Child_Attribute(mainNode, value, i);
+						System.err.println(path);
+						try
 						{
-							try
-							{
-								System.err.println(path);
-								Texture tps_txture = new Texture(path);
-								Sprite tps =new Sprite(tps_txture);
-								sprite_array_.add(tps);
-							}
-							catch(Exception e){System.err.println("erreur");}
+							System.err.println(path);
+							Texture tps_txture = new Texture(Gdx.files.internal(path));
+							Sprite tps =new Sprite(tps_txture);
+							sprite_array_.add(tps);
 						}
+						catch(Exception e){System.err.println("erreur  "+e);}
+						
 					}
 				}
 			}
@@ -57,10 +57,20 @@ public final class SpriteConteneur
 						{
 							try
 							{
-								System.err.println(path);
-								Texture tps_txture = new Texture(path);
-								Sprite tps =new Sprite(tps_txture);
-								sprite_array_.add(tps);
+								if(Gdx.app.getType() == ApplicationType.Android)
+								{
+									System.err.println(path);
+									Texture tps_txture = new Texture(Gdx.files.internal(path));
+									Sprite tps =new Sprite(tps_txture);
+									sprite_array_.add(tps);
+								}
+								else
+								{
+									System.err.println(path);
+									Texture tps_txture = new Texture(path);
+									Sprite tps =new Sprite(tps_txture);
+									sprite_array_.add(tps);
+								}
 							}
 							catch(Exception e){System.err.println("erreur");}
 						}
@@ -72,6 +82,8 @@ public final class SpriteConteneur
 		else
 			System.err.println("Erreur creation de sprite conteneur");
 	}
+	
+	
 	public Array<Sprite> sprites(){return sprite_array_;}
 	
 	public Sprite sprite(int index)
