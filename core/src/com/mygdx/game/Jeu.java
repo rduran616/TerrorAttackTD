@@ -19,9 +19,12 @@ public class Jeu extends StateMenu  implements InputProcessor
 	//multiplexer de stage -> avoir plusieur stage en 1 ( interaction monde et hud)
 	InputMultiplexer multiplexer = new InputMultiplexer();
 
+	
+	
 	//var global
 	GlobalValues values_;		
 	StateMEnuEnum selection_;
+	static Vector3 last_position_;
 	
 	//gestion etat du jeu
 	StateJeu jeu_[];
@@ -48,6 +51,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		//initialisation des variables
 		selection_ = StateMEnuEnum.JEU;
 		values_ = GlobalValues.getInstance();
+		last_position_ = new Vector3(-1,-1,0);
 		
 		//initialisation du jeu
 		etat_jeu_ = StateJeuEnum.CHOIX;
@@ -160,6 +164,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 		else
 			return selection_;
 	}
+	
+	
+	 public static Vector3 get_Last_Position(){return last_position_;}
 
 	@Override
 	public boolean keyDown(int keycode) 
@@ -206,6 +213,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		if(values_.status() == Status.POSITIONNE)
 		{
+			System.err.println("x ="+screenX+" y="+screenY);
 			Vector3 pos = new Vector3(screenX,screenY,0);
 			values_.camera().unproject(pos);
 			int x = (int) (pos.x / values_.size_Px());
@@ -219,21 +227,30 @@ public class Jeu extends StateMenu  implements InputProcessor
 				int  max = values_.carte()[cellule].getUnits_size_();
 				for(int i=0; i< max;i++)
 				{
-					int index = values_.carte()[cellule].getUnits_().get(i); // index dans le tableau tower 0... n tour
-					
-					if(values_.tower(index).collision((int)pos.x,(int)pos.y) == true)
+					int index = 0;
+					try
 					{
-						values_.status(Status.INFO);
-						values_.setIndex_unit_selection_(index);
+						index = values_.carte()[cellule].getUnits_().get(i); // index dans le tableau tower 0... n tour
+						if(values_.tower().size()>index)
+							index = values_.tower().size() -1; //attention c'est bizare
 						
-						break;
+						if(values_.tower(index).collision((int)pos.x,(int)pos.y) == true)
+						{
+							values_.status(Status.INFO);
+							values_.setIndex_unit_selection_(index);
+							last_position_.x=screenX;
+							last_position_.y=screenY;
+							
+							break;
+						}
 					}
+					catch(Exception e)
+					{System.err.println("Erreur jeu touch:  "+e);}
 				}
 			}	
 		}
 		else
 		{
-			System.err.println("onche");
 			finger.finger_Zoom(screenX, screenY, pointer);
 			finger.finger_Move(screenX, screenY, pointer);
 		}

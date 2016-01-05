@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.SerializationException;
 
@@ -163,7 +164,14 @@ public final class GlobalValues
 	}
 	public TowerType tower(int i)
 	{
-		return liste_tours.get(i);
+		try
+		{return liste_tours.get(i);}
+		catch(Exception e)
+		{
+			System.err.println(e);
+		}
+		
+		return null;
 	}
 	
 	public void carte_Init()
@@ -513,5 +521,19 @@ public final class GlobalValues
 	public void setIndex_unit_selection_(int index_unit_selection_) {
 		this.index_unit_selection_ = index_unit_selection_;
 	}
+	
+	public int get_Case(int ScrX, int ScrY)
+	{
+		int cell =-1;
+
+		Vector3 pos = new Vector3(ScrX,ScrY,0);
+		camera().unproject(pos);
+		int x = (int) (pos.x / size_Px());
+		int y = (int) (pos.y / size_Px());
+		cell = ((x -1) * size_n()) +  y - 1 ; 
+		
+		return cell;
+	}
+
 	
 }

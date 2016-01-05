@@ -203,7 +203,6 @@ public class HudGame
 				    	   values_.last_tower().setIndex( values_.carte()[cellule].getUnits_().size()-1); 
 				    	   //changement d'etat
 				    	   values_.status(Status.POSITIONNE);
-				    	   
 				    	   System.err.println("cellule sprite ="+cellule);
 			    	   }
 			    	   else
@@ -243,7 +242,7 @@ public class HudGame
 		{
 		       @Override
 		       public void clicked(InputEvent event, float x, float y)
-		       {	System.err.println("clicked1");
+		       {
 		    	   	values_.status(Status.POSITIONNE);
 		       }
 		 });
@@ -254,10 +253,56 @@ public class HudGame
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       { 
-		    	   //enregistrement de la position dans le repere carte
-		    	   System.err.println("clicked2");
+		    	  //enregistrement de la position dans le repere carte
+		    	   
+		    	 //suppression
+		    	 try
+		    	 {  
+		    		  Vector3 pos = Jeu.get_Last_Position();
+			    	  int cell = values_.get_Case((int)pos.x, (int)pos.y); //Recuperation de la case
+			    	  System.err.println("cell = "+cell);
+			    	  
+			    	  values_.camera().unproject(pos);//passage coordonée caméra à monde
+			    	  int size = values_.carte()[cell].getUnits_().size();//Recuperation taille du t'ableau d'unité
+			    	  System.err.println("size= "+size);
+			    	  
+			    	  for(int i=0;i< size;i++)
+			    	  {
+			    		  int index = values_.carte()[cell].getUnits_().get(i); //recuperation de l'index dans towertype
+			    		  if(values_.tower().get(index).box().collision((int)pos.x,(int)pos.y)) //verification de la colision
+			    		  {
+			    			  System.err.println("suppr");
+			    			  //si colision on suppr l'element dans cellmap et towertype
+			    			  values_.carte()[cell].getUnits_().remove(i); 
+			    			  values_.tower().remove(index);
+			    			  
+			    			  //désindexage
+			    			  for(int j = 0; j <  values_.tower().size();j++)//pour ctte les tour restantes faire
+			    			  {
+			    				  //System.err.println(values_.tower());
+			    				  //recuperation cellule
+			    				  int cellule =  values_.tower().get(j).get_Index_Cellule_Mono(values_.size_Px(), values_.size_Px(),  values_.size_n());
+			    				  //nombre d'unité max sur la case
+			    				  int k_max =  values_.carte()[cellule].getUnits_().size();
+			    				  //index -1 de chaque unité 
+			    				  for(int k=0;k<k_max; k++)
+			    				  {
+			    					  int val = values_.carte()[cellule].getUnits_().get(k);
+			    					  if(val >= index )
+			    						  values_.carte()[cellule].getUnits_().set(i, val--);
+			    				  }
+			    			  }
+
+			    			  break;
+			    		  }
+			    	  }
+		    	 }
+		    	 catch(Exception e)
+		    	 {
+		    		 System.err.println("hud game suppr erreur "+e);
+		    	 }
+		    	   
 		    	   values_.status(Status.POSITIONNE);
-		    	 
 		       }
 		 });
 
