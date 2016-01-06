@@ -13,8 +13,8 @@ public class MobsLourd extends Mobs{
 
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public void execute() 
+	{
 		
 	}
 }

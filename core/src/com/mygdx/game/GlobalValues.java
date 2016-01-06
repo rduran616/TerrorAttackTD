@@ -111,7 +111,7 @@ public final class GlobalValues
 	private int size_m_ = 32;					//nombre de carreaux de la carte en height
 	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
 	private ArrayList<TowerType> liste_tours;	//liste des tours placées
-	private Mobs liste_mobs[];					//liste des mobs à afficher
+	private ArrayList<Mobs> liste_mobs;			//liste des mobs à afficher
 	private String carte_name_;					//nom ou chemin de la carte
 	private int index_unit_selection_;
 	
@@ -178,7 +178,7 @@ public final class GlobalValues
 	{
 		carte_ = new CellMap[size_n_ * size_m_];
 		for(int i =0;i<size_n_ * size_m_;i++)
-			carte_[i] = new CellMap(i, 0, size_n_, null, null, null);
+			carte_[i] = new CellMap(i, 0, size_n_, null, null, null, null);
 	}
 	public void placer_Object(int celulle,int index,TypeObjet type)
 	{
@@ -217,7 +217,7 @@ public final class GlobalValues
 	
 	
 	
-	public Mobs[] mobs(){return liste_mobs;}
+	public ArrayList<Mobs> mobs(){return liste_mobs;}
 
 	public ErrorEnum camera_Update()
 	{
@@ -369,7 +369,7 @@ public final class GlobalValues
 			//liste_tours = new Tower[size_n_ * size_m_ - 2]; //nombre de tour possibles - 2 car point de dépar et arrivée 
 		}*/
 		
-		liste_mobs = new Mobs[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
+		liste_mobs = new ArrayList<Mobs>();//[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
 
 		argent_ = 100;
 		vie_ = 100;
@@ -550,6 +550,12 @@ public final class GlobalValues
 		cell = ((x -1) * size_n()) +  y - 1 ; 
 		
 		return cell;
+	}
+
+
+	public Sprite mobs(int num_texture_) 
+	{
+		return null;
 	}
 
 	

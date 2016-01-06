@@ -6,13 +6,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import Utilitaires.FingerTransformMap;
 import Utilitaires.TickHorloge;
 import units.Status;
-import units.TowerType;
+
 
 public class Jeu extends StateMenu  implements InputProcessor
 { 

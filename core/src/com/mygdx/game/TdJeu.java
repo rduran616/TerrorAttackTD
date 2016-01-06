@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
+import units.Mobs;
 import units.TowerType;
 
 public class TdJeu extends StateJeu
@@ -27,8 +28,16 @@ public class TdJeu extends StateJeu
 	public StateJeuEnum exectute() 
 	{
 
-		//mise à jour des ia
+		//Création des mobs
+		int num_vague;
+		int rythme_creation_mobs;
 		
+		//mise à jour de l'ia
+			//deplacement ennemis
+			//rotation tour
+			//tir des tours
+			
+			
 		
 		//dessin des images
 		values_.camera_Update();
@@ -44,7 +53,7 @@ public class TdJeu extends StateJeu
 				try
 				{
 					t = values_.tower().get(i); //Recuperation de la tour
-					
+						
 					values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 					values_.tower_sprite(t.num_Texture()).draw(sb_);
 				}
@@ -53,12 +62,33 @@ public class TdJeu extends StateJeu
 					System.err.println(e);
 				}
 			}
+			
+			//Dessin des mobs
+			Mobs m;
+			for(int i=0;i < values_.mobs().size();i++)
+			{
+				try
+				{
+					//Dessin du mob
+					m = values_.mobs().get(i); //Recuperation du mob
+					
+					values_.mob_sprite(m.getNum_texture_()).setPosition(m.getPosition_().x,m.getPosition_().y);			
+					values_.mob_sprite(m.getNum_texture_()).draw(sb_);
+				}
+				catch(Exception e)
+				{
+					System.err.println(e);
+				}
+			}
+
+			//dessin des projectiles
+			
+			//play particules
+			
+			
 			sb_.end();
 		}
-		
-		//mise à jour des projectiles
-		
-		
+
 		//Changer de menu
 		if(selection_ != StateJeuEnum.JEU)
 		{

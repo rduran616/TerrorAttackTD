@@ -21,12 +21,17 @@ public final class CellMap
 	private int obstacle_size_	=0;
 	private int chemin_size_	=0;
 	private int units_size_		=0;
+	private int mobs_size_		=0;
 
 	private ArrayList<Integer> obstacle_;
 	private ArrayList<Integer> units_;
 	private ArrayList<Integer> chemin_;
+	private ArrayList<Integer> mobs_;
 	
-	public CellMap(int n, int m, int size, ArrayList<Integer> ob,ArrayList<Integer> u,ArrayList<Integer> c )
+	private TypeObjet type;
+	
+	
+	public CellMap(int n, int m, int size, ArrayList<Integer> ob,ArrayList<Integer> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
 	{
 
 		if(n>=0)
@@ -59,6 +64,14 @@ public final class CellMap
 		}
 		else 
 			setChemin_(new ArrayList<Integer>());
+		
+		if(c!=null)
+		{
+			setMobs_(mobs);
+			setMobs_size_(mobs.size());
+		}
+		else 
+			setMobs_(new ArrayList<Integer>());
 	}
 
 	
@@ -192,5 +205,35 @@ public final class CellMap
 	
 	public void setObstacle_size_(int obstacle_size_) {
 		this.obstacle_size_ = obstacle_size_;
+	}
+
+
+	public ArrayList<Integer> getMobs_() {
+		return mobs_;
+	}
+
+
+	public void setMobs_(ArrayList<Integer> mobs_) {
+		this.mobs_ = mobs_;
+	}
+
+
+	public int getMobs_size_() {
+		return mobs_size_;
+	}
+
+
+	public void setMobs_size_(int mobs_size_) {
+		this.mobs_size_ = mobs_size_;
+	}
+
+
+	public TypeObjet getType() {
+		return type;
+	}
+
+
+	public void setType(TypeObjet type) {
+		this.type = type;
 	}
 }
