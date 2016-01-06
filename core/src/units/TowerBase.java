@@ -14,6 +14,20 @@ public class TowerBase extends TowerType
 		super(cout,att_speed,damage,range,h,w,air,n_txt,nom,box);
 	}
 	
+	public TowerBase(TowerBase another) 
+	{
+		 this.nom(another.nom());
+		 this._cout =  another._cout;
+		 this._attspeed =  another._attspeed;
+		 this._range =  another._range;
+		 this._damage =  another._damage;
+		 this._air =  another._air;
+		 this.collision(another.box()); 	
+		 this.size_H(another.size_H());		 	
+		 this.size_W(another.size_W());				
+		 this.num_Texture(another.num_Texture());
+	}
+
 	@Override
 	public void onExecute() {
 		// TODO Auto-generated method stub

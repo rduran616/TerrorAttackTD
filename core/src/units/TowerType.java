@@ -102,6 +102,7 @@ public abstract class TowerType
 	
 	//methode appelée pour tireer sur les mobs (implémentée par les classes filles)
 	public abstract void onExecute();
+	public int cout(){return _cout;}
 
 	//ascesseurs (get et set)
 	public int size_H(){return size_h_;}

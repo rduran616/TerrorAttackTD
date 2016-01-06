@@ -52,6 +52,7 @@ public final class SpriteConteneur
 					int nb_ = xml_tower.node_Item_Child_Number(mainNode); //recup nombre de sous noeud
 					for(int i=0;i<nb_;i++)//pour chaque noeud recuperer le sprite et le stocker
 					{
+						System.err.println(i);
 						String path = xml_tower.get_Sub_Node_Item(i,mainNode,value);
 						if(path!=null && path != "")
 						{
@@ -72,7 +73,7 @@ public final class SpriteConteneur
 									sprite_array_.add(tps);
 								}
 							}
-							catch(Exception e){System.err.println("erreur");}
+							catch(Exception e){System.err.println("erreur "+e);}
 						}
 					}
 				}

@@ -45,9 +45,6 @@ public class TdJeu extends StateJeu
 				{
 					t = values_.tower().get(i); //Recuperation de la tour
 					
-					if(values_.tower_sprite(i) == null)
-						System.err.println("null");
-					
 					values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 					values_.tower_sprite(t.num_Texture()).draw(sb_);
 				}

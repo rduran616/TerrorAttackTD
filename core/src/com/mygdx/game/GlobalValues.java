@@ -427,11 +427,11 @@ public final class GlobalValues
 				if(n.equals("air"))
 					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("base"))
-					t_base_modele_ = new TowerBase();
+					t_base_modele_ = new TowerBase(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("slow"))
-					t_slow_modele_ = new TowerSlow();
+					t_slow_modele_ = new TowerSlow(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("zone"))
-					t_zone_modele_ = new TowerZone();
+					t_zone_modele_ = new TowerZone(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				
 			} 
 		}
@@ -477,11 +477,11 @@ public final class GlobalValues
 				if(n.equals("air"))
 					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("base"))
-					t_base_modele_ = new TowerBase();
+					t_base_modele_ = new TowerBase(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("slow"))
-					t_slow_modele_ = new TowerSlow();
+					t_slow_modele_ = new TowerSlow(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("zone"))
-					t_zone_modele_ = new TowerZone();
+					t_zone_modele_ = new TowerZone(vit,money,power,range,h,w,air,n_txt,n,bbox);
 				
 			} 
 		}
