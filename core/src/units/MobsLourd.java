@@ -1,22 +1,14 @@
 package units;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Vector2;
+
+import Utilitaires.CollisionBox;
 
 public class MobsLourd extends Mobs{
 	
-	private static Sprite sprite;
 
-	public MobsLourd(int life, int speed, int money, int degat) 
+	public MobsLourd(int vie, int vitesse, int money, int degat, int h, int w,int air,int num_txt, String nom, CollisionBox box )
 	{
-		super(life,speed,money,degat);
-	}
-	
-	
-	public Sprite getSprite()
-	{
-		return sprite;
+		super( vie,  vitesse,  money,  degat,  h,  w, air, num_txt,  nom,  box );
 	}
 
 

@@ -1,6 +1,7 @@
 package units;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -24,16 +25,12 @@ public abstract class TowerType
 	
 	private int num_texture_;	//numéro de la texture -> on accepte que le tableau de texture est parfaitement ordonnée
 	private String _nom; 		//nom de la tour
-	protected int _cout; 			//son cout
+	protected int _cout; 		//son cout
 	protected float _attspeed; 	//vitesse d'attaque
-	protected float _range; 		//rayon d'action
+	protected float _range; 	//rayon d'action
 	protected int _damage; 		//domage
-	protected boolean _air;		 		// tire sur les ennemies volant?
-	
-	//attributs non exploités
-	//private String texture_;	  //l'image est stocker dans un tableau de modèle (une image en memoire, des milliers de tour affiché)
-	//private String bulletTexture_;//idem
-	//public  Vector2 bulletSize_; //n'a rien à faire la
+	protected boolean _air;		// tire sur les ennemies volant?
+	private Matrix3 mat_;		//Matrice de rotation
 	
 	public TowerType()
 	{
@@ -154,6 +151,16 @@ public abstract class TowerType
 		int m = (int) (position_.y / size_cellule_m);
 		
 		return (n * nb_case_n) + m ; 
+	}
+
+
+	public Matrix3 getMat() {
+		return mat_;
+	}
+
+
+	public void setMat(Matrix3 mat) {
+		this.mat_ = mat;
 	}
 	
 }

@@ -1,72 +1,222 @@
 package units;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+
+
+import Utilitaires.CollisionBox;
 
 
 public abstract class Mobs
 {
 
-	private int _life;
-	//Sprite mobSprite;
-	private int _speed;
-	private int _money;
+	private int life_;
+	private int speed_;
+	private int money_;
 	private int degat_;
+	protected boolean _air;	
+	private String nom_;
+	private Matrix3 mat_;	//Matrice de translation et rotation?
 	
-	private Vector2 mat;
-	private Vector2 currentPosition;
-
-	//SpriteBatch batch;
-    //Sprite sprite;
-   // Texture img;
-   // World world;
-	private Body body;
+	//attribut commun à chaque tour
+	private Vector2 position_;  	//position dans le monde
+	private CollisionBox  bbox_; 	//boite de collision
+	private int size_h_;		 	//taille du sprite en height
+	private int size_w_; 			//taille du sprite en width
+	private int index;				//index de la position de l'objet dans la cellule position/taille cellule
+	private int num_texture_;		//numero de la texture
+	private int num_sprite_;
 
 	
-	public Mobs(int vie, int vitesse, int money, int degat)
+	public Mobs(int vie, int vitesse, int money, int degat, int h, int w,int air,int num_txt, String nom, CollisionBox box )
 	{
-		this._life=vie;
-		//this.mobSprite=sprite;
-		this._speed=vitesse;
-		//this.mat=mat2;
-		this._money=money;
-		this.degat_ =degat;
+		setPosition_(new Vector2(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2));
+		num_sprite_=0;
 		
-	
-		//batch = new SpriteBatch();
-	   // img = new Texture("un fichier img de base qui ressemble a un petit personnage?? ^^ ");
-	  //  mobSprite = new Sprite(img); // ici faudra adapter avec les sprite envoyés en parametre ou autrement
-	   //
-	   // sprite.setPosition(Gdx.graphics.getWidth() / 2 - sprite.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-	   // world = new World(new Vector2(0, -98f), true);
-	    // un mob centré sur la map, à tester
+		if(h>=0)
+			setSize_h_(h);
+		else
+			setSize_h_(0);
+		
+		if(w>=0)
+			setSize_w_(w);
+		else
+			setSize_w_(0);
+			
+		if(nom!=null)
+			setNom_(nom);
+		else
+			setNom_("undefined");
+		
+		if(money >=0)
+			setMoney_(money);
+		else
+			setMoney_(0);
+		
+		if(vitesse >=0)
+			setSpeed_(vitesse);
+		else
+			setSpeed_(0);
+			
+		if(vie >=0)
+			setLife_(vie);
+		else
+			setLife_(10);
+		
+		if(degat >=0)
+			setDegat_(degat);
+		else
+			setDegat_(1);
 
-	 /*   BodyDef bodyDef = new BodyDef();
-	    bodyDef.type = BodyDef.BodyType.DynamicBody;
-	    bodyDef.position.set(sprite.getX(), sprite.getY());*/
-	
-	    // pour l'afficher sur la map
-	  //  body = world.createBody(bodyDef);
-	
-	    // paramétrage de la dimension de l'affichage
-	/*    PolygonShape shape = new PolygonShape();
-	    shape.setAsBox(sprite.getWidth()/2, sprite.getHeight()/2);
-	    
-	    // fixtdef c'est les propriétés physiques des images
-	    FixtureDef fixtureDef = new FixtureDef();
-	    fixtureDef.shape = shape;
-	    fixtureDef.density = 1f;
-	
-	    Fixture fixture = body.createFixture(fixtureDef);
-	
-	    // Shape is the only disposable of the lot, so get rid of it
-	    shape.dispose();*/
+		if(box != null)
+			setBbox_(box);
+		else
+			setBbox_(new CollisionBox());
 		
+		if(air == 1)
+			_air = true;
+		else
+			_air = false;
 		
+		if(num_txt >=0)
+			setNum_texture_(num_txt);
+		else
+			setNum_texture_(0);
 	}
 
 	
 	public abstract void execute();
+
+
+	public int getLife_() {
+		return life_;
+	}
+
+
+	public void setLife_(int life_) {
+		this.life_ = life_;
+	}
+
+
+	public int getSpeed_() {
+		return speed_;
+	}
+
+
+	public void setSpeed_(int speed_) {
+		this.speed_ = speed_;
+	}
+
+
+	public int getMoney_() {
+		return money_;
+	}
+
+
+	public void setMoney_(int money_) {
+		this.money_ = money_;
+	}
+
+
+	public int getDegat_() {
+		return degat_;
+	}
+
+
+	public void setDegat_(int degat_) {
+		this.degat_ = degat_;
+	}
+
+
+	public String getNom_() {
+		return nom_;
+	}
+
+
+	public void setNom_(String nom_) {
+		this.nom_ = nom_;
+	}
+
+
+	public Vector2 getPosition_() {
+		return position_;
+	}
+
+
+	public void setPosition_(Vector2 position_) {
+		this.position_ = position_;
+	}
+
+
+	public CollisionBox getBbox_() {
+		return bbox_;
+	}
+
+
+	public void setBbox_(CollisionBox bbox_) {
+		this.bbox_ = bbox_;
+	}
+
+
+	public int getSize_h_() {
+		return size_h_;
+	}
+
+
+	public void setSize_h_(int size_h_) {
+		this.size_h_ = size_h_;
+	}
+
+
+	public int getSize_w_() {
+		return size_w_;
+	}
+
+
+	public void setSize_w_(int size_w_) {
+		this.size_w_ = size_w_;
+	}
+
+
+	public int getIndex() {
+		return index;
+	}
+
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+
+	public int getNum_texture_() {
+		return num_texture_;
+	}
+
+
+	public void setNum_texture_(int num_texture_) {
+		this.num_texture_ = num_texture_;
+	}
+
+
+	public int getNum_sprite_() {
+		return num_sprite_;
+	}
+
+
+	public void setNum_sprite_(int num_sprite_) {
+		this.num_sprite_ = num_sprite_;
+	}
+
+
+	public Matrix3 getMat() {
+		return mat_;
+	}
+
+
+	public void setMat(Matrix3 mat) {
+		this.mat_ = mat;
+	}
 
 
 }

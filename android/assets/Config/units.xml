@@ -6,10 +6,10 @@
 	     <Zone n_texture="3" air="0" h="64" w="64" vit="2" money="50"  power="20"  range="4" name="zone"  src_desk="../android/assets/units/tower/image4.png" src_andro="units/tower/image4.png" ></Zone>
      </tower>
      <mobs id="1" value="4">  
-       <Air   vie="50" vit="3" money="150" power="10" name="air"   src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Air>
-       <Basic vie="20" vit="2" money="25" power="10" name="base"  src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Basic>
-	   <Boss  vie="100" vit="2" money="75"  power="20" name="boss"  src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Boss>
-	   <Lourd vie="150" vit="1" money="50" power="20" name="lourd" src_desk="../android/assets/units/tower/steampunk_f8.png" src_andro="assets/units/tower/steampunk_f8.png" ></Lourd>
+       <Air   n_texture="0" vie="50" vit="3"  h="48" w="32" money="150" power="10" name="air"   src_desk="../android/assets/units/mobs/falleen1.png" src_andro="assets/units/mobs/falleen1.png" ></Air>
+       <Basic n_texture="1" vie="20" vit="2"  h="48" w="32" money="25" power="10" name="base"  src_desk="../android/assets/units/mobs/falleen2.png" src_andro="assets/units/mobs/falleen2.png" ></Basic>
+	   <Boss  n_texture="2" vie="100" vit="2"  h="48" w="32" money="75"  power="20" name="boss"  src_desk="../android/assets/units/mobs/falleen3.png" src_andro="assets/units/mobs/falleen3.png" ></Boss>
+	   <Lourd n_texture="3" vie="150" vit="1"  h="48" w="32" money="50" power="20" name="lourd" src_desk="../android/assets/units/mobs/falleen4.png" src_andro="assets/units/mobs/falleen4.png" ></Lourd>
      </mobs>
      <bonus id="2" value="5">
          <pauseActive name="Pause active"></pauseActive>

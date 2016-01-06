@@ -396,16 +396,24 @@ public final class GlobalValues
 				String n =xml.get_Child_Attribute("mobs", "name", i);
 				int vit= Integer.parseInt(xml.get_Child_Attribute("mobs", "vit", i));
 				int money=Integer.parseInt(xml.get_Child_Attribute("mobs", "money", i));
-				int power=Integer.parseInt(xml.get_Child_Attribute("mobs", "power", i));
+				int degat=Integer.parseInt(xml.get_Child_Attribute("mobs", "power", i));
 				int vie=Integer.parseInt(xml.get_Child_Attribute("mobs", "vie", i));
+				int h=Integer.parseInt(xml.get_Child_Attribute("mobs", "h",  i));
+				int w=Integer.parseInt(xml.get_Child_Attribute("mobs", "w",  i));
+				int air=Integer.parseInt(xml.get_Child_Attribute("mobs", "air",  i));
+				int n_txt=Integer.parseInt(xml.get_Child_Attribute("mobs", "n_texture", i));
+
+				
+				bbox = new CollisionBox(0,0,w,h);
+				
 				if(n.equals("air"))
-					m_air_modele_= new MobsAir(vie, vit, money, power);
+					m_air_modele_= new MobsAir(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("basic"))
-					m_basic_modele_= new MobsBasic(vie, vit, money, power);
+					m_basic_modele_= new MobsBasic(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("boss"))
-					m_lourd_modele_= new MobsLourd(vie, vit, money, power);
+					m_lourd_modele_= new MobsLourd(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("lourd"))
-					m_boss_modele_= new MobsBoss(vie, vit, money, power);
+					m_boss_modele_= new MobsBoss(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				
 			} 
 			
@@ -444,19 +452,28 @@ public final class GlobalValues
 
 			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
 			{
-				String n =xml.get_Sub_Node_Item(i, "mobs", "name");
+				String n =xml.get_Sub_Node_Item(i,"mobs", "name");
 				int vit= Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "vit"));
-				int money=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "money"));
-				int power=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "power"));
+				int money=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "money"));
+				int degat=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "power"));
 				int vie=Integer.parseInt(xml.get_Sub_Node_Item(i, "mobs", "vie"));
+				int h=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "h"));
+				int w=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "w"));
+				int air=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "air"));
+				int n_txt=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "n_texture"));
+
+				
+				bbox = new CollisionBox(0,0,w,h);
+				
 				if(n.equals("air"))
-					m_air_modele_= new MobsAir(vie, vit, money, power);
+					m_air_modele_= new MobsAir(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("basic"))
-					m_basic_modele_= new MobsBasic(vie, vit, money, power);
+					m_basic_modele_= new MobsBasic(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("boss"))
-					m_lourd_modele_= new MobsLourd(vie, vit, money, power);
+					m_lourd_modele_= new MobsLourd(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("lourd"))
-					m_boss_modele_= new MobsBoss(vie, vit, money, power);
+					m_boss_modele_= new MobsBoss(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
+				
 				
 			} 
 			
