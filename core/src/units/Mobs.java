@@ -27,14 +27,14 @@ public abstract class Mobs
 	private int size_w_; 			//taille du sprite en width
 	private int index;				//index de la position de l'objet dans la cellule position/taille cellule
 	private int num_texture_;		//numero de la texture
-	private int num_sprite_;
+	private int num_direction_;
 	
 	
 	
 	public Mobs(int vie, int vitesse, int money, int degat, int h, int w,int air,int num_txt, String nom, CollisionBox box )
 	{
 		setPosition_(new Vector2(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2));
-		num_sprite_=0;
+		num_direction_=0;
 		
 		if(h>=0)
 			setSize_h_(h);
@@ -105,7 +105,7 @@ public abstract class Mobs
 		 size_w_=another.getSize_w_(); 					//taille du sprite en width
 		 index=another.getIndex();						//index de la position de l'objet dans la cellule position/taille cellule
 		 num_texture_=another.getNum_texture_();		//numero de la texture
-		 num_sprite_=another.getNum_sprite_();
+		 num_direction_=another.getNum_direction_();
 		
 	}
 	
@@ -223,15 +223,6 @@ public abstract class Mobs
 	}
 
 
-	public int getNum_sprite_() {
-		return num_sprite_;
-	}
-
-
-	public void setNum_sprite_(int num_sprite_) {
-		this.num_sprite_ = num_sprite_;
-	}
-
 
 	public Matrix3 getMat() {
 		return mat_;
@@ -244,5 +235,15 @@ public abstract class Mobs
 
 	
 	public boolean getAir(){return _air;}
+
+
+	public int getNum_direction_() {
+		return num_direction_;
+	}
+
+
+	public void setNum_direction_(int num_direction_) {
+		this.num_direction_ = num_direction_;
+	}
 
 }
