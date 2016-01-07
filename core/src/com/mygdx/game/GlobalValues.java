@@ -343,12 +343,7 @@ public final class GlobalValues
 	}
 
 	public MapProperties map_Properties(){ return prop_;}
-	
-	private void generation_Map_Tower()
-	{
-		
-	}
-	
+
 	//chargement/rechargement des ellements visuel du jeux
 	public ErrorEnum reload()
 	{

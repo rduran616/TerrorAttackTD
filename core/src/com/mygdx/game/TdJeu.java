@@ -202,8 +202,8 @@ public class TdJeu extends StateJeu
 			{
 				try
 				{
-					//Dessin du mob
-					m = values_.mobs().get(i); //Recuperation du mob				
+					//recuperation du mob
+					m = values_.mobs().get(i); //Recuperation du mob	
 					//animation
 					stateTime += Gdx.graphics.getDeltaTime();  
 					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(m.getNum_texture_(),m.getNum_direction_()).getKeyFrame(stateTime, true);

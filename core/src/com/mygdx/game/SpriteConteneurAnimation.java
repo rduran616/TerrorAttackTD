@@ -29,16 +29,15 @@ public class SpriteConteneurAnimation extends SpriteConteneur
 		//tableau contenant l'animation de tout les sprites
 		animation_ = new Animation[nb_anim][fram_row];
 		frame_time_ =frame_time;
+				
 		
-		
-		//creation d'un tableau de toutes les régions
-		region = new  TextureRegion[fram_col];
 		for(int i =0; i<nb_anim;i++) //pour chaque sprite faire x animation
 		{
 			TextureRegion[][] tmp = TextureRegion.split(this.sprite(i).getTexture(), (int)(this.sprite(i).getWidth()/fram_col),(int)( this.sprite(i).getHeight()/fram_row));
 			for(int j=0;j<fram_row;j++)//pour chaque animation faire
 			{
 				//init textureregion
+				region = new  TextureRegion[fram_col];//creation d'un tableau de toutes les régions
 				for(int k=0;k<fram_col;k++)
 				{
 					region[k]=tmp[j][k];
