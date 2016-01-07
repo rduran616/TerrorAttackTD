@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -24,6 +25,9 @@ public class TdJeu extends StateJeu
 	double rythme_creation_mobs_ = 1; //en seconde
 	VagueRand vague_;
 	TickHorloge tick_;
+	
+	//temporaire, juste pour test
+	float stateTime=0;
 	
 	public TdJeu()
 	{
@@ -199,10 +203,12 @@ public class TdJeu extends StateJeu
 				try
 				{
 					//Dessin du mob
-					m = values_.mobs().get(i); //Recuperation du mob
-					
-					values_.mob_sprite(m.getNum_texture_()).setPosition(m.getPosition_().x,m.getPosition_().y);			
-					values_.mob_sprite(m.getNum_texture_()).draw(sb_);
+					m = values_.mobs().get(i); //Recuperation du mob				
+					//animation
+					stateTime += Gdx.graphics.getDeltaTime();  
+					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(i,0).getKeyFrame(stateTime, true);
+					//placement + dessin	
+					sb_.draw(currentFrame,m.getPosition_().x, m.getPosition_().y);
 				}
 				catch(Exception e)
 				{

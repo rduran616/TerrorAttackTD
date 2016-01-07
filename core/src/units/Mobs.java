@@ -1,6 +1,7 @@
 package units;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 
@@ -27,7 +28,8 @@ public abstract class Mobs
 	private int index;				//index de la position de l'objet dans la cellule position/taille cellule
 	private int num_texture_;		//numero de la texture
 	private int num_sprite_;
-
+	
+	
 	
 	public Mobs(int vie, int vitesse, int money, int degat, int h, int w,int air,int num_txt, String nom, CollisionBox box )
 	{

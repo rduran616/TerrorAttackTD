@@ -87,7 +87,7 @@ public final class GlobalValues
 	private Skin skin_bouton_;			//peau des boutons
 	
 	//sprites
-	private SpriteConteneur mobs_sprite_;		//images des mobs
+	private SpriteConteneurAnimation mobs_sprite_;		//images des mobs
 	private SpriteConteneur tower_sprite_;		//images des tours
 
 	//modele d'ennemi et de tour
@@ -384,7 +384,7 @@ public final class GlobalValues
 		if(Gdx.app.getType() == ApplicationType.Android)
 		{
 			
-			mobs_sprite_  = new SpriteConteneur("Config/units.xml", "mobs", "src_andro",TypeFlag.FILEHANDLE_INTERNAL);
+			mobs_sprite_  = new SpriteConteneurAnimation("Config/units.xml", "mobs", "src_andro",TypeFlag.FILEHANDLE_INTERNAL,4,4,2.0f);
 			tower_sprite_ = new SpriteConteneur("Config/units.xml", "tower", "src_andro",TypeFlag.FILEHANDLE_INTERNAL);
 			
 			ReadInternalXML xml = new ReadInternalXML("Config/units.xml");
@@ -444,7 +444,7 @@ public final class GlobalValues
 		else
 		{
 			ReadXml xml = new ReadXml("../android/assets/Config/units.xml");
-			mobs_sprite_  = new SpriteConteneur("../android/assets/Config/units.xml", "mobs", "src_desk",TypeFlag.PATH);
+			mobs_sprite_  = new SpriteConteneurAnimation("../android/assets/Config/units.xml", "mobs", "src_desk",TypeFlag.PATH,4,4,2.0f);
 			tower_sprite_ = new SpriteConteneur("../android/assets/Config/units.xml", "tower","src_desk",TypeFlag.PATH);
 			CollisionBox bbox;
 
@@ -504,6 +504,7 @@ public final class GlobalValues
 	
 	public Sprite tower_sprite(int index){return tower_sprite_.sprite(index);}
 	public Sprite mob_sprite(int index){return mobs_sprite_.sprite(index);}
+	public SpriteConteneurAnimation mob_sprite_anime(){return mobs_sprite_;}
 
 	public TowerAir t_air_modele_(){return t_air_modele_;}
 	public TowerBase t_base_modele_(){return t_base_modele_;}

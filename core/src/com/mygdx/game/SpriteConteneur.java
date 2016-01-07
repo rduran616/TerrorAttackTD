@@ -10,10 +10,18 @@ import com.badlogic.gdx.utils.Array;
 import Utilitaires.ReadXml;
 import Utilitaires.TypeFlag;
 
-public final class SpriteConteneur 
+
+/**
+ * 
+ * Possède toutes les textures
+ * 
+ * @author Florian
+ *
+ */
+
+public class SpriteConteneur 
 {
 	private Array<Sprite> sprite_array_;
-
 	
 	public SpriteConteneur(String file,String mainNode,String value,TypeFlag flag)
 	{
