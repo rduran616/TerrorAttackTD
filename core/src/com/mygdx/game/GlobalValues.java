@@ -2,14 +2,11 @@ package com.mygdx.game;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.Stack;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -29,7 +26,6 @@ import units.MobsBasic;
 import units.MobsBoss;
 import units.MobsLourd;
 import units.Status;
-import units.Tower;
 import units.TowerAir;
 import units.TowerBase;
 import units.TowerSlow;
@@ -43,7 +39,7 @@ import units.TowerZone;
  *
  * A faire: implémenter un assetManager ( creer une classe ) pour le chargement des images et modifier la methode reload 
  *
- * Attention au chemin
+ *
  */
 
 
@@ -60,6 +56,7 @@ public final class GlobalValues
 	{
 		super();
 		reload();
+		pile_mobs_ = new Stack<Mobs>();
 	}
 
 	
@@ -112,6 +109,7 @@ public final class GlobalValues
 	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
 	private ArrayList<TowerType> liste_tours;	//liste des tours placées
 	private ArrayList<Mobs> liste_mobs;			//liste des mobs à afficher
+	private Stack<Mobs> pile_mobs_;				//pile contenant les mobs créé mais plus utilisé
 	private String carte_name_;					//nom ou chemin de la carte
 	private int index_unit_selection_;
 	
@@ -556,6 +554,26 @@ public final class GlobalValues
 	public Sprite mobs(int num_texture_) 
 	{
 		return null;
+	}
+
+
+	public int ennemi_max_() {
+		return ennemi_max_;
+	}
+
+
+	public void ennemi_max_(int ennemi_max_) {
+		this.ennemi_max_ = ennemi_max_;
+	}
+
+
+	public Stack<Mobs> pile_Mobs_() {
+		return pile_mobs_;
+	}
+
+
+	public void pile_Mobs_(Stack<Mobs> pile_mobs_) {
+		this.pile_mobs_ = pile_mobs_;
 	}
 
 	

@@ -12,6 +12,12 @@ public class MobsBoss extends Mobs{
 	
 	}
 
+	public MobsBoss(MobsBoss model) 
+	{
+		super(model);
+	}
+
+	
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub

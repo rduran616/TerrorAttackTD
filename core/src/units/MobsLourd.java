@@ -11,6 +11,12 @@ public class MobsLourd extends Mobs{
 		super( vie,  vitesse,  money,  degat,  h,  w, air, num_txt,  nom,  box );
 	}
 
+	
+	public MobsLourd(MobsLourd model) 
+	{
+		super(model);
+	}
+	
 
 	@Override
 	public void execute() 

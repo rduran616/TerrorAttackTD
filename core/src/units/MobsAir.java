@@ -10,6 +10,12 @@ public class MobsAir extends Mobs
 	}
 
 
+	public MobsAir(MobsAir model) 
+	{
+		super(model);
+	}
+
+
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub

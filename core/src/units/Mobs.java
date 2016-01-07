@@ -86,7 +86,29 @@ public abstract class Mobs
 	}
 
 	
+	public Mobs(Mobs another)
+	{
+		life_=another.getLife_();
+		speed_=another.getSpeed_();
+		money_=another.getMoney_();
+		degat_=another.getDegat_();
+		_air=another.getAir();	
+		nom_=another.getNom_();
+		mat_=another.getMat();							
+		
+		//attribut commun à chaque tour
+		 position_=another.getPosition_();  			//position dans le monde
+		 bbox_=another.getBbox_(); 						//boite de collision
+		 size_h_=another.getSize_h_();		 			//taille du sprite en height
+		 size_w_=another.getSize_w_(); 					//taille du sprite en width
+		 index=another.getIndex();						//index de la position de l'objet dans la cellule position/taille cellule
+		 num_texture_=another.getNum_texture_();		//numero de la texture
+		 num_sprite_=another.getNum_sprite_();
+		
+	}
+	
 	public abstract void execute();
+	
 
 
 	public int getLife_() {
@@ -218,5 +240,7 @@ public abstract class Mobs
 		this.mat_ = mat;
 	}
 
+	
+	public boolean getAir(){return _air;}
 
 }

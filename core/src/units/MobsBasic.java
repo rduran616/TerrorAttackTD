@@ -13,6 +13,10 @@ public class MobsBasic extends Mobs{
 		super( vie,  vitesse,  money,  degat,  h,  w, air, num_txt,  nom,  box );
 	}
 
+	public MobsBasic(MobsBasic model) 
+	{
+		super(model);
+	}
 
 
 	@Override
