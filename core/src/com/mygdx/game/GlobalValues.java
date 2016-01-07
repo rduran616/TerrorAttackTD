@@ -8,11 +8,13 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.SerializationException;
@@ -120,13 +122,15 @@ public final class GlobalValues
     
     //gestion de la caméra
 	private OrthographicCamera camera_;			//camera principale
-	private double zoom_max_ =1000;				//control du zoom max
-	private double zoom_min_ = 0;				//control du zoom min
+	private double zoom_max_ = 1f;				//control du zoom max
+	private double zoom_min_ = 0.1f;				//control du zoom min
+	private SpriteBatch batch;
     
     //gestion de la boucle du jeu
 	private int argent_;
 	private int vie_;
 	private Status status_; //status indiquant si on peux créé ou non un objet
+	
 
 		
 	/**** Méthodes *****/
@@ -276,10 +280,7 @@ public final class GlobalValues
     		size_n_		= tiledMap_.getProperties().get("height",Integer.class);
 			size_m_		= tiledMap_.getProperties().get("width",Integer.class);
 	
-    		camera_ = new OrthographicCamera();
-        	//camera_ = new OrthographicCamera(25 * aspectRatio ,25);
-    		camera_.setToOrtho(false,width_/aspectRatio,height_/aspectRatio);
-            camera_.update();
+    		camera_Init();
             
         }catch(SerializationException e) 
         {
@@ -299,11 +300,21 @@ public final class GlobalValues
 		}
 	}*/
 	
-	public void camera_Init(float w, float h)
+	public void camera_Init()
 	{
-		camera_ = new OrthographicCamera();
-		camera_.setToOrtho(false,w,h);
+		float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+        camera_ = new OrthographicCamera(300, 300 * (h / w));
+		camera_.position.set(camera_.viewportWidth / 2f, camera_.viewportHeight / 2f, 0);
         camera_.update(); 
+        
+        batch = new SpriteBatch();
+	}
+	
+	public void camera_Resize(int width, int height) {
+	    camera_.viewportWidth = 30f;
+	    camera_.viewportHeight = 30f * height/width;
+	    camera_.update();
 	}
 	
 	public void camera_Position(float x, float y)
@@ -318,8 +329,14 @@ public final class GlobalValues
 	{
 		if(camera_!=null)
 		{
-			camera_.translate(x, y);
+			if(camera_.position.x+x>100/camera_.zoom && camera_.position.x+x < (Gdx.graphics.getHeight()+190)/camera_.zoom)// brut, mais délimite la map
+				{camera_.translate(x, 0);}
+			if(camera_.position.y+y>100/camera_.zoom && camera_.position.y+y<(Gdx.graphics.getWidth()+100)/camera_.zoom) // est à adapter avec le zoom!
+				{camera_.translate(0, y);}
 			
+			camera_.update();
+			
+		    
 			return ErrorEnum.OK;
 		}
 		

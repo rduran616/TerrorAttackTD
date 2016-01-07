@@ -106,12 +106,12 @@ public class FingerTransformMap
 			if (lastDistance > distance) 
 			{
 				if(values_!=null)
-					values_.zoom(factor*factor_);
+					values_.zoom(0.1f);
 			}
 			else if (lastDistance < distance) 
 			{
 				if(values_!=null)
-					values_.zoom(-factor*factor_);
+					values_.zoom(-0.1f);
 			}
 	
 			lastDistance = distance;
