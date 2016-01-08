@@ -2,8 +2,10 @@ package com.mygdx.game;
 
 import java.util.ArrayList;
 
+import Utilitaires.Noeud;
+
 /*
- * Classe qui permet de donnée des renseignement sur une cellule de la carte
+ * Classe qui permet de donnée des renseignements sur une cellule de la carte
  * 
  * Chaque tableau contiens une liste fini de cellule
  * 
@@ -30,7 +32,9 @@ public final class CellMap
 	
 	private TypeObjet type;
 	
+	private Noeud noeud; //pour algorithme A*
 	
+	//une cellule de carte
 	public CellMap(int n, int m, int size, ArrayList<Integer> ob,ArrayList<Integer> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
 	{
 
@@ -235,5 +239,15 @@ public final class CellMap
 
 	public void setType(TypeObjet type) {
 		this.type = type;
+	}
+
+
+	public Noeud noeud() {
+		return noeud;
+	}
+
+
+	public void noeud(Noeud noeud) {
+		this.noeud = noeud;
 	}
 }

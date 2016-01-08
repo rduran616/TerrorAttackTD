@@ -27,7 +27,8 @@ public abstract class Mobs
 	private int size_w_; 			//taille du sprite en width
 	private int index;				//index de la position de l'objet dans la cellule position/taille cellule
 	private int num_texture_;		//numero de la texture
-	private int num_direction_;
+	private int num_direction_;		//direction que prend le mob 
+	private float time_;				//tps pour jouer animation
 	
 	
 	
@@ -85,6 +86,8 @@ public abstract class Mobs
 			setNum_texture_(num_txt);
 		else
 			setNum_texture_(0);
+		
+		time_ = 0;
 	}
 
 	
@@ -96,7 +99,9 @@ public abstract class Mobs
 		degat_=another.getDegat_();
 		_air=another.getAir();	
 		nom_=another.getNom_();
-		mat_=another.getMat();							
+		mat_=another.getMat();	
+		
+		time_ = 0;
 		
 		//attribut commun à chaque tour
 		 position_=another.getPosition_();  			//position dans le monde
@@ -245,5 +250,17 @@ public abstract class Mobs
 	public void setNum_direction_(int num_direction_) {
 		this.num_direction_ = num_direction_;
 	}
+
+
+	public float getTime_() {
+		return time_;
+	}
+
+
+	public void setTime_(float time_) {
+		this.time_ = time_;
+	}
+	
+	public void add_Time(float time){time_+=time;}
 
 }

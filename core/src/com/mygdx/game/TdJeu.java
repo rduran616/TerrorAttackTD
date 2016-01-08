@@ -25,10 +25,7 @@ public class TdJeu extends StateJeu
 	double rythme_creation_mobs_ = 1; //en seconde
 	VagueRand vague_;
 	TickHorloge tick_;
-	
-	//temporaire, juste pour test
-	float stateTime=0;
-	
+		
 	public TdJeu()
 	{
 		//initialisation des variables
@@ -205,8 +202,8 @@ public class TdJeu extends StateJeu
 					//recuperation du mob
 					m = values_.mobs().get(i); //Recuperation du mob	
 					//animation
-					stateTime += Gdx.graphics.getDeltaTime();  
-					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(m.getNum_texture_(),m.getNum_direction_()).getKeyFrame(stateTime, true);
+					m.add_Time(Gdx.graphics.getDeltaTime());
+					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(m.getNum_texture_(),m.getNum_direction_()).getKeyFrame(m.getTime_(), true);
 					//placement + dessin	
 					sb_.draw(currentFrame,m.getPosition_().x, m.getPosition_().y);
 				}
