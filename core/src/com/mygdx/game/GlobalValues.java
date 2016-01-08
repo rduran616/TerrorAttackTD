@@ -91,6 +91,7 @@ public final class GlobalValues
 	//sprites
 	private SpriteConteneurAnimation mobs_sprite_;		//images des mobs
 	private SpriteConteneur tower_sprite_;		//images des tours
+	private float time = 0.2f;
 
 	//modele d'ennemi et de tour
 	private TowerAir t_air_modele_;
@@ -177,12 +178,15 @@ public final class GlobalValues
 		return null;
 	}
 	
+	
 	public void carte_Init()
 	{
 		carte_ = new CellMap[size_n_ * size_m_];
 		for(int i =0;i<size_n_ * size_m_;i++)
 			carte_[i] = new CellMap(i, 0, size_n_, null, null, null, null);
 	}
+	
+	
 	public void placer_Object(int celulle,int index,TypeObjet type)
 	{
 		switch(type)
@@ -397,7 +401,7 @@ public final class GlobalValues
 		if(Gdx.app.getType() == ApplicationType.Android)
 		{
 			
-			mobs_sprite_  = new SpriteConteneurAnimation("Config/units.xml", "mobs", "src_andro",TypeFlag.FILEHANDLE_INTERNAL,4,4,2.0f);
+			mobs_sprite_  = new SpriteConteneurAnimation("Config/units.xml", "mobs", "src_andro",TypeFlag.FILEHANDLE_INTERNAL,4,4,time);
 			tower_sprite_ = new SpriteConteneur("Config/units.xml", "tower", "src_andro",TypeFlag.FILEHANDLE_INTERNAL);
 			
 			ReadInternalXML xml = new ReadInternalXML("Config/units.xml");
@@ -457,7 +461,7 @@ public final class GlobalValues
 		else
 		{
 			ReadXml xml = new ReadXml("../android/assets/Config/units.xml");
-			mobs_sprite_  = new SpriteConteneurAnimation("../android/assets/Config/units.xml", "mobs", "src_desk",TypeFlag.PATH,4,4,2.0f);
+			mobs_sprite_  = new SpriteConteneurAnimation("../android/assets/Config/units.xml", "mobs", "src_desk",TypeFlag.PATH,4,4,time);
 			tower_sprite_ = new SpriteConteneur("../android/assets/Config/units.xml", "tower","src_desk",TypeFlag.PATH);
 			CollisionBox bbox;
 

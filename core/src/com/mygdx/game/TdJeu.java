@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -29,6 +32,8 @@ public class TdJeu extends StateJeu
 	TickHorloge tick_;
 	Noeud depart;
 	Noeud arrivee;
+	ArrayList<Noeud> chemin;
+
 		
 	public TdJeu()
 	{
@@ -52,10 +57,10 @@ public class TdJeu extends StateJeu
 		
 		vague_.init(200,liste_mob);
 		values_.recalculerChemin_(true);
-		AStar.init_CellMap(values_.carte());
+		//AStar.init_CellMap(values_.carte());
 		depart = new Noeud();
 		arrivee= new Noeud();
-		AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
+		chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
 		values_.recalculerChemin_(false);
 	}
 	
@@ -182,7 +187,28 @@ public class TdJeu extends StateJeu
 				values_.recalculerChemin_(false);
 			}
 				
-			//deplacement ennemis
+			//ia ennemis = deplacement en suivant le chemin calculé ou recalculé en focntion du placement des tours
+			Vector2 position = new Vector2();
+		    for(final Mobs m: values_.mobs()) 
+		    {
+		    	//Case suivante
+		    	int case_suivante=48;
+		    	//orientation vers case suivante 
+		    	int direction=0;				//->calcul de la direction
+		    	m.setNum_direction_(direction);	//-> mise a jour direction mob ( pour savoir quelle sequence d'image afficher )
+		    	//deplacment de vitesse mob.vitesse dans la bonne direction ( de case en case pour le moment )
+		    	position.x = m.getPosition_().x + m.getSpeed_();
+		    	position.y = m.getPosition_().y + m.getSpeed_();	
+		    	//nouvelle position
+		    	m.setPosition_(position);
+		    	//Maj des autres variables
+		    	
+		    	//verification si on est arrivé ou pas
+		    	
+		    		//si arrivé destruction
+		    }
+			
+			
 			
 			//rotation tour
 			

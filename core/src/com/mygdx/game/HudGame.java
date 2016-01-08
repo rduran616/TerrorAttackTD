@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import Utilitaires.ConfigHud;
 import Utilitaires.ReadXml;
-import Utilitaires.TypeFlag;
 import units.Status;
 import units.TowerAir;
 import units.TowerBase;

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import com.mygdx.game.CellMap;
+import com.mygdx.game.GlobalValues;
 
 /**
  * 
@@ -99,9 +100,15 @@ public final class AStar
 	
 	public static void init_CellMap(CellMap[] map)
 	{
+		if(map == null)
+		{
+			GlobalValues.getInstance().carte_Init();
+		}
+
 		Noeud n = new Noeud();
 		for(int i=0; i<map.length;i++)
 			map[i].noeud(n);
+		
 	}
 	
 	private static void reconstituerChemin(Noeud depart, Noeud arrivee) 
@@ -185,14 +192,21 @@ public final class AStar
 		int indice_gauche= c.case_ - 1;
 
 		//vérification existance des voisins
-		if(indice_haut>= 0 && indice_haut<h*w)
-			voisin.add(map[indice_haut].noeud());
-		if(indice_bas>= 0 && indice_bas<h*w)
-			voisin.add(map[indice_bas].noeud());
-		if(indice_droite>= 0 && indice_droite<h*w)
-			voisin.add(map[indice_droite].noeud());
-		if(indice_gauche>= 0 && indice_gauche<h*w)
-			voisin.add(map[indice_gauche].noeud());
+		try
+		{
+			if(indice_haut>= 0 && indice_haut<h*w)
+				voisin.add(map[indice_haut].noeud());
+			if(indice_bas>= 0 && indice_bas<h*w)
+				voisin.add(map[indice_bas].noeud());
+			if(indice_droite>= 0 && indice_droite<h*w)
+				voisin.add(map[indice_droite].noeud());
+			if(indice_gauche>= 0 && indice_gauche<h*w)
+				voisin.add(map[indice_gauche].noeud());
+		}
+		catch(Exception e)
+		{
+			System.err.println("Astar voisins: "+e);
+		}
 		
 		return voisin;
 	}
