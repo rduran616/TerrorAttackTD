@@ -114,6 +114,7 @@ public final class GlobalValues
 	private Stack<Mobs> pile_mobs_;				//pile contenant les mobs créé mais plus utilisé
 	private String carte_name_;					//nom ou chemin de la carte
 	private int index_unit_selection_;
+	private boolean recalculerChemin_ = false;
 	
 	//private Texture img_;  						//texture carte
 	private TiledMap tiledMap_; 				//carte
@@ -587,6 +588,16 @@ public final class GlobalValues
 
 	public void pile_Mobs_(Stack<Mobs> pile_mobs_) {
 		this.pile_mobs_ = pile_mobs_;
+	}
+
+
+	public boolean recalculerChemin_() {
+		return recalculerChemin_;
+	}
+
+
+	public void recalculerChemin_(boolean recalculerChemin_) {
+		this.recalculerChemin_ = recalculerChemin_;
 	}
 
 	

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import Utilitaires.AStar;
+import Utilitaires.Noeud;
 import Utilitaires.TickHorloge;
 import units.Mobs;
 import units.MobsAir;
@@ -25,6 +27,8 @@ public class TdJeu extends StateJeu
 	double rythme_creation_mobs_ = 1; //en seconde
 	VagueRand vague_;
 	TickHorloge tick_;
+	Noeud depart;
+	Noeud arrivee;
 		
 	public TdJeu()
 	{
@@ -47,6 +51,12 @@ public class TdJeu extends StateJeu
 		liste_mob[3] = values_.m_boss_modele_().getDegat_();
 		
 		vague_.init(200,liste_mob);
+		values_.recalculerChemin_(true);
+		AStar.init_CellMap(values_.carte());
+		depart = new Noeud();
+		arrivee= new Noeud();
+		AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
+		values_.recalculerChemin_(false);
 	}
 	
 	
@@ -163,8 +173,19 @@ public class TdJeu extends StateJeu
 		
 		
 		//mise à jour de l'ia
+		
+			//Recalcul du chemin des mobs
+			if(values_.recalculerChemin_()==true)
+			{
+				AStar.init_CellMap(values_.carte());
+				AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(),values_.size_n());
+				values_.recalculerChemin_(false);
+			}
+				
 			//deplacement ennemis
+			
 			//rotation tour
+			
 			//tir des tours
 			
 			

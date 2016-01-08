@@ -76,6 +76,8 @@ public final class CellMap
 		}
 		else 
 			setMobs_(new ArrayList<Integer>());
+		
+		noeud = new Noeud();
 	}
 
 	

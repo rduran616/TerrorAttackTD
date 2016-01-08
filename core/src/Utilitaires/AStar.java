@@ -19,13 +19,13 @@ public final class AStar
 {
 	
 	private static final int NODE_DISTANCE_VALUE = 100;
-	ArrayList<Noeud> open;
-	ArrayList<Noeud> close;
-	ArrayList<Noeud> chemin;
+	static ArrayList<Noeud> open;
+	static ArrayList<Noeud> close;
+	static ArrayList<Noeud> chemin;
 
 	
 	//h,w = propriété height, width de la carte
-	public ArrayList<Noeud> cheminPlusCourt(CellMap[] map, Noeud depart, Noeud arrivee, int h, int w)
+	public static ArrayList<Noeud> cheminPlusCourt(CellMap[] map, Noeud depart, Noeud arrivee, int h, int w)
 	{
 		open 	= new ArrayList<Noeud>();
 		close 	= new ArrayList<Noeud>();
@@ -97,14 +97,14 @@ public final class AStar
 		
 	}
 	
-	public void init_CellMap(CellMap[] map)
+	public static void init_CellMap(CellMap[] map)
 	{
 		Noeud n = new Noeud();
 		for(int i=0; i<map.length;i++)
 			map[i].noeud(n);
 	}
 	
-	private void reconstituerChemin(Noeud depart, Noeud arrivee) 
+	private static void reconstituerChemin(Noeud depart, Noeud arrivee) 
 	{
 		//l'arrivé est le dernier de  la liste close
 		Noeud tmp = arrivee;
@@ -115,7 +115,7 @@ public final class AStar
 		}
 	}
 
-	private void addToOpenList(Noeud n) 
+	private static void addToOpenList(Noeud n) 
 	{
 		//remove de close list
 		removeFromCloseList( n );
@@ -124,7 +124,7 @@ public final class AStar
 	}
 
 
-	private void removeFromCloseList(Noeud n) 
+	private static void removeFromCloseList(Noeud n) 
 	{
 		ArrayList<Noeud> tmp = new 	ArrayList<Noeud>();
 		for(int i=0; i < close.size();i++)
@@ -138,7 +138,7 @@ public final class AStar
 	}
 
 
-	private boolean isOnOpenList(Noeud v)
+	private static boolean isOnOpenList(Noeud v)
 	{
 		int maximum = open.size();
 		 
@@ -150,7 +150,7 @@ public final class AStar
 	    return false;
 	}
 	
-	private boolean isOnCloseList(Noeud v)
+	private static boolean isOnCloseList(Noeud v)
 	{
 		int maximum = close.size();
 	 
@@ -164,7 +164,7 @@ public final class AStar
 	
 	
 	//si le tableau de tour ou d'obstacle est rempli, on est pas walkable
-	private boolean walkable(Noeud v, CellMap[] map)
+	private static boolean walkable(Noeud v, CellMap[] map)
 	{
 		if(map[v.case_].getObstacle_size_()<=0 	&& map[v.case_].getUnits_size_()<=0)
 			return true;
@@ -174,7 +174,7 @@ public final class AStar
 
 
 	//recherche des voisin du noeud courant ( retourne la case correspondantes
-	private ArrayList<Noeud> getNeighbours(Noeud c,CellMap[] map,int h, int w) 
+	private static ArrayList<Noeud> getNeighbours(Noeud c,CellMap[] map,int h, int w) 
 	{
 		ArrayList<Noeud> voisin = new ArrayList<Noeud>();
 
@@ -199,7 +199,7 @@ public final class AStar
 
 
 	//passage du noeud courant de la lsite open a close
-	private void addToCloseList(Noeud courant)
+	private static void addToCloseList(Noeud courant)
 	{
 		ArrayList<Noeud> tmp = new 	ArrayList<Noeud>();
 		for(int i=0; i < open.size();i++)
@@ -214,7 +214,7 @@ public final class AStar
 
 
 	//choix du meilleur noeud ( plus petit F)
-	private Noeud meilleur_noeud() 
+	private static Noeud meilleur_noeud() 
 	{
 		Noeud current = null;
 		int min_f=10000000;
