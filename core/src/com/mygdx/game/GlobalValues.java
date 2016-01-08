@@ -309,7 +309,7 @@ public final class GlobalValues
 	{
 		float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        camera_ = new OrthographicCamera(300, 300 * (h / w));
+        camera_ = new OrthographicCamera(600, 600 * (h / w));
 		camera_.position.set(camera_.viewportWidth / 2f, camera_.viewportHeight / 2f, 0);
         camera_.update(); 
         
@@ -334,9 +334,9 @@ public final class GlobalValues
 	{
 		if(camera_!=null)
 		{
-			if(camera_.position.x+x>100/camera_.zoom && camera_.position.x+x < (Gdx.graphics.getHeight()+190)/camera_.zoom)// brut, mais délimite la map
+			if(camera_.position.x+x>200*camera_.zoom && camera_.position.x+x < (Gdx.graphics.getHeight()+40)*camera_.zoom)// brut, mais délimite la map
 				{camera_.translate(x, 0);}
-			if(camera_.position.y+y>100/camera_.zoom && camera_.position.y+y<(Gdx.graphics.getWidth()+100)/camera_.zoom) // est à adapter avec le zoom!
+			if(camera_.position.y+y>200*camera_.zoom && camera_.position.y+y<(Gdx.graphics.getWidth())*camera_.zoom) // est à adapter avec le zoom!
 				{camera_.translate(0, y);}
 			
 			camera_.update();
