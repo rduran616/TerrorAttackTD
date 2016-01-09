@@ -181,6 +181,7 @@ public class HudGame
 		    	   //recuperation de la cellule correspondante a la position
 		    	   int cellule = values_.last_tower().get_Index_Cellule_Mono(values_.size_Px(), values_.size_Px(),  values_.size_n());
 		    	   //verification collision avec autre objet
+		    	   System.err.println("cell ="+cellule);
 		    	   
 		    	   boolean en_collision = false;
 		    	   if(values_.carte()[cellule].getUnits_size_()>0)//si il y a qqun
@@ -211,13 +212,15 @@ public class HudGame
 					}
 					else
 			 	   	{
-						System.err.println("cellule sprite ="+cellule);
+							System.err.println("cellule sprite ="+cellule);
 				    	   //placement sur la carte
 				    	   values_.carte()[cellule].add_Unit(values_.tower().size()-1);
 				    	   //mise a jour de l'index dans cellule dans towertype ->  index = index dans le units de cellmap
 				    	   values_.last_tower().setIndex( values_.carte()[cellule].getUnits_().size()-1); 
 				    	   //changement d'etat
 				    	   values_.status(Status.POSITIONNE);
+				    	   values_.recalculerChemin_(true);
+				    	   
 			 	   	}
 		       }
 		 });
@@ -246,7 +249,7 @@ public class HudGame
 		       }
 		 });
 		
-		//placement definitif de la tour et mise en route de celle ci
+		//suppression definitif de la tour
 		validate_2.addListener(new ClickListener()
 		{
 		       @Override
@@ -259,7 +262,7 @@ public class HudGame
 		    	 {  
 		    		  Vector3 pos = Jeu.get_Last_Position();
 			    	  int cell = values_.get_Case((int)pos.x, (int)pos.y); //Recuperation de la case
-			    	  System.err.println("cell = "+cell);
+			    	  System.err.println("cell suppr = "+cell);
 			    	  
 			    	  values_.camera().unproject(pos);//passage coordonée caméra à monde
 			    	  int size = values_.carte()[cell].getUnits_().size();//Recuperation taille du t'ableau d'unité

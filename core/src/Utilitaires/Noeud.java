@@ -8,7 +8,7 @@ public final class Noeud
 	int f=0; //g+h = poid total
 	
 	Noeud parent=null; //parent
-	int case_=0; //case 
+	private int case_=0; //case 
 	boolean walkable=false;
 	
 	public Noeud()
@@ -18,9 +18,17 @@ public final class Noeud
 		f=0; 
 		
 		parent=null; 
-		case_=0;
+		case_(0);
 		walkable=false;
 	} 
 	
-	public void set_Case(int c){case_ = c;}
+	public void set_Case(int c){case_(c);}
+
+	public int case_() {
+		return case_;
+	}
+
+	public void case_(int case_) {
+		this.case_ = case_;
+	}
 }

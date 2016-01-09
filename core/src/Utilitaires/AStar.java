@@ -31,8 +31,8 @@ public final class AStar
 		chemin 	= new ArrayList<Noeud>();
 		
 		Noeud courant = depart;
-		System.err.println("depart ="+courant.case_);
-		System.err.println("arrivée ="+arrivee.case_);
+		System.err.println("depart ="+courant.case_());
+		System.err.println("arrivée ="+arrivee.case_());
 		
 		
 		open.add(courant);
@@ -42,7 +42,7 @@ public final class AStar
 			courant = meilleur_noeud();
 			//System.err.println("meilleur noeud ="+courant.case_);
 			//si arrivé on quit 
-			if( courant.case_ == arrivee.case_ )
+			if( courant.case_() == arrivee.case_() )
 		          break;
 			
 			//basculer courant dans la liste fermée
@@ -72,7 +72,7 @@ public final class AStar
 				 //on calcule le nouveau g = g du parent + distance entre parent et noeud
 		         int newG = v.parent.g + NODE_DISTANCE_VALUE; 
 		         //on calcule le nouveau h  = distance entre arrivé et courant : distance manhattan
-		         int newH = ( Math.abs( map[arrivee.case_].getN_() -  map[v.case_].getN_() ) + Math.abs( map[arrivee.case_].getM_() - map[v.case_].getM_() ) ) * NODE_DISTANCE_VALUE;
+		         int newH = ( Math.abs( map[arrivee.case_()].getN_() -  map[v.case_()].getN_() ) + Math.abs( map[arrivee.case_()].getM_() - map[v.case_()].getM_() ) ) * NODE_DISTANCE_VALUE;
 		         //on calcule le nouveau F
 		         int newF = newH + newG;
 		         
@@ -136,7 +136,7 @@ public final class AStar
 		{
 			//cpt++;
 			//System.err.println(cpt);
-			System.out.println(tmp.case_);
+			System.out.println(tmp.case_());
 			chemin.add(tmp);
 		//	System.err.println(tmp.parent);
 			tmp=tmp.parent;
@@ -197,7 +197,7 @@ public final class AStar
 	//si le tableau de tour ou d'obstacle est rempli, on est pas walkable
 	private static boolean walkable(Noeud v, CellMap[] map)
 	{
-		if(map[v.case_].getObstacle_size_()<=0 	&&  map[v.case_].getUnits_size_()<=0)
+		if(map[v.case_()].getObstacle_size_()<=0 	&&  map[v.case_()].getUnits_size_()<=0)
 			return true;
 		
 		return false;
@@ -210,10 +210,10 @@ public final class AStar
 		ArrayList<Noeud> voisin = new ArrayList<Noeud>();
 
 		//calcul indice des noeuds adjacents
-		int indice_haut	 = c.case_ - h;
-		int indice_bas = c.case_ + h;
-		int indice_droite  = c.case_ + 1;
-		int indice_gauche= c.case_ - 1;
+		int indice_haut	 = c.case_() - h;
+		int indice_bas = c.case_() + h;
+		int indice_droite  = c.case_() + 1;
+		int indice_gauche= c.case_() - 1;
 
 		//vérification existance des voisins
 		try
@@ -323,9 +323,9 @@ public final class AStar
 				value=1;
 			else if(carte_[i].getUnits_size_()>0)
 				value=2;
-			else if(carte_[i].getNum_case_() == depart.case_ )
+			else if(carte_[i].getNum_case_() == depart.case_() )
 				value=3;
-			else if(carte_[i].getNum_case_() == arrivee.case_ )
+			else if(carte_[i].getNum_case_() == arrivee.case_() )
 				value=4;
 			else
 				value=0;

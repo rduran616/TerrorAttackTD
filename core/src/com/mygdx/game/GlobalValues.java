@@ -290,7 +290,7 @@ public final class GlobalValues
             size_px_	= tiledMap_.getProperties().get("tileheight",Integer.class);
     		size_n_		= tiledMap_.getProperties().get("height",Integer.class);
 			size_m_		= tiledMap_.getProperties().get("width",Integer.class);
-	
+				
     		camera_Init();
             
         }catch(SerializationException e) 
@@ -315,7 +315,7 @@ public final class GlobalValues
 	{
 		float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        camera_ = new OrthographicCamera(600, 600 * (h / w));
+        camera_ = new OrthographicCamera(600, 600 * (h / w)); //j'aime pas. d'ou sort 600*600?
 		camera_.position.set(camera_.viewportWidth / 2f, camera_.viewportHeight / 2f, 0);
         camera_.update(); 
         
@@ -570,7 +570,7 @@ public final class GlobalValues
 		camera().unproject(pos);
 		int x = (int) (pos.x / size_Px());
 		int y = (int) (pos.y / size_Px());
-		cell = ((x -1) * size_n()) +  y - 1 ; 
+		cell = ((x) * size_n()) +  y ; 
 		
 		return cell;
 	}

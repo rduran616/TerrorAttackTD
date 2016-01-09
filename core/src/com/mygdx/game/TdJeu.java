@@ -60,9 +60,9 @@ public class TdJeu extends StateJeu
 		
 		//Init chemin
 		depart = new Noeud();
-		depart.set_Case(307);
+		depart.set_Case(340);
 		arrivee= new Noeud();
-		arrivee.set_Case(287);
+		arrivee.set_Case(320);
 		//tracer chemin
 	//	chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
 		values_.recalculerChemin_(true);
@@ -81,6 +81,11 @@ public class TdJeu extends StateJeu
 			System.err.println("d");
 			chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
 			values_.recalculerChemin_(false);
+			
+		/*	for(int i=0;i<chemin.size();i++)
+				System.err.print(chemin.get(i).case_()+" ");*/
+			
+			//System.err.println("");
 			System.err.println("f");
 		}
 		
