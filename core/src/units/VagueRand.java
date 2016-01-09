@@ -41,15 +41,15 @@ public final class VagueRand
 	{
 		try
 		{
-		setNum_vague_(0); 			//premiere vague
-		power_ = power_min; 		//puissance de base.
-		unit_power_ = power_list; 	//liste des puissances de chaque ennemi, ordonnée.
-		nb_ennemi_ =0;
-		
-		//init tableau ou le nombre de mob par vague sera enregistré
-		coef_ = new int[unit_power_.length];
-		for(int i=0;i<unit_power_.length;i++)
-			coef_[i]=0;	
+			setNum_vague_(0); 			//premiere vague
+			power_ = power_min; 		//puissance de base.
+			unit_power_ = power_list; 	//liste des puissances de chaque ennemi, ordonnée.
+			nb_ennemi_ =0;
+			
+			//init tableau ou le nombre de mob par vague sera enregistré
+			coef_ = new int[unit_power_.length];
+			for(int i=0;i<unit_power_.length;i++)
+				coef_[i]=0;	
 		}
 		catch(Exception e)
 		{

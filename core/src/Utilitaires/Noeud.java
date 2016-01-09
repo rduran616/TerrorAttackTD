@@ -21,4 +21,6 @@ public final class Noeud
 		case_=0;
 		walkable=false;
 	} 
+	
+	public void set_Case(int c){case_ = c;}
 }

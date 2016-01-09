@@ -21,6 +21,6 @@ public class MobsLourd extends Mobs{
 	@Override
 	public void execute() 
 	{
-		
+		//System.err.println("execute lourd");
 	}
 }

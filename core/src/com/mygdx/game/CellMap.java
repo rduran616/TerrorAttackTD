@@ -18,6 +18,7 @@ public final class CellMap
 	private int n_=0; //position en n
 	private int m_=0; //position en m
 	private int size_cell_=0; //taille en px en n et m
+	private int num_case_ =0; //numéro de la case
 	
 	//propriété des elements sur la cellule
 	private int obstacle_size_	=0;
@@ -35,7 +36,7 @@ public final class CellMap
 	private Noeud noeud; //pour algorithme A*
 	
 	//une cellule de carte
-	public CellMap(int n, int m, int size, ArrayList<Integer> ob,ArrayList<Integer> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
+	public CellMap(int num_case,int n, int m, int size, ArrayList<Integer> ob,ArrayList<Integer> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
 	{
 
 		if(n>=0)
@@ -78,6 +79,8 @@ public final class CellMap
 			setMobs_(new ArrayList<Integer>());
 		
 		noeud = new Noeud();
+		noeud.set_Case(num_case);
+		num_case_ = num_case;
 	}
 
 	
@@ -251,5 +254,15 @@ public final class CellMap
 
 	public void noeud(Noeud noeud) {
 		this.noeud = noeud;
+	}
+
+
+	public int getNum_case_() {
+		return num_case_;
+	}
+
+
+	public void setNum_case_(int num_case_) {
+		this.num_case_ = num_case_;
 	}
 }

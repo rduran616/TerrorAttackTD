@@ -218,6 +218,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 			int x = (int) (pos.x / values_.size_Px());
 			int y= (int) (pos.y / values_.size_Px());
 			int cellule = ((x -1) * values_.size_n()) +  y - 1 ; 
+			//System.err.println("cellule = "+cellule);
+			System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule+ "  mpa cellule= "+values_.carte()[cellule].getNum_case_());
 			
 			if(values_.tower()!=null)
 			if(cellule<values_.size_m()*values_.size_n() && cellule>=0)

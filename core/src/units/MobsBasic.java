@@ -20,8 +20,8 @@ public class MobsBasic extends Mobs{
 
 
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
+	public void execute() 
+	{
+		//System.err.println("execute basic");		
 	}
 }

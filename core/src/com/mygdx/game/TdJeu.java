@@ -1,13 +1,13 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+
 
 import Utilitaires.AStar;
 import Utilitaires.Noeud;
@@ -43,7 +43,7 @@ public class TdJeu extends StateJeu
 		
 		sb_ = new SpriteBatch();
 		num_vague_=1;
-		rythme_creation_mobs_ =1000; //en msseconde
+		rythme_creation_mobs_ =250; //en msseconde
 		
 		tick_ = new TickHorloge(rythme_creation_mobs_);
 		
@@ -57,11 +57,15 @@ public class TdJeu extends StateJeu
 		
 		vague_.init(200,liste_mob);
 		values_.recalculerChemin_(true);
-		//AStar.init_CellMap(values_.carte());
+		
+		//Init chemin
 		depart = new Noeud();
+		depart.set_Case(307);
 		arrivee= new Noeud();
-		chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
-		values_.recalculerChemin_(false);
+		arrivee.set_Case(287);
+		//tracer chemin
+	//	chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
+		values_.recalculerChemin_(true);
 	}
 	
 	
@@ -72,6 +76,15 @@ public class TdJeu extends StateJeu
 		if(vague_.nb_Ennemis()<=0)
 			vague_.new_Vague();
 		
+		if(values_.recalculerChemin_()==true)
+		{	
+			System.err.println("d");
+			chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
+			values_.recalculerChemin_(false);
+			System.err.println("f");
+		}
+		
+		
 		//si on est dans le bon temps on peut creer un ennemi
 		if(tick_.tick())
 		{
@@ -79,9 +92,9 @@ public class TdJeu extends StateJeu
 			int m = vague_.get_Ennemi();
 			
 			//calcul position de départ
-			Vector2  position = new Vector2(values_.get_width()/2,values_.get_height()/2);
+			Vector2  position = new Vector2(values_.carte()[307].getN_(),values_.carte()[307].getM_());
 			//creation et placement		
-			System.err.println(values_.pile_Mobs_().isEmpty()+"  "+m);
+			//System.err.println("hap "+values_.pile_Mobs_().isEmpty()+"  "+m+ "  "+vague_.nb_Ennemis());
 			switch(m)
 			{
 				//air
@@ -189,24 +202,29 @@ public class TdJeu extends StateJeu
 				
 			//ia ennemis = deplacement en suivant le chemin calculé ou recalculé en focntion du placement des tours
 			Vector2 position = new Vector2();
-		    for(final Mobs m: values_.mobs()) 
+		    for(int i =0; i< values_.mobs().size();i++) 
 		    {
-		    	//Case suivante
+		    	Mobs m = values_.mobs().get(i);
+		    /*	//Case suivante
 		    	int case_suivante=48;
 		    	//orientation vers case suivante 
 		    	int direction=0;				//->calcul de la direction
-		    	m.setNum_direction_(direction);	//-> mise a jour direction mob ( pour savoir quelle sequence d'image afficher )
+		    	//m.setNum_direction_(direction);	//-> mise a jour direction mob ( pour savoir quelle sequence d'image afficher )
 		    	//deplacment de vitesse mob.vitesse dans la bonne direction ( de case en case pour le moment )
-		    	position.x = m.getPosition_().x + m.getSpeed_();
+		    	//position.x = m.getPosition_().x + m.getSpeed_();
 		    	position.y = m.getPosition_().y + m.getSpeed_();	
 		    	//nouvelle position
-		    	m.setPosition_(position);
+		    	values_.mobs().get(i).setNum_direction_(direction);
+		    	values_.mobs().get(i).setPosition_(position);
 		    	//Maj des autres variables
 		    	
 		    	//verification si on est arrivé ou pas
 		    	
-		    		//si arrivé destruction
+		    		//si arrivé destructionp*/
+		    	
+		    	m.execute();
 		    }
+			
 			
 			
 			
@@ -242,16 +260,19 @@ public class TdJeu extends StateJeu
 			
 			//Dessin des mobs
 			Mobs m;
+			//System.err.println("debut");
 			for(int i=0;i < values_.mobs().size();i++)
 			{
+				//System.err.println("mob size = "+values_.mobs().size());
 				try
 				{
 					//recuperation du mob
-					m = values_.mobs().get(i); //Recuperation du mob	
+					m = values_.mobs().get(i); //Recuperation du mob
 					//animation
 					m.add_Time(Gdx.graphics.getDeltaTime());
 					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(m.getNum_texture_(),m.getNum_direction_()).getKeyFrame(m.getTime_(), true);
 					//placement + dessin	
+				//	System.err.println(m.getPosition_().x+ "   "+ m.getPosition_().y);
 					sb_.draw(currentFrame,m.getPosition_().x, m.getPosition_().y);
 				}
 				catch(Exception e)
@@ -259,7 +280,7 @@ public class TdJeu extends StateJeu
 					System.err.println("mob dessin "+e);
 				}
 			}
-
+			//System.err.println("fin");
 			//dessin des projectiles
 			
 			//play particules

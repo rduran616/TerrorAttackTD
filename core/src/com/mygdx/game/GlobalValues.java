@@ -14,7 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
+
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.SerializationException;
@@ -181,9 +181,15 @@ public final class GlobalValues
 	
 	public void carte_Init()
 	{
-		carte_ = new CellMap[size_n_ * size_m_];
-		for(int i =0;i<size_n_ * size_m_;i++)
-			carte_[i] = new CellMap(i, 0, size_n_, null, null, null, null);
+		carte_ = new CellMap[size_n_ * size_m_];//0->1023 = 1024
+		for(int i =0;i<size_n_;i++)//0->31 = 32
+		{	
+			for(int j =0;j<size_m_;j++)//0->31 =32
+			{
+				carte_[i*size_n_+j] = new CellMap(i*size_n_+j,i,j, size_n_, null, null, null, null);
+				//System.err.println(i*size_n_+j);
+			}
+		}
 	}
 	
 	
@@ -555,6 +561,7 @@ public final class GlobalValues
 		this.index_unit_selection_ = index_unit_selection_;
 	}
 	
+	
 	public int get_Case(int ScrX, int ScrY)
 	{
 		int cell =-1;
@@ -568,6 +575,15 @@ public final class GlobalValues
 		return cell;
 	}
 
+	public int get_Index_Cellule(int x, int y)
+	{
+		//calcul coordonnées dans matrice n*m via les coord du monde en px
+		int n = (int) (x / size_n_);
+		int m = (int) (y / size_m_);
+		
+		return (n * size_n_) + m ; 
+	}
+	
 
 	public Sprite mobs(int num_texture_) 
 	{
