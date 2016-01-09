@@ -223,7 +223,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 			
 			
 			//System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule);
-			System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule+ "  mpa cellule= "+values_.carte()[cellule].getNum_case_());
+			System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule+ "  mpa cellule= "+values_.carte()[cellule].getNum_case_()+"  coordo centre ="+values_.carte()[cellule].centre());
 			
 			
 			

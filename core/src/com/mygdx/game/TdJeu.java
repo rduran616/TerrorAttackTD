@@ -97,7 +97,7 @@ public class TdJeu extends StateJeu
 			int m = vague_.get_Ennemi();
 			
 			//calcul position de départ
-			Vector2  position = new Vector2(values_.carte()[340].getN_()*32,values_.carte()[340].getM_());
+			Vector2  position = new Vector2(values_.carte()[340].centre());
 			//System.err.println(values_.carte()[340].getN_()*32+"+"+values_.carte()[340].getM_());
 			//creation et placement		
 			//System.err.println("hap "+values_.pile_Mobs_().isEmpty()+"  "+m+ "  "+vague_.nb_Ennemis());
@@ -221,43 +221,39 @@ public class TdJeu extends StateJeu
 
 		    	//Case suivante
 		    	int index = m.index_chemin_-1;
+		    	System.err.println("index ="+index);
+		    	
 		    	int case_suivante=chemin.get(index).case_();
-		    	//System.err.println("chemin = "+case_suivante+" case actu= "+chemin.get(m.index_chemin_).case_());
+		    	System.err.println("chemin = "+case_suivante+" case actu= "+chemin.get(m.index_chemin_).case_());
 		    	//position actuel
-		    	float x =  m.getPosition_().x;
-		    	float y =  m.getPosition_().y;
+		    	Vector2 pos = m.getPosition_();
 		    	//System.err.println("ma position = "+m.getPosition_());
-		    	
-		    	//position suivante
-		    	float x2_m =  values_.carte()[case_suivante].getN_()+values_.size_Px();
-		    	float y2_m =  values_.carte()[case_suivante].getM_()+values_.size_Px();
-		    	float x2 = values_.carte()[case_suivante].getN_();
-		    	float y2 = values_.carte()[case_suivante].getM_();
-		    	
-		    	
-		    	//System.err.println("position arrivé = ("+x2*32+","+(values_.size_m()*values_.size_Px()-y2*32)+")");
-		    	//System.err.println(values_.carte()[case_suivante].getPosition().x*32+" "+values_.carte()[case_suivante].getPosition().y );
-		    	//direction suivante	
-		    	/*int dirx = (x2*32-x);
-		    	int diry = (y2-y);
-		    	
-		    	//Deduction position
-		    	int direction=0;
-		    	m.setNum_direction_(direction);
+
+		    	//position cible
+		    	Vector2 pos2 =  values_.carte()[case_suivante].centre();
 		    
-		    	//nouvelle position
-		    	position.x += dirx ;
-		    	position.y += diry ;	
+		    	//vecteur de déplacement 
+		    	Vector2 pos3 = new Vector2(pos2.x - pos.x, pos2.y - pos.y);
+
+		    	//deplacement avec application de la vitesse
+		    	position.x=(pos.x+pos3.x/m.getSpeed_()*Gdx.graphics.getDeltaTime());
+		    	position.y=(pos.y+pos3.y/m.getSpeed_()*Gdx.graphics.getDeltaTime());
 		    	
-		    	//System.err.println(position);
+		    	//System.err.println("actu = "+pos+" cible ="+pos2+" deplacement= "+pos3+"  nouvelle coord ="+position);
+		    	//System.err.println(position.x+ "   "+position.y);
 		    	
-		    	//mise a jour position
-		    	values_.mobs().get(i).setNum_direction_(direction);
-		    	values_.mobs().get(i).setPosition_(position);*/
+		    	//mise a jour position*/
+		    	values_.mobs().get(i).setNum_direction_(0);
+		    	values_.mobs().get(i).setPosition_(position);
+		    	
+		    	//System.err.println(m.getPosition_().x+ "   "+ m.getPosition_().y);
 		    	
 		    	if(values_.get_Index_Cellule((int)position.x, (int)position.y) == case_suivante)
 		    	{
-		    		m.index_chemin_=case_suivante;
+		    		if(values_.get_Index_Cellule((int)position.x, (int)position.y) != arrivee.case_())
+		    		{
+		    			m.index_chemin_--;
+		    		}
 		    	}
 		    	
 		    	//verification si on est arrivé ou pas
@@ -301,7 +297,6 @@ public class TdJeu extends StateJeu
 			}
 			
 			//Dessin des mobs
-			Mobs m;
 			//System.err.println("debut");
 			for(int i=0;i < values_.mobs().size();i++)
 			{
@@ -309,12 +304,12 @@ public class TdJeu extends StateJeu
 				try
 				{
 					//recuperation du mob
-					m = values_.mobs().get(i); //Recuperation du mob
+					Mobs m = values_.mobs().get(i); //Recuperation du mob
 					//animation
 					m.add_Time(Gdx.graphics.getDeltaTime());
 					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(m.getNum_texture_(),m.getNum_direction_()).getKeyFrame(m.getTime_(), true);
 					//placement + dessin	
-				//	System.err.println(m.getPosition_().x+ "   "+ m.getPosition_().y);
+					//System.err.println(m.getNom_()+"  "+m.getPosition_().x+ "   "+ m.getPosition_().y);
 					sb_.draw(currentFrame,m.getPosition_().x, m.getPosition_().y);
 				}
 				catch(Exception e)

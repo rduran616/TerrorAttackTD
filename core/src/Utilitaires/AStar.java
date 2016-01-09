@@ -299,7 +299,7 @@ public final class AStar
 		{	
 			for(int j =0;j<h;j++)//0->7 =8
 			{
-				carte_[i*h+j] = new CellMap(i*h+j,i,j, 32, null, null, null, null); // 32 = taille px h et w on suppose carré
+				carte_[i*h+j] = new CellMap(0,0,i*h+j,i,j, 32, null, null, null, null); // 32 = taille px h et w on suppose carré
 			}
 		}
 		

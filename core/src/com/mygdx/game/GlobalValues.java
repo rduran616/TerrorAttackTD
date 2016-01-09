@@ -186,7 +186,7 @@ public final class GlobalValues
 		{	
 			for(int j =0;j<size_m_;j++)//0->31 =32
 			{
-				carte_[i*size_n_+j] = new CellMap(i*size_n_+j,i,j, size_n_, null, null, null, null);
+				carte_[i*size_n_+j] = new CellMap(size_n_,size_m_,i*size_n_+j,i,j, size_n_, null, null, null, null);
 				//System.err.println(i*size_n_+j);
 			}
 		}

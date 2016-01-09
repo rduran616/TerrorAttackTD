@@ -36,10 +36,17 @@ public final class CellMap
 	private TypeObjet type;
 	
 	private Noeud noeud; //pour algorithme A*
+	private Vector2 centre_;
 	
 	//une cellule de carte
-	public CellMap(int num_case,int n, int m, int size, ArrayList<Integer> ob,ArrayList<Integer> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
+	//map_x = taille de la carte en x en px
+	public CellMap(int map_x, int map_y,int num_case,int n, int m, int size, ArrayList<Integer> ob,ArrayList<Integer> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
 	{
+
+		int col =m;
+		int row =n;
+		
+		centre_ = new Vector2(((row*size)+size/2),((col*size)+size/2) ); //centre de la cellule en coordonée monde
 
 		if(n>=0)
 			setN_(n);
@@ -270,4 +277,14 @@ public final class CellMap
 	
 	public Vector2 getPosition(){return new Vector2(n_,m_);}
 	public void setPosition(Vector2 p){n_=(int) p.x;m_=(int) p.y;}
+
+
+	public Vector2 centre() {
+		return centre_;
+	}
+
+
+	public void centre(Vector2 centre_) {
+		this.centre_ = centre_;
+	}
 }
