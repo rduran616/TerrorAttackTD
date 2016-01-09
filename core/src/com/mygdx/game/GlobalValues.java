@@ -412,7 +412,8 @@ public final class GlobalValues
 			
 			ReadInternalXML xml = new ReadInternalXML("Config/units.xml");
 			CollisionBox bbox; 
-			for(int i=0; i < xml.get_Number_Child("mobs"); i++)
+			int nb = Integer.parseInt(xml.get_Attribute("mobs","value"));
+			for(int i=0; i < nb; i++)
 			{
 				String n =xml.get_Child_Attribute("mobs", "name", i);
 				int vit= Integer.parseInt(xml.get_Child_Attribute("mobs", "vit", i));
@@ -423,10 +424,9 @@ public final class GlobalValues
 				int w=Integer.parseInt(xml.get_Child_Attribute("mobs", "w",  i));
 				int air=Integer.parseInt(xml.get_Child_Attribute("mobs", "air",  i));
 				int n_txt=Integer.parseInt(xml.get_Child_Attribute("mobs", "n_texture", i));
-
 				
 				bbox = new CollisionBox(0,0,w,h);
-				
+				//System.err.println(n);
 				if(n.equals("air"))
 					m_air_modele_= new MobsAir(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("basic"))
@@ -438,7 +438,8 @@ public final class GlobalValues
 				
 			} 
 			
-			for(int i=0; i < xml.get_Number_Child("tower"); i++)
+			Integer.parseInt(xml.get_Attribute("tower","value"));
+			for(int i=0; i < nb; i++)
 			{
 				String n =xml.get_Child_Attribute("tower", "name", i);
 				int vit= Integer.parseInt(xml.get_Child_Attribute("tower", "vit", i));
@@ -454,13 +455,13 @@ public final class GlobalValues
 
 				
 				if(n.equals("air"))
-					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n_txt,n,bbox);
+					t_air_modele_ = new TowerAir(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("base"))
-					t_base_modele_ = new TowerBase(vit,money,power,range,h,w,air,n_txt,n,bbox);
+					t_base_modele_ = new TowerBase(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("slow"))
-					t_slow_modele_ = new TowerSlow(vit,money,power,range,h,w,air,n_txt,n,bbox);
+					t_slow_modele_ = new TowerSlow(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("zone"))
-					t_zone_modele_ = new TowerZone(vit,money,power,range,h,w,air,n_txt,n,bbox);
+					t_zone_modele_ = new TowerZone(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				
 			} 
 		}
@@ -513,13 +514,13 @@ public final class GlobalValues
 				bbox = new CollisionBox(0,0,w,h);
 				
 				if(n.equals("air"))
-					t_air_modele_ = new TowerAir(vit,money,power,range,h,w,air,n_txt,n,bbox);
+					t_air_modele_ = new TowerAir(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("base"))
-					t_base_modele_ = new TowerBase(vit,money,power,range,h,w,air,n_txt,n,bbox);
+					t_base_modele_ = new TowerBase(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("slow"))
-					t_slow_modele_ = new TowerSlow(vit,money,power,range,h,w,air,n_txt,n,bbox);
+					t_slow_modele_ = new TowerSlow(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				else if(n.equals("zone"))
-					t_zone_modele_ = new TowerZone(vit,money,power,range,h,w,air,n_txt,n,bbox);
+					t_zone_modele_ = new TowerZone(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				
 			} 
 		}
