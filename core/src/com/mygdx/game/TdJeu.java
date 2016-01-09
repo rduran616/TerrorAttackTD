@@ -97,7 +97,8 @@ public class TdJeu extends StateJeu
 			int m = vague_.get_Ennemi();
 			
 			//calcul position de départ
-			Vector2  position = new Vector2(values_.carte()[307].getN_(),values_.carte()[307].getM_());
+			Vector2  position = new Vector2(values_.carte()[340].getN_()*32,values_.carte()[340].getM_());
+			//System.err.println(values_.carte()[340].getN_()*32+"+"+values_.carte()[340].getM_());
 			//creation et placement		
 			//System.err.println("hap "+values_.pile_Mobs_().isEmpty()+"  "+m+ "  "+vague_.nb_Ennemis());
 			switch(m)
@@ -111,8 +112,10 @@ public class TdJeu extends StateJeu
 						MobsAir mob = new MobsAir(values_.m_air_modele_());
 						//placement dans la map
 						mob.setPosition_(position);
+						mob.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						values_.mobs().add(mob);
+						
 					}
 					else //sinon le prendre de la file
 					{
@@ -133,6 +136,7 @@ public class TdJeu extends StateJeu
 						MobsBasic mob = new MobsBasic(values_.m_basic_modele_());
 						//placement dans la map
 						mob.setPosition_(position);
+						mob.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						values_.mobs().add(mob);
 					}
@@ -154,6 +158,7 @@ public class TdJeu extends StateJeu
 						MobsBoss mob = new MobsBoss(values_.m_boss_modele_());
 						//placement dans la map
 						mob.setPosition_(position);
+						mob.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						values_.mobs().add(mob);
 					}
@@ -175,6 +180,7 @@ public class TdJeu extends StateJeu
 						MobsLourd mob = new MobsLourd(values_.m_lourd_modele_());
 						//placement dans la map
 						mob.setPosition_(position);
+						mob.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						values_.mobs().add(mob);
 					}
@@ -210,24 +216,55 @@ public class TdJeu extends StateJeu
 		    for(int i =0; i< values_.mobs().size();i++) 
 		    {
 		    	Mobs m = values_.mobs().get(i);
-		    /*	//Case suivante
-		    	int case_suivante=48;
-		    	//orientation vers case suivante 
-		    	int direction=0;				//->calcul de la direction
-		    	//m.setNum_direction_(direction);	//-> mise a jour direction mob ( pour savoir quelle sequence d'image afficher )
-		    	//deplacment de vitesse mob.vitesse dans la bonne direction ( de case en case pour le moment )
-		    	//position.x = m.getPosition_().x + m.getSpeed_();
-		    	position.y = m.getPosition_().y + m.getSpeed_();	
+		    	
+		    	//position:
+
+		    	//Case suivante
+		    	int index = m.index_chemin_-1;
+		    	int case_suivante=chemin.get(index).case_();
+		    	//System.err.println("chemin = "+case_suivante+" case actu= "+chemin.get(m.index_chemin_).case_());
+		    	//position actuel
+		    	float x =  m.getPosition_().x;
+		    	float y =  m.getPosition_().y;
+		    	//System.err.println("ma position = "+m.getPosition_());
+		    	
+		    	//position suivante
+		    	float x2_m =  values_.carte()[case_suivante].getN_()+values_.size_Px();
+		    	float y2_m =  values_.carte()[case_suivante].getM_()+values_.size_Px();
+		    	float x2 = values_.carte()[case_suivante].getN_();
+		    	float y2 = values_.carte()[case_suivante].getM_();
+		    	
+		    	
+		    	//System.err.println("position arrivé = ("+x2*32+","+(values_.size_m()*values_.size_Px()-y2*32)+")");
+		    	//System.err.println(values_.carte()[case_suivante].getPosition().x*32+" "+values_.carte()[case_suivante].getPosition().y );
+		    	//direction suivante	
+		    	/*int dirx = (x2*32-x);
+		    	int diry = (y2-y);
+		    	
+		    	//Deduction position
+		    	int direction=0;
+		    	m.setNum_direction_(direction);
+		    
 		    	//nouvelle position
+		    	position.x += dirx ;
+		    	position.y += diry ;	
+		    	
+		    	//System.err.println(position);
+		    	
+		    	//mise a jour position
 		    	values_.mobs().get(i).setNum_direction_(direction);
-		    	values_.mobs().get(i).setPosition_(position);
-		    	//Maj des autres variables
+		    	values_.mobs().get(i).setPosition_(position);*/
+		    	
+		    	if(values_.get_Index_Cellule((int)position.x, (int)position.y) == case_suivante)
+		    	{
+		    		m.index_chemin_=case_suivante;
+		    	}
 		    	
 		    	//verification si on est arrivé ou pas
 		    	
-		    		//si arrivé destructionp*/
+		    		//si arrivé destructionp
 		    	
-		    	m.execute();
+		    	//m.execute();
 		    }
 			
 			

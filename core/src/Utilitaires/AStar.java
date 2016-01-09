@@ -144,6 +144,9 @@ public final class AStar
 			if(tmp == null)
 				System.err.println("erreur tmp = null");
 		}
+		
+		chemin.add(depart);
+		System.out.println(chemin.get(chemin.size()-1).case_());
 	}
 
 	private static void addToOpenList(Noeud n) 
@@ -357,6 +360,7 @@ public final class AStar
 
 		//tracer chemin
 		chemin = AStar.cheminPlusCourt(carte_, depart, arrivee, h, w);
+		
 		
 	}
 

@@ -28,7 +28,10 @@ public abstract class Mobs
 	private int index;				//index de la position de l'objet dans la cellule position/taille cellule
 	private int num_texture_;		//numero de la texture
 	private int num_direction_;		//direction que prend le mob 
-	private float time_;				//tps pour jouer animation
+	private float time_;			//tps pour jouer animation
+	
+	public int index_chemin_;
+	
 	
 	
 	

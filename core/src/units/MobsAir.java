@@ -19,7 +19,15 @@ public class MobsAir extends Mobs
 	@Override
 	public void execute()
 	{
-		//System.err.println("execute air");
+		//calcul du vecteur
+		
+		//position actuel
+		
+		//position arrivé
+		
+		//calcul vecteur
+		
+		//mise a jour position
 		
 	}
 }

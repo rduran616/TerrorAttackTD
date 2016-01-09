@@ -24,10 +24,10 @@ public class FingerTransformMap
 	 int fingerOnePointer;		//doigt numero 0
 	 int fingerTwoPointer;		//doigt numero 1
 	 float lastDistance = 1;	//distance entre les doigts
-	 Vector3 fingerOne = new Vector3();		// coordonée du doigt 0
-	 Vector3 fingerTwo = new Vector3();		//coordonnée du doigt 1
+	 Vector3 fingerOne = new Vector3();		// coordonï¿½e du doigt 0
+	 Vector3 fingerTwo = new Vector3();		//coordonnï¿½e du doigt 1
 	 GlobalValues values_;					//valeur globale + camera
-	 MapProperties map_prop_;				//propriété de la carte
+	 MapProperties map_prop_;				//propriï¿½tï¿½ de la carte
 	 
 	 double factor_ = 0.1;					//Facteur de zoom
 	 
@@ -59,7 +59,7 @@ public class FingerTransformMap
 	 }
 	 
 	 
-	 //enregistrement des coordonées des doigts sur l'ecran
+	 //enregistrement des coordonï¿½es des doigts sur l'ecran
 	 public void finger_Touch(int x, int y,int pointer)
 	 {
 		 numberOfFingers++;
@@ -82,7 +82,7 @@ public class FingerTransformMap
 		 }
 	 }
 	 
-	 //zoom si deux doigts sur lecran qui se déplace
+	 //zoom si deux doigts sur lecran qui se dï¿½place
 	 public void finger_Zoom(int x, int y,int pointer)
 	 {
 		 //System.err.println("finger = "+numberOfFingers);

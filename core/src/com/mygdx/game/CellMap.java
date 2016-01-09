@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.math.Vector2;
+
 import Utilitaires.Noeud;
 
 /*
@@ -265,4 +267,7 @@ public final class CellMap
 	public void setNum_case_(int num_case_) {
 		this.num_case_ = num_case_;
 	}
+	
+	public Vector2 getPosition(){return new Vector2(n_,m_);}
+	public void setPosition(Vector2 p){n_=(int) p.x;m_=(int) p.y;}
 }
