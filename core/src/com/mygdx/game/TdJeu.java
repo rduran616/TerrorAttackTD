@@ -27,7 +27,7 @@ public class TdJeu extends StateJeu
 	StateJeuEnum selection_;
 	SpriteBatch sb_;
 	int num_vague_=1;
-	double rythme_creation_mobs_ = 1; //en seconde
+	double rythme_creation_mobs_ = 1000; //en msseconde
 	VagueRand vague_;
 	TickHorloge tick_;
 	Noeud depart;
@@ -43,7 +43,7 @@ public class TdJeu extends StateJeu
 		
 		sb_ = new SpriteBatch();
 		num_vague_=1;
-		rythme_creation_mobs_ =250; //en msseconde
+		rythme_creation_mobs_ =1000; //en msseconde
 		
 		tick_ = new TickHorloge(rythme_creation_mobs_);
 		
