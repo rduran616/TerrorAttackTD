@@ -212,29 +212,26 @@ public class TdJeu extends StateJeu
 			}
 				
 			//ia ennemis = deplacement en suivant le chemin calculé ou recalculé en focntion du placement des tours
-			Vector2 position = new Vector2();
+			
 		    for(int i =0; i< values_.mobs().size();i++) 
 		    {
 		    	Mobs m = values_.mobs().get(i);
+		    	Vector2 position = new Vector2();
 		    	
 		    	//position:
 
 		    	//Case suivante
 		    	int index = m.index_chemin_-1;
-		    	System.err.println("index ="+index);
-		    	
+		    	//System.err.println("index ="+index);
 		    	int case_suivante=chemin.get(index).case_();
-		    	System.err.println("chemin = "+case_suivante+" case actu= "+chemin.get(m.index_chemin_).case_());
+		    	//System.err.println("chemin = "+case_suivante+" case actu= "+chemin.get(m.index_chemin_).case_());
 		    	//position actuel
 		    	Vector2 pos = m.getPosition_();
 		    	//System.err.println("ma position = "+m.getPosition_());
-
 		    	//position cible
 		    	Vector2 pos2 =  values_.carte()[case_suivante].centre();
-		    
 		    	//vecteur de déplacement 
 		    	Vector2 pos3 = new Vector2(pos2.x - pos.x, pos2.y - pos.y);
-
 		    	//deplacement avec application de la vitesse
 		    	position.x=(pos.x+pos3.x/m.getSpeed_()*Gdx.graphics.getDeltaTime());
 		    	position.y=(pos.y+pos3.y/m.getSpeed_()*Gdx.graphics.getDeltaTime());
@@ -262,10 +259,6 @@ public class TdJeu extends StateJeu
 		    	
 		    	//m.execute();
 		    }
-			
-			
-			
-			
 			//rotation tour
 			
 			//tir des tours
