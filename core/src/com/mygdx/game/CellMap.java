@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.math.Vector2;
 
 import Utilitaires.Noeud;
+import units.TowerType;
 
 /*
  * Classe qui permet de donnée des renseignements sur une cellule de la carte
@@ -29,7 +30,7 @@ public final class CellMap
 	private int mobs_size_		=0;
 
 	private ArrayList<Integer> obstacle_;
-	private ArrayList<Integer> units_;
+	private ArrayList<TowerType> units_;
 	private ArrayList<Integer> chemin_;
 	private ArrayList<Integer> mobs_;
 	
@@ -40,7 +41,7 @@ public final class CellMap
 	
 	//une cellule de carte
 	//map_x = taille de la carte en x en px
-	public CellMap(int map_x, int map_y,int num_case,int n, int m, int size, ArrayList<Integer> ob,ArrayList<Integer> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
+	public CellMap(int map_x, int map_y,int num_case,int n, int m, int size, ArrayList<Integer> ob,ArrayList<TowerType> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
 	{
 
 		int col =m;
@@ -69,7 +70,7 @@ public final class CellMap
 			setUnits_size_(u.size());
 		}
 		else 
-			setUnits_(new ArrayList<Integer>());
+			setUnits_(new ArrayList<TowerType>());
 		
 		if(c!=null)
 		{
@@ -105,10 +106,10 @@ public final class CellMap
 		chemin_.add(index);
 	} 
 	
-	public void add_Unit(int index)
+	public void add_Unit(TowerType index)
 	{
 		units_size_++;
-		units_.add(index); //index = index du tableau de tower
+		units_.add(index); 
 	} 
 	
 	public void remove_Obstacle(int index)
@@ -148,7 +149,7 @@ public final class CellMap
 			return false;
 	}
 	
-	public int index_Units(int index)
+	public TowerType index_Units(int index)
 	{
 		return units_.get(index);
 	}
@@ -201,11 +202,11 @@ public final class CellMap
 		this.n_ = n_;
 	}
 
-	public ArrayList<Integer> getUnits_() {
+	public ArrayList<TowerType> getUnits_() {
 		return units_;
 	}
 
-	public void setUnits_(ArrayList<Integer> units_) {
+	public void setUnits_(ArrayList<TowerType> units_) {
 		this.units_ = units_;
 	}
 

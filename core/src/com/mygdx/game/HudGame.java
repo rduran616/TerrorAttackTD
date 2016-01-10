@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import Utilitaires.CollisionBox;
 import Utilitaires.ConfigHud;
 import Utilitaires.ReadXml;
 import units.Status;
@@ -165,7 +168,7 @@ public class HudGame
 		       { 
 		    	   values_.argent(argent_temp);
 		    	   values_.status(Status.POSITIONNE);
-		    	   values_.tower().remove(values_.tower().size()-1); 
+		    	   values_.setT_temporaire_(null);
 		       }
 		 });
 		
@@ -174,54 +177,45 @@ public class HudGame
 		{
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
-		       { 
-		    	   //enregistrement de la position dans le repere carte
-		    	   
-		    	   
-		    	   //recuperation de la cellule correspondante a la position
-		    	   int cellule = values_.last_tower().get_Index_Cellule_Mono(values_.size_Px(), values_.size_Px(),  values_.size_n());
-		    	   //verification collision avec autre objet
-		    	   System.err.println("cell ="+cellule);
-		    	   
-		    	   boolean en_collision = false;
-		    	   if(values_.carte()[cellule].getUnits_size_()>0)//si il y a qqun
-				   {
-						for(int i=0;i< values_.carte()[cellule].getUnits_().size();i++)
-			    	    {
-			    		   if(values_.last_tower().collision(values_.tower().get(values_.carte()[cellule].index_Units(i)).box())==true)
+		       {   
+		    	   	//la position dans le monde
+		    	   	Vector3 pos = new Vector3(values_.getT_temporaire_().position().x,values_.getT_temporaire_().position().y,0); 
+					//la case ou on place le bonhomme
+	   				int cell = values_.get_Index_Cellule((int)pos.x,(int)pos.y);
+
+		    	   //vérification collision 
+		    	   ArrayList<TowerType> list_tower = values_.carte()[cell].getUnits_();
+		    	   boolean colision = false;
+		    	   if(list_tower.size()>0)
+		    	   {
+		    		   colision = false;
+		    		   for(int i=0; i < list_tower.size();i++)
+		    		   {
+		    			   CollisionBox b = values_.getT_temporaire_().box(); 
+		    			   if(list_tower.get(i).collision(b))
 		    			   {
-		    			   		en_collision =true;
-		    			   		break;
+		    				   colision =true; 
+		    				   break;
 		    			   }
-			    	    }
-	
-			    	   if(en_collision == false)
-			    	   {
-				    	   //placement sur la carte
-				    	   values_.carte()[cellule].add_Unit(values_.tower().size()-1);
-				    	   //mise a jour de l'index dans cellule dans towertype ->  index = index dans le units de cellmap
-				    	   values_.last_tower().setIndex( values_.carte()[cellule].getUnits_().size()-1); 
-				    	   //changement d'etat
-				    	   values_.status(Status.POSITIONNE);
-				    	   System.err.println("cellule sprite ="+cellule);
-			    	   }
-			    	   else
-			    	   {
-			    		   System.err.println("il y a deja qqun");
-			    	   }
-					}
-					else
-			 	   	{
-							System.err.println("cellule sprite ="+cellule);
-				    	   //placement sur la carte
-				    	   values_.carte()[cellule].add_Unit(values_.tower().size()-1);
-				    	   //mise a jour de l'index dans cellule dans towertype ->  index = index dans le units de cellmap
-				    	   values_.last_tower().setIndex( values_.carte()[cellule].getUnits_().size()-1); 
-				    	   //changement d'etat
-				    	   values_.status(Status.POSITIONNE);
-				    	   values_.recalculerChemin_(true);
-				    	   
-			 	   	}
+		    		   }
+		    		   
+		    		   if(colision==false)
+		    		   {
+		    			   System.err.println("positioné");
+		    			   values_.carte()[cell].add_Unit(values_.getT_temporaire_());
+		    			   values_.setT_temporaire_(null);
+		    			   values_.status(Status.POSITIONNE);
+		    			   values_.recalculerChemin_(true);
+		    		   }
+		    	   }
+		    	   else
+		    	   {
+		    		   System.err.println("position cell = "+cell);
+	    			   values_.carte()[cell].add_Unit(values_.getT_temporaire_());
+	    			   values_.setT_temporaire_(null);
+	    			   values_.status(Status.POSITIONNE); 
+	    			   values_.recalculerChemin_(true);
+		    	   }
 		       }
 		 });
 
@@ -233,8 +227,7 @@ public class HudGame
 		main_layout_game_2.add(cancel_).pad(pad_).row();
 		
 
-		//troisième hud
-	//	stage_game_3 = new Stage();				
+		//troisième hud		
 		main_layout_game_3 = new Table();		
 		txt_info_2 = new Label("Vendre?", values_.get_Skin());
 		cancel_2 = new TextButton("Annuler", values_.get_Skin());
@@ -255,57 +248,34 @@ public class HudGame
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       { 
-		    	  //enregistrement de la position dans le repere carte
+		    	 //enregistrement de la position dans le repere carte
 		    	   
 		    	 //suppression
 		    	 try
 		    	 {  
-		    		  Vector3 pos = Jeu.get_Last_Position();
-			    	  int cell = values_.get_Case((int)pos.x, (int)pos.y); //Recuperation de la case
-			    	  System.err.println("cell suppr = "+cell);
-			    	  
-			    	  values_.camera().unproject(pos);//passage coordonée caméra à monde
-			    	  int size = values_.carte()[cell].getUnits_().size();//Recuperation taille du t'ableau d'unité
-			    	  System.err.println("size= "+size);
-			    	  
-			    	  for(int i=0;i< size;i++)
-			    	  {
-			    		  int index = values_.carte()[cell].getUnits_().get(i); //recuperation de l'index dans towertype
-			    		  if(values_.tower().get(index).box().collision((int)pos.x,(int)pos.y)) //verification de la colision
-			    		  {
-			    			  System.err.println("suppr");
-			    			  //si colision on suppr l'element dans cellmap et towertype
-			    			  values_.carte()[cell].getUnits_().remove(i); 
-			    			  values_.tower().remove(index);
-			    			  
-			    			  //désindexage
-			    			  for(int j = 0; j <  values_.tower().size();j++)//pour ctte les tour restantes faire
-			    			  {
-			    				  //System.err.println(values_.tower());
-			    				  //recuperation cellule
-			    				  int cellule =  values_.tower().get(j).get_Index_Cellule_Mono(values_.size_Px(), values_.size_Px(),  values_.size_n());
-			    				  //nombre d'unité max sur la case
-			    				  int k_max =  values_.carte()[cellule].getUnits_().size();
-			    				  //index -1 de chaque unité 
-			    				  for(int k=0;k<k_max; k++)
-			    				  {
-			    					  int val = values_.carte()[cellule].getUnits_().get(k);
-			    					  if(val >= index )
-			    						  values_.carte()[cellule].getUnits_().set(i, val--);
-			    				  }
-			    			  }
+		    		 int cellule = values_.getIndex_unit_selection_(); //retourne la cellule ou la tour est
+		    		 //suppression cellule
+		    		 int size = values_.carte()[cellule].getUnits_size_();
+		    		 float xScr = Jeu.get_Last_Position().x;
+		    		 float yScr = Jeu.get_Last_Position().y;
+		    		 CollisionBox box =new CollisionBox((int)xScr-5,(int)yScr-5,10,10);
+		    		 for(int i=0; i < size ;i++)
+		    		 {
+	    				if(values_.carte()[cellule].getUnits_().get(i).collision(box) == true)				
+						{
+	    					values_.carte()[cellule].getUnits_().remove(i);
+							break;
+						}		
+		    		 }
 
-			    			  break;
-			    		  }
-			    	  }
+			    	  values_.recalculerChemin_(true);
+			    	  values_.status(Status.POSITIONNE);
 		    	 }
 		    	 catch(Exception e)
 		    	 {
 		    		 System.err.println("hud game suppr erreur "+e);
 		    	 }
-		    	   
-		    	   	values_.recalculerChemin_(true);
-		    	   	values_.status(Status.POSITIONNE);
+
 		       }
 		 });
 
@@ -316,7 +286,6 @@ public class HudGame
 		main_layout_game_3.add(validate_2).pad(pad_).row();
 		main_layout_game_3.add(cancel_2).pad(pad_).row();
 		
-		//stage_game_3.addActor(main_layout_game_3);
 		
 		stage_game_.addActor(argent_);
 		stage_game_.addActor(vie_);
@@ -357,7 +326,6 @@ public class HudGame
 			main_table_game_.setVisible(false);
 			main_layout_game_2.setVisible(true);
 			main_layout_game_3.setVisible(false);
-			//return stage_game_2;
 		}
 		else
 		{
@@ -368,9 +336,7 @@ public class HudGame
 			
 			return stage_game_;
 	} 
-//	public Stage stage2(){return stage_game_2;}
-//	public Stage stage3(){return stage_game_3;}
-	
+
 	
 	//création des boutons de l'ui principal
 	private void creation_Hud_Objects(ConfigHud hud)
@@ -399,22 +365,21 @@ public class HudGame
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       { 
-						    	   try{			
-						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= values_.t_air_modele_().cout())
+						    	   try
+						    	   {			
+						    		   TowerType t = new TowerAir(values_.t_air_modele_());
+						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
 							    	   {
 							    		   argent_temp = values_.argent();
-							    		   values_.argent(values_.argent()-values_.t_air_modele_().cout());
-							    		   
-							    		   System.err.println("TowerAir");
-							    		   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
-							    		   values_.tower().add(new TowerAir(values_.t_air_modele_()));	
+							    		   values_.argent(values_.argent()-t.cout());
 							    		   
 							    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
 							    		   values_.camera().unproject(pos); //screen to world
 							    		      
-							    		   values_.last_tower().box().set_Collision_box((int)pos.x, (int)pos.x, 64,64);
-							    		   values_.last_tower().position(pos.x, pos.y);
-	
+							    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
+							    		   t.position(pos.x, pos.y);
+
+							    		   values_.setT_temporaire_(t);							    		
 							    		   values_.status(Status.NON_POSITIONNE);
 							    	   }
 						    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
@@ -430,23 +395,22 @@ public class HudGame
 						       { 
 						    	   try
 						    	   {
-							    	   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= values_.t_zone_modele_().cout())
+						    		   TowerType t = new TowerZone(values_.t_zone_modele_());
+						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
 							    	   {
 							    		   argent_temp = values_.argent();
-							    		   values_.argent(values_.argent()-values_.t_zone_modele_().cout());
-							    		   
-							    		   System.err.println("TowerZone");
-							    		   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
-							    		   values_.tower().add(new TowerZone(values_.t_zone_modele_()));	
+							    		   values_.argent(values_.argent()-t.cout());
 							    		   
 							    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
 							    		   values_.camera().unproject(pos); //screen to world
 							    		      
-							    		   values_.last_tower().box().set_Collision_box((int)pos.x, (int)pos.x, 64,64);
-							    		   values_.last_tower().position(pos.x, pos.y);
-	
+							    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
+							    		   t.position(pos.x, pos.y);
+
+							    		   values_.setT_temporaire_(t);							    		
 							    		   values_.status(Status.NON_POSITIONNE);
 							    	   }
+							    	   
 						    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
 						       }
 						 });
@@ -460,21 +424,19 @@ public class HudGame
 						       { 
 						    	   try
 						    	   {
-							    	   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= values_.t_slow_modele_().cout())
+						    		   TowerType t = new TowerSlow(values_.t_slow_modele_());
+						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
 							    	   {
 							    		   argent_temp = values_.argent();
-							    		   values_.argent(values_.argent()-values_.t_slow_modele_().cout());
-							    		   
-							    		   System.err.println("TowerSlow");
-							    		   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
-							    		   values_.tower().add(new TowerSlow(values_.t_slow_modele_()));	
+							    		   values_.argent(values_.argent()-t.cout());
 							    		   
 							    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
 							    		   values_.camera().unproject(pos); //screen to world
 							    		      
-							    		   values_.last_tower().box().set_Collision_box((int)pos.x, (int)pos.x, 64,64);
-							    		   values_.last_tower().position(pos.x, pos.y);
-	
+							    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
+							    		   t.position(pos.x, pos.y);
+
+							    		   values_.setT_temporaire_(t);							    		
 							    		   values_.status(Status.NON_POSITIONNE);
 							    	   }
 						    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
@@ -490,21 +452,19 @@ public class HudGame
 						       { 
 						    	   try
 						    	   {
-							    	   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= values_.t_base_modele_().cout())
+						    		   TowerType t = new TowerBase(values_.t_base_modele_());
+						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
 							    	   {
 							    		   argent_temp = values_.argent();
-							    		   values_.argent(values_.argent()-values_.t_base_modele_().cout());
-							    		   
-							    		   System.err.println("TowerBase");
-							    		   //creation de la tour et ajout dans le tableau "list_tower" en mode non positionner
-							    		   values_.tower().add(new TowerBase(values_.t_base_modele_()));	
+							    		   values_.argent(values_.argent()-t.cout());
 							    		   
 							    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
 							    		   values_.camera().unproject(pos); //screen to world
 							    		      
-							    		   values_.last_tower().box().set_Collision_box((int)pos.x, (int)pos.x, 64,64);
-							    		   values_.last_tower().position(pos.x, pos.y);
-	
+							    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
+							    		   t.position(pos.x, pos.y);
+
+							    		   values_.setT_temporaire_(t);							    		
 							    		   values_.status(Status.NON_POSITIONNE);
 							    	   }
 						    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}

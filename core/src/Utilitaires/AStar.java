@@ -136,7 +136,7 @@ public final class AStar
 		{
 			//cpt++;
 			//System.err.println(cpt);
-			System.out.println(tmp.case_());
+			//System.out.println(tmp.case_());
 			chemin.add(tmp);
 		//	System.err.println(tmp.parent);
 			tmp=tmp.parent;
@@ -146,7 +146,7 @@ public final class AStar
 		}
 		
 		chemin.add(depart);
-		System.out.println(chemin.get(chemin.size()-1).case_());
+		//System.out.println(chemin.get(chemin.size()-1).case_());
 	}
 
 	private static void addToOpenList(Noeud n) 

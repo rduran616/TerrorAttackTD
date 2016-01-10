@@ -122,5 +122,10 @@ public final class CollisionBox
 	    	  System.err.println("no collision");
 	}
 	
+	
+	public void print()
+	{
+		System.out.println("x= "+x_+" y= "+y_+" w= "+w_+" h="+h_);
+	}
 
 }

@@ -43,7 +43,7 @@ public class TdJeu extends StateJeu
 		
 		sb_ = new SpriteBatch();
 		num_vague_=1;
-		rythme_creation_mobs_ =1000; //en msseconde
+		rythme_creation_mobs_ =10000; //en msseconde
 		
 		tick_ = new TickHorloge(rythme_creation_mobs_);
 		
@@ -78,15 +78,8 @@ public class TdJeu extends StateJeu
 		
 		if(values_.recalculerChemin_()==true)
 		{	
-			System.err.println("d");
 			chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
 			values_.recalculerChemin_(false);
-			
-		/*	for(int i=0;i<chemin.size();i++)
-				System.err.print(chemin.get(i).case_()+" ");*/
-			
-			//System.err.println("");
-			System.err.println("f");
 		}
 		
 		
@@ -223,6 +216,8 @@ public class TdJeu extends StateJeu
 		    	//Case suivante
 		    	int index = m.index_chemin_-1;
 		    	//System.err.println("index ="+index);
+		    	if(index == chemin.size())
+		    		index --;
 		    	int case_suivante=chemin.get(index).case_();
 		    	//System.err.println("chemin = "+case_suivante+" case actu= "+chemin.get(m.index_chemin_).case_());
 		    	//position actuel
@@ -273,15 +268,20 @@ public class TdJeu extends StateJeu
 			
 			sb_.begin();
 			sb_.setProjectionMatrix(values_.camera().combined);//mise à jour de la matrice de projection du batch pour redimentionnement des sprites
-			//dessin des tours
-			for(int i=0;i < values_.tower().size();i++)
+
+						
+			//dessin des tours -> parcours toutes la carte n*m
+			for(int i=0;i < values_.carte().length;i++)
 			{
 				try
 				{
-					t = values_.tower().get(i); //Recuperation de la tour
-						
-					values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
-					values_.tower_sprite(t.num_Texture()).draw(sb_);
+					for(int j=0; j < values_.carte()[i].getUnits_().size();j++)
+					{
+						t = values_.carte()[i].getUnits_().get(j); //Recuperation de la tour
+							
+						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
+						values_.tower_sprite(t.num_Texture()).draw(sb_);
+					}
 				}
 				catch(Exception e)
 				{
@@ -310,6 +310,17 @@ public class TdJeu extends StateJeu
 					System.err.println("mob dessin "+e);
 				}
 			}
+			
+			
+			//affichage de la tour en cours de palcement
+			t = values_.getT_temporaire_();
+			if(t!=null)
+			{
+				values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
+				values_.tower_sprite(t.num_Texture()).draw(sb_);
+			}
+			
+			
 			//System.err.println("fin");
 			//dessin des projectiles
 			

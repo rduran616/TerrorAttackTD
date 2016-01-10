@@ -98,6 +98,7 @@ public final class GlobalValues
 	private TowerBase t_base_modele_;
 	private TowerZone t_zone_modele_;
 	private TowerSlow t_slow_modele_;
+	private TowerType t_temporaire_;
 	
 	private MobsAir m_air_modele_;
 	private MobsBasic m_basic_modele_;
@@ -110,7 +111,7 @@ public final class GlobalValues
 	private int size_n_ = 32;					//nombre de carreaux de la carte en width
 	private int size_m_ = 32;					//nombre de carreaux de la carte en height
 	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
-	private ArrayList<TowerType> liste_tours;	//liste des tours placées
+	//private ArrayList<TowerType> liste_tours;	//liste des tours placées
 	private ArrayList<Mobs> liste_mobs;			//liste des mobs à afficher
 	private Stack<Mobs> pile_mobs_;				//pile contenant les mobs créé mais plus utilisé
 	private String carte_name_;					//nom ou chemin de la carte
@@ -159,24 +160,6 @@ public final class GlobalValues
 	}
 	
 	public CellMap[] carte(){return carte_;}
-	public ArrayList<TowerType> tower()
-	{
-		if(liste_tours == null)
-			liste_tours = new ArrayList<TowerType>();
-		
-		return liste_tours;
-	}
-	public TowerType tower(int i)
-	{
-		try
-		{return liste_tours.get(i);}
-		catch(Exception e)
-		{
-			System.err.println(e);
-		}
-		
-		return null;
-	}
 	
 	
 	public void carte_Init()
@@ -191,43 +174,7 @@ public final class GlobalValues
 			}
 		}
 	}
-	
-	
-	public void placer_Object(int celulle,int index,TypeObjet type)
-	{
-		switch(type)
-		{
-			case ARRIVEE:
-			break;
-			
-			case CHEMIN:
-				carte_[celulle].add_Chemin(index);
-			break;
-			
-			case DEPART:
-			break;
-			
-			case ENNEMI:
-			break;
-			
-			case OBSTACLE:
-				carte_[celulle].add_Obstacle(index);
-			break;
-			
-			case TOUR:
-				carte_[celulle].add_Unit(index);
-			break;
-			
-			case VIDE:
-			break;
-			
-			default:
-			break;
 		
-		}
-	}
-	
-	
 	
 	
 	public ArrayList<Mobs> mobs(){return liste_mobs;}
@@ -300,16 +247,6 @@ public final class GlobalValues
 
 	}
 	
-	/*public void print_carte() 
-	{
-		for(int i=0;i<carte_.length;i++)
-		{
-			if(i%size_n_ == size_n_-1)
-				System.out.println(carte_[i].ordinal());
-			else
-				System.out.print(carte_[i].ordinal());
-		}
-	}*/
 	
 	public void camera_Init()
 	{
@@ -543,7 +480,6 @@ public final class GlobalValues
 	public Status status(){return status_;}
 	public void status(Status s){status_=s;}
 	
-	public TowerType last_tower(){return liste_tours.get(liste_tours.size()-1);}
 	
 	public void size_Px(int px){size_px_=px;}
 	public void size_n(int n){size_n_=n;}
@@ -619,6 +555,16 @@ public final class GlobalValues
 
 	public void recalculerChemin_(boolean recalculerChemin_) {
 		this.recalculerChemin_ = recalculerChemin_;
+	}
+
+
+	public TowerType getT_temporaire_() {
+		return t_temporaire_;
+	}
+
+
+	public void setT_temporaire_(TowerType t_temporaire_) {
+		this.t_temporaire_ = t_temporaire_;
 	}
 
 	

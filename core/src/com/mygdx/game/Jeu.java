@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -8,9 +10,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 
+import Utilitaires.CollisionBox;
 import Utilitaires.FingerTransformMap;
 import Utilitaires.TickHorloge;
 import units.Status;
+import units.TowerType;
 
 
 public class Jeu extends StateMenu  implements InputProcessor
@@ -165,7 +169,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 	}
 	
 	
-	 public static Vector3 get_Last_Position(){return last_position_;}
+	public static Vector3 get_Last_Position(){return last_position_;}
 
 	@Override
 	public boolean keyDown(int keycode) 
@@ -173,7 +177,6 @@ public class Jeu extends StateMenu  implements InputProcessor
 		if(keycode == Keys.BACK)
 		{
 			System.err.println("test");
-		//	Gdx.input.setCatchBackKey(false);
 			etat_jeu_ = StateJeuEnum.CHOIX;
 			selection_ = StateMEnuEnum.MENU;
 	    }
@@ -212,51 +215,53 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		if(values_.status() == Status.POSITIONNE)
 		{
-			System.err.println("x ="+screenX+" y="+screenY);
 			Vector3 pos = new Vector3(screenX,screenY,0);
 			values_.camera().unproject(pos);
-			int x = (int) (pos.x / values_.size_Px());
-			int y= (int) (pos.y / values_.size_Px());
+			int x = (int) (pos.x / values_.size_n());
+			int y= (int) (pos.y / values_.size_m());
 			int cellule = ((x) * values_.size_m()) +  y ; 
-			//System.err.println("cellule = "+cellule);
-			//try{
 			
+			//calcul cellule adj
+			ArrayList<Integer> cell = new ArrayList<Integer>();
+    	    cell.add(cellule);
+    	    int indice_haut	 = cellule - values_.size_m();
+  		    int indice_bas = cellule + values_.size_m();
+  		    int indice_droite  = cellule + 1;
+  		    int indice_gauche= cellule - 1;
+  		  
+	  		if(indice_haut>= 0 && indice_haut<values_.size_m() * values_.size_n())
+	  			cell.add(indice_haut);
+			if(indice_bas>= 0 && indice_bas<values_.size_m() * values_.size_n())
+				cell.add(indice_bas);
+			if(indice_droite>= 0 && indice_droite<values_.size_m() * values_.size_n() && indice_droite%values_.size_m() !=0)
+				cell.add(indice_droite);
+			if(indice_gauche>= 0 && indice_gauche<values_.size_m() * values_.size_n() && indice_gauche%values_.size_m() !=values_.size_m()-1)
+				cell.add(indice_gauche);
+              
+
+			System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule+ "  mpa cellule= "+values_.carte()[cellule].getNum_case_()+"  coordo centre ="+values_.carte()[cellule].centre()+
+					"  cell adj= "+cell.get(0)+" "+cell.get(1)+" "+cell.get(2)+" "+cell.get(3)+" "+cell.get(4));
 			
-			//System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule);
-			System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule+ "  mpa cellule= "+values_.carte()[cellule].getNum_case_()+"  coordo centre ="+values_.carte()[cellule].centre());
+			CollisionBox box =new CollisionBox((int)pos.x-5,(int)pos.y-5,10,10);
+			boolean trouve = false;
 			
-			
-			
-			/*}catch(Exception e)
-			{System.err.println("jeu "+e);}*/
-			if(values_.tower()!=null)
-			if(cellule<values_.size_m()*values_.size_n() && cellule>=0)
-			if(values_.carte()[cellule].getUnits_size_() >0)
+			for(int i=0;i<cell.size();i++)
 			{
-				int  max = values_.carte()[cellule].getUnits_size_();
-				for(int i=0; i< max;i++)
+				int size = values_.carte()[cell.get(i)].getUnits_().size();
+				for(int j=0 ; j < size; j++ )
 				{
-					int index = 0;
-					try
+					TowerType tower =values_.carte()[cell.get(i)].getUnits_().get(j);
+					if(tower.collision(box) == true)				
 					{
-						index = values_.carte()[cellule].getUnits_().get(i); // index dans le tableau tower 0... n tour
-						if(values_.tower().size()>index)
-							index = values_.tower().size() -1; //attention c'est bizare
-						
-						if(values_.tower(index).collision((int)pos.x,(int)pos.y) == true)
-						{
-							values_.status(Status.INFO);
-							values_.setIndex_unit_selection_(index);
-							last_position_.x=screenX;
-							last_position_.y=screenY;
-							
-							break;
-						}
+						values_.status(Status.INFO);
+						values_.setIndex_unit_selection_(cell.get(i)); //cellule qui contient la collision
+						last_position_.x=pos.x;
+						last_position_.y=pos.y;
+						trouve =true;
+						break;
 					}
-					catch(Exception e)
-					{System.err.println("Erreur jeu touch:  "+e);}
 				}
-			}	
+			}
 		}
 		else
 		{
@@ -283,19 +288,20 @@ public class Jeu extends StateMenu  implements InputProcessor
 			//repasse dans le  repere monde	
 			Vector3 pos = new Vector3(screenX,screenY,0);
 			values_.camera().unproject(pos);
+			CollisionBox box = new CollisionBox((int)(pos.x)-5,(int)(pos.y)-5,10,10); //boite autour du clic
 			
-			if(values_.last_tower().collision((int)pos.x,(int)pos.y) == true)
+			if(values_.getT_temporaire_().collision(box) == true)
 			{
 				int Tx = Gdx.input.getDeltaX(0);
 				int Ty = Gdx.input.getDeltaY(0);
 
-				values_.last_tower().position_add(Tx, -Ty);
+				values_.getT_temporaire_().position_add(Tx, -Ty);
 			}
-			else
+			/*else
 			{
 				finger.finger_Zoom(screenX, screenY, pointer);
-				finger.finger_Move(screenX, screenY, pointer);
-			}
+				finger.finger_Move(screenX, screenY, pointer);*/
+			//}
 		}
 		else 
 		{
