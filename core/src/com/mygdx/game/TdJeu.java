@@ -90,7 +90,7 @@ public class TdJeu extends StateJeu
 			int m = vague_.get_Ennemi();
 			
 			//calcul position de départ
-			Vector2  position = new Vector2(values_.carte()[340].centre());
+			Vector2  position = new Vector2(values_.carte()[depart.case_()].centre());
 			//System.err.println(values_.carte()[340].getN_()*32+"+"+values_.carte()[340].getM_());
 			//creation et placement		
 			//System.err.println("hap "+values_.pile_Mobs_().isEmpty()+"  "+m+ "  "+vague_.nb_Ennemis());
