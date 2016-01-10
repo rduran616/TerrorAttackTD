@@ -57,7 +57,7 @@ public final class GlobalValues
 	private GlobalValues() 
 	{
 		super();
-		reload();
+		load();
 		pile_mobs_ = new Stack<Mobs>();
 	}
 
@@ -310,7 +310,17 @@ public final class GlobalValues
 	public MapProperties map_Properties(){ return prop_;}
 
 	//chargement/rechargement des ellements visuel du jeux
-	public ErrorEnum reload()
+	public ErrorEnum reload_asset()
+	{
+		System.err.println("reload");
+		//creation d'un skin ( fond des boutons )
+		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
+		get_Units_Model();
+		return ErrorEnum.OK;
+	}
+	
+	
+	public ErrorEnum load()
 	{
 		System.err.println("reload");
 		
@@ -329,14 +339,15 @@ public final class GlobalValues
 		
 		liste_mobs = new ArrayList<Mobs>();//[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
 
-		argent_ = 100;
-		vie_ = 100;
+		argent_ = 100; //pas ici
+		vie_ = 100; //pas ici
 		status_ = Status.POSITIONNE;
 		
 		get_Units_Model();
 		
 		return ErrorEnum.OK;
 	}
+	
 
 	private void get_Units_Model()
 	{
@@ -480,6 +491,7 @@ public final class GlobalValues
 	public Status status(){return status_;}
 	public void status(Status s){status_=s;}
 	
+
 	
 	public void size_Px(int px){size_px_=px;}
 	public void size_n(int n){size_n_=n;}

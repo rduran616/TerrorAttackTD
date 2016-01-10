@@ -35,7 +35,7 @@ public class MyGdxGame extends ApplicationAdapter
 		if(Gdx.app.getType() == ApplicationType.Android)
 		{
 			GlobalValues values = GlobalValues.getInstance();
-			values.reload();
+			values.reload_asset();
 		}
 	}
 
@@ -65,7 +65,7 @@ public class MyGdxGame extends ApplicationAdapter
 	public void resume()
 	{
 		System.err.println("resume");
-		GlobalValues.getInstance().reload();
+		GlobalValues.getInstance().reload_asset();
 	}
 
 	@Override
