@@ -329,7 +329,7 @@ public class TdJeu extends StateJeu
 			
 			sb_.end();
 		}
-
+ 
 		//Changer de menu
 		if(selection_ != StateJeuEnum.JEU)
 		{
