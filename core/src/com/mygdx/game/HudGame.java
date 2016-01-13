@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import Utilitaires.CollisionBox;
 import Utilitaires.ConfigHud;
 import Utilitaires.ReadXml;
+import Utilitaires.Spirale;
 import units.Status;
 import units.TowerAir;
 import units.TowerBase;
@@ -202,7 +203,9 @@ public class HudGame
 		    		   if(colision==false)
 		    		   {
 		    			   System.err.println("positioné");
-		    			   values_.carte()[cell].add_Unit(values_.getT_temporaire_());
+		    			   TowerType t = values_.getT_temporaire_();
+		    			   t.setCases_adj(Spirale.adjacente2( values_.size_Px(), t.position(), values_.size_n(), values_.size_m(), (int)t.get_range()));
+		    			   values_.carte()[cell].add_Unit(t);
 		    			   values_.setT_temporaire_(null);
 		    			   values_.status(Status.POSITIONNE);
 		    			   values_.recalculerChemin_(true);

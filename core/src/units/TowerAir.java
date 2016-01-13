@@ -35,9 +35,11 @@ public class TowerAir extends TowerType
 	 
 	 //ia
 	 
-	public void onExecute() {
-		// TODO Auto-generated method stub
+	 public  boolean onExecute()
+	{
 		
+		
+		return false;
 	}
 	 
 	

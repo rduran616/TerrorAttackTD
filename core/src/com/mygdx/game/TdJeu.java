@@ -277,14 +277,7 @@ public class TdJeu extends StateJeu
 						//Recuperation de la tour
 						t = values_.carte()[i].getUnits_().get(j); 
 						//tir + rotation
-				/*		int[] adj = t.adjacente(); //recuperation des cases adjacentes visibles par la tour
-						for(int k =0; k < adj.length; k++)
-						{
-							boolean test = t.onExecute(values_.carte()[adj[k]].getMobs_());
-							if(test == true) //si on a tirer dans cette case -> on sort
-								break;
-							
-						}*/
+						t.onExecute();
 						//dessin	
 						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 						values_.tower_sprite(t.num_Texture()).draw(sb_);

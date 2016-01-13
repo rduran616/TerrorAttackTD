@@ -33,9 +33,10 @@ public class TowerZone extends TowerType
 	}
 
 
-	public void onExecute() {
-		// TODO Auto-generated method stub
+	public  boolean onExecute()
+	{
 		
+		
+		return false;
 	}
-	
 }

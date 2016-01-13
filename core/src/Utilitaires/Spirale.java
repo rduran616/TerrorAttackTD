@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 
-import units.TowerType;
-
 
 /***
  * 
@@ -23,10 +21,8 @@ public class Spirale
 	//Retourne case adjacente suivant un cercle 
 	public static ArrayList<Integer> adjacente(int n, int m, int size_case, Vector2 position, int range)
 	{
-		int nb_cases_adj =0;
-		int nb = (int)(range + range + 1);
-		nb_cases_adj = nb*nb;
 
+		int nb = (int)(range + range + 1);
 		ArrayList<Integer> adj = new ArrayList<Integer>(); 
 
 		float depart_x = position.x;
@@ -82,14 +78,14 @@ public class Spirale
 	}
 	
 	//retourne case adjs suivant une spirale carré
-	public static ArrayList<Integer> adjacente2(int pas, int size_case, Vector2 depart, int n, int m, int num_couche)
+	public static ArrayList<Integer> adjacente2(int pas, Vector2 depart, int n, int m, int num_couche)
 	{
 		ArrayList<Integer> adj = new ArrayList<Integer>();
 		int jump = 1;
 		Vector2 lastPoint = depart;
 		Direction dir = Direction.DROITE;
-		int x = (int) (lastPoint.x/size_case);
-		int y = (int) (lastPoint.y/size_case);
+		int x = (int) (lastPoint.x/pas);
+		int y = (int) (lastPoint.y/pas);
 		int cell =(int) ((y * m) + x);
 		adj.add(cell);
 		
@@ -105,8 +101,8 @@ public class Spirale
 	        	   //calcul nouveau point
 	                Vector2 newPoint = new_Position(dir,lastPoint, pas);
 	                //calcul case
-	                x = (int) (newPoint.x/size_case);
-					y = (int) (newPoint.y/size_case);
+	                x = (int) (newPoint.x/pas);
+					y = (int) (newPoint.y/pas);
 					cell =(int) ((y * m) + x);
 					//test case
 					cell  = test_cellule(cell, n,  m, dir);
@@ -195,7 +191,7 @@ public class Spirale
 
 		ArrayList<Integer> adj;
 		//adj = tower.adjacente(n, m,32);
-		adj = adjacente2(32, 32, new Vector2(128,64), n, m, range*2);
+		adj = adjacente2(32, new Vector2(128,64), n, m, range*2);
 		for(int i=0; i < adj.size(); i++)
 		{
 			System.out.print(" "+adj.get(i));

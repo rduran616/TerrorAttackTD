@@ -28,11 +28,12 @@ public class TowerSlow extends TowerType {
 		 this.num_Texture(another.num_Texture());
 	}
 
-	public void onExecute() {
-		// TODO Auto-generated method stub
+	public  boolean onExecute()
+	{
 		
+		
+		return false;
 	}
-	
 	/*public TowerSlow(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {
 		super(texture, bulletTexture, bulletSize, x, y);
 		// TODO Auto-generated constructor stub

@@ -29,9 +29,11 @@ public class TowerBase extends TowerType
 	}
 
 
-	public void onExecute() {
-		// TODO Auto-generated method stub
+	public  boolean onExecute()
+	{
 		
+		
+		return false;
 	}
 	
 	/*public TowerBase(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {

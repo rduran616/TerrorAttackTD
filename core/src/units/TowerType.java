@@ -101,7 +101,7 @@ public abstract class TowerType
 	
 		
 	//methode appelée pour tireer sur les mobs (implémentée par les classes filles)
-	public  boolean onExecute(ArrayList<Integer> enemy)
+	public  boolean onExecute()
 	{
 		
 		
@@ -138,6 +138,8 @@ public abstract class TowerType
 	public void position(int x, int y){position_=new Vector2(x,y);maj_box();}
 	public void position_add(int x, int y){position_.x+=x;position_.y+=y;maj_box();} 
 	public void position(Vector3 pos){position_.x=pos.x; position_.y=pos.y;}
+	
+	public float get_range(){return _range;}
 	
 	private void maj_box()
 	{
@@ -190,6 +192,16 @@ public abstract class TowerType
 	public static void main(String [ ] args)
 	{
 		
+	}
+
+
+	public ArrayList<Integer> getCases_adj() {
+		return cases_adj;
+	}
+
+
+	public void setCases_adj(ArrayList<Integer> cases_adj) {
+		this.cases_adj = cases_adj;
 	}
 
 }
