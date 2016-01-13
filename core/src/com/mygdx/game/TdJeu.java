@@ -72,6 +72,9 @@ public class TdJeu extends StateJeu
 	@Override
 	public StateJeuEnum exectute() 
 	{
+		
+		/*********************crétaion de l'ia***************************************/
+		
 		//Création des mobs
 		if(vague_.nb_Ennemis()<=0)
 			vague_.new_Vague();
@@ -82,7 +85,7 @@ public class TdJeu extends StateJeu
 			values_.recalculerChemin_(false);
 		}
 		
-		
+				
 		//si on est dans le bon temps on peut creer un ennemi
 		if(tick_.tick())
 		{
@@ -91,9 +94,7 @@ public class TdJeu extends StateJeu
 			
 			//calcul position de départ
 			Vector2  position = new Vector2(values_.carte()[depart.case_()].centre());
-			//System.err.println(values_.carte()[340].getN_()*32+"+"+values_.carte()[340].getM_());
 			//creation et placement		
-			//System.err.println("hap "+values_.pile_Mobs_().isEmpty()+"  "+m+ "  "+vague_.nb_Ennemis());
 			switch(m)
 			{
 				//air
@@ -194,7 +195,7 @@ public class TdJeu extends StateJeu
 		}
 		
 		
-		//mise à jour de l'ia
+		/***********************************mise à jour de l'ia***************************************/
 		
 			//Recalcul du chemin des mobs
 			if(values_.recalculerChemin_()==true)
@@ -205,7 +206,6 @@ public class TdJeu extends StateJeu
 			}
 				
 			//ia ennemis = deplacement en suivant le chemin calculé ou recalculé en focntion du placement des tours
-			
 		    for(int i =0; i< values_.mobs().size();i++) 
 		    {
 		    	Mobs m = values_.mobs().get(i);
@@ -215,14 +215,12 @@ public class TdJeu extends StateJeu
 
 		    	//Case suivante
 		    	int index = m.index_chemin_-1;
-		    	//System.err.println("index ="+index);
 		    	if(index == chemin.size())
 		    		index --;
+		    	
 		    	int case_suivante=chemin.get(index).case_();
-		    	//System.err.println("chemin = "+case_suivante+" case actu= "+chemin.get(m.index_chemin_).case_());
 		    	//position actuel
 		    	Vector2 pos = m.getPosition_();
-		    	//System.err.println("ma position = "+m.getPosition_());
 		    	//position cible
 		    	Vector2 pos2 =  values_.carte()[case_suivante].centre();
 		    	//vecteur de déplacement 
@@ -238,26 +236,24 @@ public class TdJeu extends StateJeu
 		    	values_.mobs().get(i).setNum_direction_(0);
 		    	values_.mobs().get(i).setPosition_(position);
 		    	
-		    	//System.err.println(m.getPosition_().x+ "   "+ m.getPosition_().y);
-		    	
 		    	if(values_.get_Index_Cellule((int)position.x, (int)position.y) == case_suivante)
 		    	{
 		    		if(values_.get_Index_Cellule((int)position.x, (int)position.y) != arrivee.case_())
 		    		{
 		    			m.index_chemin_--;
 		    		}
+		    		else // on est arrivé
+		    		{
+		    			//si arrivé destructionp
+		    			//m.execute();
+		    		}
 		    	}
+
 		    	
-		    	//verification si on est arrivé ou pas
-		    	
-		    		//si arrivé destructionp
-		    	
-		    	//m.execute();
 		    }
-			//rotation tour
-			
-			//tir des tours
-			
+		    
+		    
+	    /*********************************** Affichage ***************************************/
 			
 		
 		//dessin des images
@@ -271,14 +267,25 @@ public class TdJeu extends StateJeu
 
 						
 			//dessin des tours -> parcours toutes la carte n*m
-			for(int i=0;i < values_.carte().length;i++)
+			for(int i=0;i < values_.carte().length;i++)//pour chaque tour faire...
 			{
 				try
 				{
+					//pour chaque tour de la case faire...
 					for(int j=0; j < values_.carte()[i].getUnits_().size();j++)
 					{
-						t = values_.carte()[i].getUnits_().get(j); //Recuperation de la tour
+						//Recuperation de la tour
+						t = values_.carte()[i].getUnits_().get(j); 
+						//tir + rotation
+				/*		int[] adj = t.adjacente(); //recuperation des cases adjacentes visibles par la tour
+						for(int k =0; k < adj.length; k++)
+						{
+							boolean test = t.onExecute(values_.carte()[adj[k]].getMobs_());
+							if(test == true) //si on a tirer dans cette case -> on sort
+								break;
 							
+						}*/
+						//dessin	
 						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 						values_.tower_sprite(t.num_Texture()).draw(sb_);
 					}
@@ -290,7 +297,6 @@ public class TdJeu extends StateJeu
 			}
 			
 			//Dessin des mobs
-			//System.err.println("debut");
 			for(int i=0;i < values_.mobs().size();i++)
 			{
 				//System.err.println("mob size = "+values_.mobs().size());
@@ -302,7 +308,6 @@ public class TdJeu extends StateJeu
 					m.add_Time(Gdx.graphics.getDeltaTime());
 					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(m.getNum_texture_(),m.getNum_direction_()).getKeyFrame(m.getTime_(), true);
 					//placement + dessin	
-					//System.err.println(m.getNom_()+"  "+m.getPosition_().x+ "   "+ m.getPosition_().y);
 					sb_.draw(currentFrame,m.getPosition_().x, m.getPosition_().y);
 				}
 				catch(Exception e)
@@ -312,7 +317,7 @@ public class TdJeu extends StateJeu
 			}
 			
 			
-			//affichage de la tour en cours de palcement
+			//affichage de la tour en cours de placement
 			t = values_.getT_temporaire_();
 			if(t!=null)
 			{
@@ -320,11 +325,10 @@ public class TdJeu extends StateJeu
 				values_.tower_sprite(t.num_Texture()).draw(sb_);
 			}
 			
-			
-			//System.err.println("fin");
+
 			//dessin des projectiles
 			
-			//play particules
+			//dessin des particules
 			
 			
 			sb_.end();

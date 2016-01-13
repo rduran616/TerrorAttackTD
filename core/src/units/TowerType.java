@@ -1,5 +1,7 @@
 package units;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
@@ -32,6 +34,8 @@ public abstract class TowerType
 	protected boolean _air;		// tire sur les ennemies volant?
 	private Matrix3 mat_;		//Matrice de rotation
 	
+	private ArrayList<Integer> cases_adj;//cases adjacentes en fonction du range
+	
 	public TowerType()
 	{
 		//status_ = Status.NON_POSITIONNE;
@@ -42,7 +46,7 @@ public abstract class TowerType
 	
 	public TowerType(int cout, int att_speed,int damage, int range,int h, int w,int air,int num_txt, String nom, CollisionBox box )
 	{
-		position_= new Vector2(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+	//	position_= new Vector2(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
 		
 		if(h>=0)
 			size_h_=h;
@@ -95,10 +99,27 @@ public abstract class TowerType
 			num_texture_ =0;		
 	}
 	
-	
-	
+		
 	//methode appelée pour tireer sur les mobs (implémentée par les classes filles)
-	public abstract void onExecute();
+	public  boolean onExecute(ArrayList<Integer> enemy)
+	{
+		
+		
+		return false;
+	}
+	
+	//méthode de rotation vers la première cible trouvé
+	public void  onRotate(int index) 
+	{
+		
+	}
+	
+	//méthode de rotation vers la première cible trouvé
+	public void onShot(int index)
+	{
+		
+	}
+	
 	public int cout(){return _cout;}
 
 	//ascesseurs (get et set)
@@ -162,5 +183,13 @@ public abstract class TowerType
 	public void setMat(Matrix3 mat) {
 		this.mat_ = mat;
 	}
+
+
+
 	
+	public static void main(String [ ] args)
+	{
+		
+	}
+
 }

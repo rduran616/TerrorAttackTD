@@ -117,8 +117,27 @@ public abstract class Mobs
 		
 	}
 	
+	
+	//fonction de perte de vie. test: EnVie()? si oui return true sinon faux
+	public boolean subir_Degat(int d)
+	{
+		degat_ -= d;
+		if(degat_ <= 0)
+			return false;
+		
+		return true;
+	}
+	
+	
+	public int[] get_adjacentes()
+	{
+		
+		return null;
+	}
+	
 	public abstract void execute();
 	
+	public abstract void destruction();
 
 
 	public int getLife_() {

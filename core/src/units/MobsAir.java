@@ -30,4 +30,11 @@ public class MobsAir extends Mobs
 		//mise a jour position
 		
 	}
+
+
+	@Override
+	public void destruction() {
+		// TODO Auto-generated method stub
+		
+	}
 }

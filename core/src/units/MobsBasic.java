@@ -24,4 +24,10 @@ public class MobsBasic extends Mobs{
 	{
 		//System.err.println("execute basic");		
 	}
+
+	@Override
+	public void destruction() {
+		// TODO Auto-generated method stub
+		
+	}
 }

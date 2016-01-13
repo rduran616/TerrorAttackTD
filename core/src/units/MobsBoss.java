@@ -23,4 +23,10 @@ public class MobsBoss extends Mobs{
 	{
 		//System.err.println("execute boss");		
 	}
+
+	@Override
+	public void destruction() {
+		// TODO Auto-generated method stub
+		
+	}
 }

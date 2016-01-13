@@ -35,7 +35,6 @@ public class TowerAir extends TowerType
 	 
 	 //ia
 	 
-	@Override
 	public void onExecute() {
 		// TODO Auto-generated method stub
 		

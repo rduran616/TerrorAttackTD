@@ -27,7 +27,7 @@ public class TowerSlow extends TowerType {
 		 this.size_W(another.size_W());				
 		 this.num_Texture(another.num_Texture());
 	}
-	@Override
+
 	public void onExecute() {
 		// TODO Auto-generated method stub
 		

@@ -1,6 +1,9 @@
 package units;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+
 import Utilitaires.CollisionBox;
 
 public class MobsLourd extends Mobs{
@@ -21,6 +24,12 @@ public class MobsLourd extends Mobs{
 	@Override
 	public void execute() 
 	{
-		//System.err.println("execute lourd");
+	}
+
+
+	@Override
+	public void destruction() {
+		// TODO Auto-generated method stub
+		
 	}
 }

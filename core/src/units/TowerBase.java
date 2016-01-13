@@ -28,7 +28,7 @@ public class TowerBase extends TowerType
 		 this.num_Texture(another.num_Texture());
 	}
 
-	@Override
+
 	public void onExecute() {
 		// TODO Auto-generated method stub
 		
