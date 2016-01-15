@@ -108,7 +108,8 @@ public class TdJeu extends StateJeu
 						mob.setPosition_(position);
 						mob.index_chemin_= chemin.size()-1;
 						//placement dans la liste
-						values_.mobs().add(mob);
+						//values_.mobs().add(mob);
+						values_.carte()[depart.case_()].addMob(mob);
 						
 					}
 					else //sinon le prendre de la file
@@ -132,7 +133,8 @@ public class TdJeu extends StateJeu
 						mob.setPosition_(position);
 						mob.index_chemin_= chemin.size()-1;
 						//placement dans la liste
-						values_.mobs().add(mob);
+						//values_.mobs().add(mob);
+						values_.carte()[depart.case_()].addMob(mob);
 					}
 					else //sinon le prendre de la file
 					{
@@ -154,7 +156,8 @@ public class TdJeu extends StateJeu
 						mob.setPosition_(position);
 						mob.index_chemin_= chemin.size()-1;
 						//placement dans la liste
-						values_.mobs().add(mob);
+						//values_.mobs().add(mob);
+						values_.carte()[depart.case_()].addMob(mob);
 					}
 					else //sinon le prendre de la file
 					{
@@ -176,7 +179,8 @@ public class TdJeu extends StateJeu
 						mob.setPosition_(position);
 						mob.index_chemin_= chemin.size()-1;
 						//placement dans la liste
-						values_.mobs().add(mob);
+						//values_.mobs().add(mob);
+						values_.carte()[depart.case_()].addMob(mob);
 					}
 					else //sinon le prendre de la file
 					{
@@ -206,50 +210,53 @@ public class TdJeu extends StateJeu
 			}
 				
 			//ia ennemis = deplacement en suivant le chemin calculé ou recalculé en focntion du placement des tours
-		    for(int i =0; i< values_.mobs().size();i++) 
+		    for(int i =0; i< values_.carte().length;i++) //pour chaque mob dans mob[] faire
 		    {
-		    	Mobs m = values_.mobs().get(i);
-		    	Vector2 position = new Vector2();
-		    	
-		    	//position:
-
-		    	//Case suivante
-		    	int index = m.index_chemin_-1;
-		    	if(index == chemin.size())
-		    		index --;
-		    	
-		    	int case_suivante=chemin.get(index).case_();
-		    	//position actuel
-		    	Vector2 pos = m.getPosition_();
-		    	//position cible
-		    	Vector2 pos2 =  values_.carte()[case_suivante].centre();
-		    	//vecteur de déplacement 
-		    	Vector2 pos3 = new Vector2(pos2.x - pos.x, pos2.y - pos.y);
-		    	//deplacement avec application de la vitesse
-		    	position.x=(pos.x+pos3.x/m.getSpeed_()*Gdx.graphics.getDeltaTime());
-		    	position.y=(pos.y+pos3.y/m.getSpeed_()*Gdx.graphics.getDeltaTime());
-		    	
-		    	//System.err.println("actu = "+pos+" cible ="+pos2+" deplacement= "+pos3+"  nouvelle coord ="+position);
-		    	//System.err.println(position.x+ "   "+position.y);
-		    	
-		    	//mise a jour position*/
-		    	values_.mobs().get(i).setNum_direction_(0);
-		    	values_.mobs().get(i).setPosition_(position);
-		    	
-		    	if(values_.get_Index_Cellule((int)position.x, (int)position.y) == case_suivante)
+		    	for(int j = 0; j <values_.carte()[i].getMobs_size_();j++ )
 		    	{
-		    		if(values_.get_Index_Cellule((int)position.x, (int)position.y) != arrivee.case_())
-		    		{
-		    			m.index_chemin_--;
-		    		}
-		    		else // on est arrivé
-		    		{
-		    			//si arrivé destructionp
-		    			//m.execute();
-		    		}
-		    	}
+			    	Mobs m = values_.carte()[i].getMobs_().get(j);
+			    	Vector2 position = new Vector2();
+			    	
+			    	//position:
+	
+			    	//Case actu
+			    	int index = m.index_chemin_-1;
+			    	if(index == chemin.size())
+			    		index --;
+			    	//case suivante
+			    	int case_suivante=chemin.get(index).case_();
+			    	//position actuel
+			    	Vector2 pos = m.getPosition_();
+			    	//position cible
+			    	Vector2 pos2 =  values_.carte()[case_suivante].centre();
+			    	//vecteur de déplacement 
+			    	Vector2 pos3 = new Vector2(pos2.x - pos.x, pos2.y - pos.y);
+			    	//deplacement avec application de la vitesse
+			    	position.x=(pos.x+pos3.x/m.getSpeed_()*Gdx.graphics.getDeltaTime());
+			    	position.y=(pos.y+pos3.y/m.getSpeed_()*Gdx.graphics.getDeltaTime());
+			    	
+			    	//mise a jour position
+			    	m.setNum_direction_(0);
+			    	m.setPosition_(position);
 
-		    	
+			    	//enregsitrement sur la carte
+			    	int cell = values_.get_Index_Cellule((int)pos.x, (int)pos.y);
+			    	if(values_.get_Index_Cellule((int)position.x, (int)position.y) == case_suivante) // si on change de case
+			    	{
+			    		if(values_.get_Index_Cellule((int)position.x, (int)position.y) != arrivee.case_()) //si pas arrivé
+			    		{	    			
+			    			m.index_chemin_--;
+					    	values_.carte()[cell].getMobs_().remove(m);
+					    	values_.carte()[cell].setMobs_size_(values_.carte()[cell].getMobs_size_()-1);
+					    	values_.carte()[case_suivante].addMob(m);
+			    		}
+			    		else // on est arrivé
+			    		{
+			    			//si arrivé destructionp
+			    			//m.execute();
+			    		}
+			    	}
+		    	}
 		    }
 		    
 		    
@@ -261,6 +268,7 @@ public class TdJeu extends StateJeu
 		if(sb_!=null)
 		{ 
 			TowerType t;
+			Mobs mob;
 			
 			sb_.begin();
 			sb_.setProjectionMatrix(values_.camera().combined);//mise à jour de la matrice de projection du batch pour redimentionnement des sprites
@@ -269,8 +277,20 @@ public class TdJeu extends StateJeu
 			//dessin des tours -> parcours toutes la carte n*m
 			for(int i=0;i < values_.carte().length;i++)//pour chaque tour faire...
 			{
-				try
-				{
+			//	try
+			//	{
+					//pour chaque mob de la case faire...
+					for(int k=0; k < values_.carte()[i].getMobs_size_();k++)
+					{
+						//Recuperation de la tour
+						mob = values_.carte()[i].getMobs_().get(k); 
+						//dessin	
+						mob.add_Time(Gdx.graphics.getDeltaTime());
+						TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(mob.getNum_texture_(),mob.getNum_direction_()).getKeyFrame(mob.getTime_(), true);
+						//dessin	
+						sb_.draw(currentFrame,mob.getPosition_().x, mob.getPosition_().y);
+					}
+					
 					//pour chaque tour de la case faire...
 					for(int j=0; j < values_.carte()[i].getUnits_().size();j++)
 					{
@@ -281,34 +301,33 @@ public class TdJeu extends StateJeu
 						//dessin	
 						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 						values_.tower_sprite(t.num_Texture()).draw(sb_);
-					}
-				}
+					}	
+				/*}
 				catch(Exception e)
 				{
 					System.err.println("tour dessin "+e);
-				}
+				}*/
 			}
-			
-			//Dessin des mobs
-			for(int i=0;i < values_.mobs().size();i++)
+						
+			//Dessin des tir
+			for(int i=0;i < values_.shots().size();i++)
 			{
 				//System.err.println("mob size = "+values_.mobs().size());
 				try
 				{
 					//recuperation du mob
-					Mobs m = values_.mobs().get(i); //Recuperation du mob
+					Tir s = values_.shots().get(i); //Recuperation du mob
 					//animation
-					m.add_Time(Gdx.graphics.getDeltaTime());
-					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(m.getNum_texture_(),m.getNum_direction_()).getKeyFrame(m.getTime_(), true);
+					s.add_Time(Gdx.graphics.getDeltaTime());
+					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(s.num_Texture(),0).getKeyFrame(s.time(), true);
 					//placement + dessin	
-					sb_.draw(currentFrame,m.getPosition_().x, m.getPosition_().y);
+					sb_.draw(currentFrame,s.position().x, s.position().y);
 				}
 				catch(Exception e)
 				{
-					System.err.println("mob dessin "+e);
+					System.err.println("tir dessin "+e);
 				}
 			}
-			
 			
 			//affichage de la tour en cours de placement
 			t = values_.getT_temporaire_();

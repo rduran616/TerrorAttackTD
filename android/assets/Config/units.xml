@@ -1,9 +1,9 @@
  <units>
      <tower id="0" value="4" w="32" h="32">
-	     <Air n_texture="0" air="1" h="32" w="32" vit="2" money="15" power="10"  range="2" name="air"   src_desk="../android/assets/units/tower/image.png" src_andro="units/tower/image.png" ></Air>
-	     <Base n_texture="1" air="0" h="32" w="32" vit="2" money="2"  power="10"  range="2" name="base"  src_desk="../android/assets/units/tower/image2.png" src_andro="units/tower/image2.png" ></Base>
-	     <Slow n_texture="2" air="0" h="32" w="32" vit="1" money="7"  power="20"  range="2" name="slow"  src_desk="../android/assets/units/tower/image3.png" src_andro="units/tower/image3.png" ></Slow>
-	     <Zone n_texture="3" air="0" h="32" w="32" vit="2" money="5"  power="20"  range="4" name="zone"  src_desk="../android/assets/units/tower/image4.png" src_andro="units/tower/image4.png" ></Zone>
+	     <Air n_texture="0" air="1" h="32" w="32" vit="2000" money="15" power="10"  range="2" name="air"   src_desk="../android/assets/units/tower/image.png" src_andro="units/tower/image.png" ></Air>
+	     <Base n_texture="1" air="0" h="32" w="32" vit="2000" money="2"  power="10"  range="2" name="base"  src_desk="../android/assets/units/tower/image2.png" src_andro="units/tower/image2.png" ></Base>
+	     <Slow n_texture="2" air="0" h="32" w="32" vit="1000" money="7"  power="20"  range="2" name="slow"  src_desk="../android/assets/units/tower/image3.png" src_andro="units/tower/image3.png" ></Slow>
+	     <Zone n_texture="3" air="0" h="32" w="32" vit="2000" money="5"  power="20"  range="4" name="zone"  src_desk="../android/assets/units/tower/image4.png" src_andro="units/tower/image4.png" ></Zone>
      </tower>
      <mobs id="1" value="4">  
        <Air   air="1" n_texture="0" vie="50" vit="3"  h="48" w="32" money="150" power="10" name="air"   src_desk="../android/assets/units/mobs/falleen1.png" src_andro="units/mobs/falleen1.png" ></Air>
@@ -18,5 +18,8 @@
          <puissanceBonus name="Puissance ++"></puissanceBonus>
          <rapideShootBonus name="Vitesse ++"></rapideShootBonus>
      </bonus>
+     <tir id="3" value="1">
+         <obus name="obus" n_texture="0" nb_anim="12" h="16" w="16" src_desk="../android/assets/units/obus/boulet.png" src_andro="units/obus/boulet.png" ></obus>
+     </tir>
      
  </units>

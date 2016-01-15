@@ -204,7 +204,7 @@ public class HudGame
 		    		   {
 		    			   System.err.println("positioné");
 		    			   TowerType t = values_.getT_temporaire_();
-		    			   t.setCases_adj(Spirale.adjacente2( values_.size_Px(), t.position(), values_.size_n(), values_.size_m(), (int)t.get_range()));
+		    			   t.setCases_adj(new ArrayList<Integer>( Spirale.adjacente2( values_.size_Px(), t.position(), values_.size_n(), values_.size_m(), (int)t.get_range())));
 		    			   values_.carte()[cell].add_Unit(t);
 		    			   values_.setT_temporaire_(null);
 		    			   values_.status(Status.POSITIONNE);

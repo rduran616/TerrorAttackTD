@@ -30,10 +30,11 @@ public class TowerSlow extends TowerType {
 
 	public  boolean onExecute()
 	{
-		
-		
-		return false;
+		return super.onExecute();
 	}
+
+	
+	
 	/*public TowerSlow(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {
 		super(texture, bulletTexture, bulletSize, x, y);
 		// TODO Auto-generated constructor stub

@@ -12,6 +12,13 @@ import Utilitaires.TypeFlag;
  *
  * En faite le sprite chargé est une TextureRegion 
  * -> cette classe la convertie en texture region
+ * 
+ *  animation: 1 2 3 4 5 6  = sprite 
+ *             |
+ * 			   v
+ * 			anim1[]
+ * 			anim2[]
+ * 
  */
 
 public class SpriteConteneurAnimation extends SpriteConteneur

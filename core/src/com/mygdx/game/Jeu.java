@@ -213,6 +213,17 @@ public class Jeu extends StateMenu  implements InputProcessor
 	{		
 		finger.finger_Touch(screenX, screenY, pointer);
 		
+		
+		
+		Vector3 pos2 = new Vector3(screenX,screenY,0);
+		values_.camera().unproject(pos2);
+		int x2 = (int) (pos2.x / values_.size_n());
+		int y2= (int) (pos2.y / values_.size_m());
+		int cellule2 = ((x2) * values_.size_m()) +  y2 ; 
+		System.err.println("x ="+screenX+" y="+screenY+" cellule= "+cellule2);
+		
+		
+		
 		if(values_.status() == Status.POSITIONNE)
 		{
 			Vector3 pos = new Vector3(screenX,screenY,0);

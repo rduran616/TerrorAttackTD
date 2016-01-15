@@ -6,8 +6,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.GlobalValues;
+import com.mygdx.game.Tir;
 
 import Utilitaires.CollisionBox;
+import Utilitaires.Spirale;
+import Utilitaires.TickHorloge;
 
 
 /*
@@ -18,6 +22,8 @@ import Utilitaires.CollisionBox;
 
 public abstract class TowerType 
 {
+	private GlobalValues values_;
+	
 	//attribut commun à chaque tour
 	private Vector2 position_;  	//position dans le monde
 	private CollisionBox  bbox_; 	//boite de collision
@@ -34,6 +40,8 @@ public abstract class TowerType
 	protected boolean _air;		// tire sur les ennemies volant?
 	private Matrix3 mat_;		//Matrice de rotation
 	
+	protected TickHorloge countdown;		//compte a rebour pour tirer
+	
 	private ArrayList<Integer> cases_adj;//cases adjacentes en fonction du range
 	
 	public TowerType()
@@ -45,7 +53,7 @@ public abstract class TowerType
 	
 	
 	public TowerType(int cout, int att_speed,int damage, int range,int h, int w,int air,int num_txt, String nom, CollisionBox box )
-	{
+	{	
 	//	position_= new Vector2(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
 		
 		if(h>=0)
@@ -96,14 +104,90 @@ public abstract class TowerType
 		if(num_txt >=0)
 			num_texture_ = num_txt;
 		else
-			num_texture_ =0;		
+			num_texture_ =0;	
+		
+		countdown = new TickHorloge(this._attspeed);//en ms
 	}
 	
 		
 	//methode appelée pour tireer sur les mobs (implémentée par les classes filles)
 	public  boolean onExecute()
 	{
+		values_ = GlobalValues.getInstance();
 		
+		//recherche ennemi
+		int size =0;
+		Mobs cible = null;
+		boolean trouve = false;
+		if(cases_adj!=null)
+		{
+			size =0;
+			trouve = false;
+			//pour chaque case adjacente faire
+			/*for(int i=0;i<cases_adj.size();i++)
+			{
+				System.err.print("  "+cases_adj.get(i));
+			}*/
+			
+		//	System.err.println("");
+			for(int i=0;i<cases_adj.size();i++)
+			{
+				//recuperer la taille
+				size = values_.carte()[cases_adj.get(i)].getMobs_size_();
+			//	System.err.println(cases_adj.get(i)+"  "+size);
+				//si case > 0, pour chaque ennemi present dans la case faire...
+				for(int j=0;j<size;j++)
+				{
+					//System.err.println("tir1");
+					// si il est vol on passe au suivant sinon on enregistre l'ennemi a viser
+					if(values_.carte()[cases_adj.get(i)].getMobs_().get(j).getAir()==false) 
+					{
+						trouve = true;
+						cible = values_.carte()[cases_adj.get(i)].getMobs_().get(j);
+						break;
+					}
+				}
+				
+				//on a trouvé
+				if(trouve == true)
+					break;
+			}
+		}
+		else
+		{
+			Vector3 p = new Vector3(this.position().x,this.position().y,0);
+			cases_adj = new ArrayList<Integer>( Spirale.adjacente2( values_.size_Px(), new Vector2(p.x,p.y), values_.size_n(), values_.size_m(), (int)this.get_range()));
+		}
+		
+		//rotation
+		//si on a trouver une cible : tourner la tour vers la cible et tiré si en face etsi c'est possible
+		if(trouve == true)
+		{
+			//rotation?
+			//tir
+			if(countdown==null)
+				countdown = new TickHorloge(_attspeed);
+			
+			if(this.countdown.tick() && cible != null) // on peux tirer
+			{
+				Vector2 AB = new Vector2(cible.getPosition_().x - position_.x, cible.getPosition_().y - position_.y);
+
+				if(values_.getPile_shot_().size()>0)
+				{}
+				else
+				{
+					//duplication
+					Tir t = new Tir(values_.tir_Modele_());
+					//parametrage
+					
+					//t.init(this._damage, this.position_, vitesse, time, time_destruction);
+					
+					//lancement
+					values_.shots().add(t);
+				}
+				
+			}
+		}
 		
 		return false;
 	}

@@ -35,8 +35,6 @@ public class TowerZone extends TowerType
 
 	public  boolean onExecute()
 	{
-		
-		
-		return false;
+		return super.onExecute();
 	}
 }

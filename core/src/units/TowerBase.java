@@ -31,9 +31,7 @@ public class TowerBase extends TowerType
 
 	public  boolean onExecute()
 	{
-		
-		
-		return false;
+		return super.onExecute();
 	}
 	
 	/*public TowerBase(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {

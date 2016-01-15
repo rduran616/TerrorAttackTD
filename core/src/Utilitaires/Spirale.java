@@ -86,8 +86,11 @@ public class Spirale
 		Direction dir = Direction.DROITE;
 		int x = (int) (lastPoint.x/pas);
 		int y = (int) (lastPoint.y/pas);
-		int cell =(int) ((y * m) + x);
+		int cell =(int) ((x * m) + y);
 		adj.add(cell);
+		
+		
+		System.err.println("case depart = "+cell);
 		
 		for (int a = 0; a < num_couche; a++)
 		{     
@@ -103,7 +106,8 @@ public class Spirale
 	                //calcul case
 	                x = (int) (newPoint.x/pas);
 					y = (int) (newPoint.y/pas);
-					cell =(int) ((y * m) + x);
+					//cell =(int) ((y * m) + x);
+					cell =(int) ((x * m) + y);
 					//test case
 					cell  = test_cellule(cell, n,  m, dir);
 					//si != -1 on ajoute
@@ -175,13 +179,24 @@ public class Spirale
 	{	    
 		int[] tab=
 			{
-					00,01,02,03,04,05,06,07,
+					/*00,01,02,03,04,05,06,07,
 					8,9,10,11,12,13,14,15,
 					16,17,18,19,20,21,22,23,
 					24,25,26,27,28,29,30,31,
 					32,33,34,35,36,37,38,39,
 					40,41,42,43,44,45,46,47,
-					48,49,50,51,52,53,54,55
+					48,49,50,51,52,53,54,55*/
+					
+					
+					0,8,16,24,32,40,48,
+					1,9,17,25,33,41,49,
+					2,10,18,26,34,42,50,
+					3,11,19,27,35,43,51,
+					4,12,20,28,36,44,52,
+					5,13,21,29,37,45,53,
+					6,14,22,30,38,46,54,
+					7,15,23,31,39,47,55
+					
 			};
 		
 		int range = 2;

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.math.Vector2;
 
 import Utilitaires.Noeud;
+import units.Mobs;
 import units.TowerType;
 
 /*
@@ -32,7 +33,7 @@ public final class CellMap
 	private ArrayList<Integer> obstacle_;
 	private ArrayList<TowerType> units_;
 	private ArrayList<Integer> chemin_;
-	private ArrayList<Integer> mobs_;
+	private ArrayList<Mobs> mobs_;
 	
 	private TypeObjet type;
 	
@@ -41,7 +42,7 @@ public final class CellMap
 	
 	//une cellule de carte
 	//map_x = taille de la carte en x en px
-	public CellMap(int map_x, int map_y,int num_case,int n, int m, int size, ArrayList<Integer> ob,ArrayList<TowerType> u,ArrayList<Integer> c,ArrayList<Integer> mobs )
+	public CellMap(int map_x, int map_y,int num_case,int n, int m, int size, ArrayList<Integer> ob,ArrayList<TowerType> u,ArrayList<Integer> c,ArrayList<Mobs> mobs )
 	{
 
 		int col =m;
@@ -86,7 +87,7 @@ public final class CellMap
 			setMobs_size_(mobs.size());
 		}
 		else 
-			setMobs_(new ArrayList<Integer>());
+			setMobs_(new ArrayList<Mobs>());
 		
 		noeud = new Noeud();
 		noeud.set_Case(num_case);
@@ -227,12 +228,30 @@ public final class CellMap
 	}
 
 
-	public ArrayList<Integer> getMobs_() {
+	public ArrayList<Mobs> getMobs_() 
+	{
+		if(mobs_==null)
+		{
+			mobs_ = new ArrayList<Mobs>();
+			mobs_size_ = 0;
+		}
+		
 		return mobs_;
 	}
 
+	public void addMob(Mobs i) 
+	{
+		this.mobs_size_++;
+		this.mobs_.add(i);
+	}
+	
+	public void rmMob(int i) 
+	{
+		this.mobs_size_--;
+		this.mobs_.remove(i);
+	}
 
-	public void setMobs_(ArrayList<Integer> mobs_) {
+	public void setMobs_(ArrayList<Mobs> mobs_) {
 		this.mobs_ = mobs_;
 	}
 

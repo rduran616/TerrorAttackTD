@@ -26,6 +26,7 @@ public abstract class Mobs
 	private int size_h_;		 	//taille du sprite en height
 	private int size_w_; 			//taille du sprite en width
 	private int index;				//index de la position de l'objet dans la cellule position/taille cellule
+	private int index_carte_;		//index dans le tableau du tab mob dans la case
 	private int num_texture_;		//numero de la texture
 	private int num_direction_;		//direction que prend le mob 
 	private float time_;			//tps pour jouer animation
@@ -129,12 +130,7 @@ public abstract class Mobs
 	}
 	
 	
-	public int[] get_adjacentes()
-	{
-		
-		return null;
-	}
-	
+
 	public abstract void execute();
 	
 	public abstract void destruction();
@@ -284,5 +280,16 @@ public abstract class Mobs
 	}
 	
 	public void add_Time(float time){time_+=time;}
+
+
+	public int index_carte() 
+	{
+		return index_carte_;
+	}
+	
+	public void index_carte(int i) 
+	{
+		index_carte_= i;
+	}
 
 }

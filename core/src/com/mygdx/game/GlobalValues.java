@@ -59,6 +59,7 @@ public final class GlobalValues
 		super();
 		load();
 		pile_mobs_ = new Stack<Mobs>();
+		pile_shot_ = new Stack<Tir>();
 	}
 
 	
@@ -90,10 +91,11 @@ public final class GlobalValues
 	
 	//sprites
 	private SpriteConteneurAnimation mobs_sprite_;		//images des mobs
-	private SpriteConteneur tower_sprite_;		//images des tours
+	private SpriteConteneur tower_sprite_;				//images des tours
+	private SpriteConteneurAnimation shot_sprites_;		//image des tirs
 	private float time = 0.2f;
 
-	//modele d'ennemi et de tour
+	//modele d'ennemi, tour et shoot
 	private TowerAir t_air_modele_;
 	private TowerBase t_base_modele_;
 	private TowerZone t_zone_modele_;
@@ -105,6 +107,8 @@ public final class GlobalValues
 	private MobsBoss m_boss_modele_;
 	private MobsLourd m_lourd_modele_;
 	
+	private Tir tir_modele_;
+	
 	
 	//carte
 	private int ennemi_max_=1000;				//nombre max d'ennemi
@@ -113,12 +117,14 @@ public final class GlobalValues
 	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
 	//private ArrayList<TowerType> liste_tours;	//liste des tours placées
 	private ArrayList<Mobs> liste_mobs;			//liste des mobs à afficher
-	private Stack<Mobs> pile_mobs_;				//pile contenant les mobs créé mais plus utilisé
+	private Stack<Mobs> pile_mobs_;				//pile contenant les mobs créés mais plus utilisé
+	private Stack<Tir> pile_shot_;				//pile contenant les tirs créés mais plus utilisé
+	private ArrayList<Tir> liste_shots_;		//liste des balles tiré en cours
 	private String carte_name_;					//nom ou chemin de la carte
 	private int index_unit_selection_;
 	private boolean recalculerChemin_ = false;
 	
-	//private Texture img_;  						//texture carte
+	//private Texture img_;  					//texture carte
 	private TiledMap tiledMap_; 				//carte
 	private TiledMapRenderer tiledMapRenderer_;	//rendu de la carte
 	private MapProperties prop_;				//propriétés de la carte
@@ -126,14 +132,14 @@ public final class GlobalValues
     //gestion de la caméra
 	private OrthographicCamera camera_;			//camera principale
 	private double zoom_max_ = 1f;				//control du zoom max
-	private double zoom_min_ = 0.1f;				//control du zoom min
+	private double zoom_min_ = 0.1f;			//control du zoom min
 	private SpriteBatch batch;
     
     //gestion de la boucle du jeu
 	private int argent_;
 	private int vie_;
 	private Status status_; //status indiquant si on peux créé ou non un objet
-	
+	private float  vitesse_projectil_ = 1 ; //x case par sec
 
 		
 	/**** Méthodes *****/
@@ -312,7 +318,7 @@ public final class GlobalValues
 	//chargement/rechargement des ellements visuel du jeux
 	public ErrorEnum reload_asset()
 	{
-		System.err.println("reload");
+		System.err.println("reload_asset");
 		//creation d'un skin ( fond des boutons )
 		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
 		get_Units_Model();
@@ -322,7 +328,7 @@ public final class GlobalValues
 	
 	public ErrorEnum load()
 	{
-		System.err.println("reload");
+		System.err.println("load");
 		
 		height_ = Gdx.graphics.getHeight();
 		width_ 	= Gdx.graphics.getWidth();
@@ -338,6 +344,7 @@ public final class GlobalValues
 		}*/
 		
 		liste_mobs = new ArrayList<Mobs>();//[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
+		liste_shots_ = new ArrayList<Tir>();
 
 		argent_ = 100; //pas ici
 		vie_ = 100; //pas ici
@@ -357,6 +364,7 @@ public final class GlobalValues
 			
 			mobs_sprite_  = new SpriteConteneurAnimation("Config/units.xml", "mobs", "src_andro",TypeFlag.FILEHANDLE_INTERNAL,4,4,time);
 			tower_sprite_ = new SpriteConteneur("Config/units.xml", "tower", "src_andro",TypeFlag.FILEHANDLE_INTERNAL);
+			shot_sprites_ = new SpriteConteneurAnimation("Config/units.xml","tir","src_andro",TypeFlag.FILEHANDLE_INTERNAL,12,1,time);
 			
 			ReadInternalXML xml = new ReadInternalXML("Config/units.xml");
 			CollisionBox bbox; 
@@ -386,7 +394,7 @@ public final class GlobalValues
 				
 			} 
 			
-			Integer.parseInt(xml.get_Attribute("tower","value"));
+			nb = Integer.parseInt(xml.get_Attribute("tower","value"));
 			for(int i=0; i < nb; i++)
 			{
 				String n =xml.get_Child_Attribute("tower", "name", i);
@@ -412,12 +420,27 @@ public final class GlobalValues
 					t_zone_modele_ = new TowerZone(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				
 			} 
+			
+			nb = Integer.parseInt(xml.get_Attribute("tir","value"));
+			for(int i=0; i < nb; i++)
+			{
+				String n =xml.get_Child_Attribute("tir", "name", i);
+				int h= Integer.parseInt(xml.get_Child_Attribute("tir", "h", i));
+				int w= Integer.parseInt(xml.get_Child_Attribute("tir", "w", i));
+				int n_txt=Integer.parseInt(xml.get_Child_Attribute("tir", "n_texture", i));
+				int nb_anim=Integer.parseInt(xml.get_Child_Attribute("tir", "nb_anim", i));
+				
+				bbox = new CollisionBox(0,0,w,h);
+				tir_modele_ = new Tir(n,h,w,n_txt,0,bbox,nb_anim);
+			} 
 		}
 		else
 		{
 			ReadXml xml = new ReadXml("../android/assets/Config/units.xml");
 			mobs_sprite_  = new SpriteConteneurAnimation("../android/assets/Config/units.xml", "mobs", "src_desk",TypeFlag.PATH,4,4,time);
 			tower_sprite_ = new SpriteConteneur("../android/assets/Config/units.xml", "tower","src_desk",TypeFlag.PATH);
+			shot_sprites_ = new SpriteConteneurAnimation("../android/assets/Config/units.xml","tir","src_desk",TypeFlag.FILEHANDLE_INTERNAL,12,1,time);
+			
 			CollisionBox bbox;
 
 			for(int i=0; i < xml.node_Item_Child_Number("mobs"); i++)
@@ -470,6 +493,18 @@ public final class GlobalValues
 				else if(n.equals("zone"))
 					t_zone_modele_ = new TowerZone(money,vit,power,range,h,w,air,n_txt,n,bbox);
 				
+			} 
+			
+			for(int i=0; i < xml.node_Item_Child_Number("tir"); i++)
+			{
+				String n =xml.get_Sub_Node_Item(i, "tir", "name");
+				int h= Integer.parseInt(xml.get_Sub_Node_Item(i,"tir", "h"));
+				int w= Integer.parseInt(xml.get_Sub_Node_Item(i,"tir", "w"));
+				int n_txt=Integer.parseInt(xml.get_Sub_Node_Item(i,"tir", "n_texture"));
+				int nb_anim=Integer.parseInt(xml.get_Sub_Node_Item(i,"tir", "nb_anim"));
+				
+				bbox = new CollisionBox(0,0,w,h);
+				tir_modele_ = new Tir(n,h,w,n_txt,0,bbox,nb_anim);
 			} 
 		}
 	}
@@ -577,6 +612,56 @@ public final class GlobalValues
 
 	public void setT_temporaire_(TowerType t_temporaire_) {
 		this.t_temporaire_ = t_temporaire_;
+	}
+
+
+	public float vitesse_Projectil() {
+		return vitesse_projectil_;
+	}
+
+
+	public void vitesse_Projectil(float vitesse_projectil_) {
+		this.vitesse_projectil_ = vitesse_projectil_;
+	}
+
+
+	public Stack<Tir> getPile_shot_() {
+		return pile_shot_;
+	}
+
+
+	public void setPile_shot_(Stack<Tir> pile_shot_) {
+		this.pile_shot_ = pile_shot_;
+	}
+
+
+	public ArrayList<Tir> shots() {
+		return liste_shots_;
+	}
+
+
+	public void shots(ArrayList<Tir> liste_shots_) {
+		this.liste_shots_ = liste_shots_;
+	}
+
+
+	public Tir tir_Modele_() {
+		return tir_modele_;
+	}
+
+
+	public void tir_Modele_(Tir tir_modele_) {
+		this.tir_modele_ = tir_modele_;
+	}
+
+
+	public SpriteConteneurAnimation shots_Sprite_() {
+		return shot_sprites_;
+	}
+
+
+	public void shots_Sprite_(SpriteConteneurAnimation shots_sprite_) {
+		this.shot_sprites_ = shots_sprite_;
 	}
 
 	
