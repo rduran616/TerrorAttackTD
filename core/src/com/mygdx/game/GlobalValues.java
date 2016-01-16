@@ -347,7 +347,7 @@ public final class GlobalValues
 		liste_shots_ = new ArrayList<Tir>();
 
 		argent_ = 100; //pas ici
-		vie_ = 100; //pas ici
+		vie_ = 1000; //pas ici
 		status_ = Status.POSITIONNE;
 		
 		get_Units_Model();
@@ -382,7 +382,7 @@ public final class GlobalValues
 				int n_txt=Integer.parseInt(xml.get_Child_Attribute("mobs", "n_texture", i));
 				
 				bbox = new CollisionBox(0,0,w,h);
-				//System.err.println(n);
+//				System.err.println("vie ="+vie);
 				if(n.equals("air"))
 					m_air_modele_= new MobsAir(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("basic"))
@@ -455,7 +455,7 @@ public final class GlobalValues
 				int air=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "air"));
 				int n_txt=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "n_texture"));
 
-				
+				//System.err.println("vie ="+vie);
 				bbox = new CollisionBox(0,0,w,h);
 				
 				if(n.equals("air"))

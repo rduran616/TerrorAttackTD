@@ -28,7 +28,8 @@ public class TdJeu extends StateJeu
 	StateJeuEnum selection_;
 	SpriteBatch sb_;
 	int num_vague_=1;
-	double rythme_creation_mobs_ = 1000; //en msseconde
+	double rythme_creation_mobs_min = 1000; //en msseconde
+	double rythme_creation_mobs_max= 10000; //en msseconde
 	VagueRand vague_;
 	TickHorloge tick_;
 	Noeud depart;
@@ -44,9 +45,9 @@ public class TdJeu extends StateJeu
 		
 		sb_ = new SpriteBatch();
 		num_vague_=1;
-		rythme_creation_mobs_ =5000; //en msseconde
+		//rythme_creation_mobs_ =5000; //en msseconde
 		
-		tick_ = new TickHorloge(rythme_creation_mobs_);
+		tick_ = new TickHorloge(rythme_creation_mobs_min);
 		
 		vague_ = VagueRand.get_Instance();
 		
@@ -101,95 +102,95 @@ public class TdJeu extends StateJeu
 				//air
 				case 0:
 					//verification de la disponibilité
-					if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
-					{
+					//if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
+					//{
 						//copie
-						MobsAir mob = new MobsAir(values_.m_air_modele_());
+						MobsAir mob0 = new MobsAir(values_.m_air_modele_());
 						//placement dans la map
-						mob.setPosition_(position);
-						mob.index_chemin_= chemin.size()-1;
+						mob0.setPosition_(position);
+						mob0.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						//values_.mobs().add(mob);
-						values_.carte()[depart.case_()].addMob(mob);
+						values_.carte()[depart.case_()].addMob(mob0);
 						
-					}
-					else //sinon le prendre de la file
+					//}
+					/*else //sinon le prendre de la file
 					{
 						//dépile
 						//init
 						//placement dans la map
 						//placement dans la liste
-					}
+					}*/
 					
 				break;
 				
 				//basic
 				case 1:
 					//verification de la disponibilité
-					if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
-					{
+					//if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
+					//{
 						//copie
-						MobsBasic mob = new MobsBasic(values_.m_basic_modele_());
+						MobsBasic mob1 = new MobsBasic(values_.m_basic_modele_());
 						//placement dans la map
-						mob.setPosition_(position);
-						mob.index_chemin_= chemin.size()-1;
+						mob1.setPosition_(position);
+						mob1.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						//values_.mobs().add(mob);
-						values_.carte()[depart.case_()].addMob(mob);
-					}
-					else //sinon le prendre de la file
+						values_.carte()[depart.case_()].addMob(mob1);
+				//	}
+				/*	else //sinon le prendre de la file
 					{
 						//dépile
 						//init
 						//placement dans la map
 						//placement dans la liste
-					}
+					}*/
 				break;
 				
 				//lourd
 				case 2:
 					//verification de la disponibilité
-					if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
-					{
+				//	if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
+					//{
 						//copie
-						MobsBoss mob = new MobsBoss(values_.m_boss_modele_());
+						MobsBoss mob2 = new MobsBoss(values_.m_boss_modele_());
 						//placement dans la map
-						mob.setPosition_(position);
-						mob.index_chemin_= chemin.size()-1;
+						mob2.setPosition_(position);
+						mob2.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						//values_.mobs().add(mob);
-						values_.carte()[depart.case_()].addMob(mob);
-					}
-					else //sinon le prendre de la file
+						values_.carte()[depart.case_()].addMob(mob2);
+					//}
+					/*else //sinon le prendre de la file
 					{
 						//dépile
 						//init
 						//placement dans la map
 						//placement dans la liste
-					}
+					}*/
 				break;
 				
 				//boss
 				case 3:
 					//verification de la disponibilité
-					if(values_.pile_Mobs_().isEmpty() == true) //si non disponible le copier
-					{
+				//	if(values_.pile_Mobs_().isEmpty() == true) //si non disponible le copier
+				//	{
 						//copie
-						MobsLourd mob = new MobsLourd(values_.m_lourd_modele_());
+						MobsLourd mob3 = new MobsLourd(values_.m_lourd_modele_());
 						//placement dans la map
-						mob.setPosition_(position);
-						mob.index_chemin_= chemin.size()-1;
+						mob3.setPosition_(position);
+						mob3.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						//values_.mobs().add(mob);
-						values_.carte()[depart.case_()].addMob(mob);
-					}
-					else //sinon le prendre de la file
-					{
+						values_.carte()[depart.case_()].addMob(mob3);
+				//	}
+				//	else //sinon le prendre de la file
+				//	{
 						//dépile
 						//init
 						//placement dans la map
 						//placement dans la liste
-					}
+				//	}
 				break;
 				
 				default:
@@ -197,6 +198,11 @@ public class TdJeu extends StateJeu
 					break;
 			}
 			
+		}
+		else
+		{
+			double tps  = rythme_creation_mobs_min + Math.random()%rythme_creation_mobs_max;
+			tick_.range(tps);
 		}
 		
 		
@@ -215,6 +221,7 @@ public class TdJeu extends StateJeu
 		    {
 		    	for(int j = 0; j <values_.carte()[i].getMobs_size_();j++ )
 		    	{
+		    		//try{
 			    	Mobs m = values_.carte()[i].getMobs_().get(j);
 			    	Vector2 position = new Vector2();
 			    	
@@ -254,9 +261,15 @@ public class TdJeu extends StateJeu
 			    		else // on est arrivé
 			    		{
 			    			//si arrivé destructionp
-			    			//m.execute();
+			    			values_.vie(values_.vie()-m.getDegat_());
+			    			if(values_.vie()<=0)
+			    				selection_ = StateJeuEnum.FIN;
+			    			
+							values_.pile_Mobs_().push(m);
+							values_.carte()[i].remove_Mobs(j);
 			    		}
 			    	}
+		    	//}catch(Exception e){System.err.println("erreur tdjeux ia mob : "+e);}
 		    	}
 		    }
 		    
@@ -285,6 +298,17 @@ public class TdJeu extends StateJeu
 					{
 						//Recuperation de la tour
 						mob = values_.carte()[i].getMobs_().get(k); 
+						//System.err.println("life ="+mob.getLife_());
+						
+						if(mob.subir_Degat(0)==false)
+						{
+							values_.argent(values_.argent()+mob.getMoney_());
+							values_.pile_Mobs_().push(mob);
+							values_.carte()[i].remove_Mobs(k);
+							
+							break;
+						}
+						
 						//dessin	
 						mob.add_Time(Gdx.graphics.getDeltaTime());
 						TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(mob.getNum_texture_(),mob.getNum_direction_()).getKeyFrame(mob.getTime_(), true);
@@ -327,17 +351,26 @@ public class TdJeu extends StateJeu
 			int size_shot = values_.shots().size();
 			for(int a=0;a < size_shot;a++)
 			{
-				try
-				{
-					//recuperation du mob
+				//try
+				//{
+					//recuperation du tir
 					Tir tir = new Tir();
 					tir = values_.shots().get(a);
-					boolean existePlus = tir.onExectute();
+					
+					
+					int c = values_.get_Index_Cellule((int)tir.position().x,(int)tir.position().y);
+					if(c<0 || c>= values_.size_m()*values_.size_n())
+						continue;
+
+					ArrayList<Mobs> case_mob =values_.carte()[c].getMobs_();
+					boolean existePlus = tir.onExectute(case_mob);
 					if(existePlus == true)
 					{
 						values_.shots().remove(a);
 						values_.getPile_shot_().push(tir);
+						break;
 					}
+	
 
 					//deplacement
 					//animation
@@ -345,11 +378,11 @@ public class TdJeu extends StateJeu
 					TextureRegion currentFrame2 = values_.shots_Sprite_().get_Animation(tir.num_Texture(),0).getKeyFrame(tir.time(), false);
 					//placement + dessin	
 					sb_.draw(currentFrame2,tir.position().x, tir.position().y);
-				}
+			/*	}
 				catch(Exception e)
 				{
 					System.err.println("tir dessin "+e);
-				}
+				}*/
 			}
 			
 			

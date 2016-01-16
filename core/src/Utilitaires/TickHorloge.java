@@ -71,6 +71,8 @@ public class TickHorloge
 	{
 		if(tps >=0)
 			range_ = tps;
+		else
+			range_ = 0;
 	}
 	
 	public double range(){return range_;}

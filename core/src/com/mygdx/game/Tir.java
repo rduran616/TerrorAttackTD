@@ -1,8 +1,11 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import Utilitaires.CollisionBox;
+import units.Mobs;
 
 public class Tir 
 {
@@ -67,17 +70,29 @@ public class Tir
 	}
 
 	
-	public boolean onExectute()
+	public boolean onExectute(ArrayList<Mobs> case_mob)
 	{
 		//test collision
 		
 		//changement position
 		position_.add(vitesse());
 		time_total_ -=Gdx.graphics.getDeltaTime()*1000;//passage en ms
-		System.err.println(time_total_);
+		//System.err.println(time_total_);
 		if(time_total_<0)
 		{
 			return true; //on supprime
+		}
+		else
+		{
+			for(int i =0; i <case_mob.size();i++)
+			{
+				if(this.bbox_.collision(case_mob.get(i).getBbox_()))
+				{
+					case_mob.get(i).subir_Degat(this.degat_);
+					System.err.println(this.degat_);
+					return true;
+				}			
+			}
 		}
 		
 		return false;

@@ -122,6 +122,15 @@ public final class CellMap
 		obstacle_.remove(index);
 	}
 	
+	public void remove_Mobs(int index)
+	{
+		mobs_size_--;
+		if(mobs_size_ < 0)
+			mobs_size_=0;
+		
+		mobs_.remove(index);
+	}
+	
 	public void remove_Unit(int index)
 	{
 		units_size_--;
@@ -230,6 +239,9 @@ public final class CellMap
 
 	public ArrayList<Mobs> getMobs_() 
 	{
+		if(mobs_size_ < 0)
+			mobs_size_=0;
+
 		if(mobs_==null)
 		{
 			mobs_ = new ArrayList<Mobs>();

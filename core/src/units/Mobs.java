@@ -40,7 +40,7 @@ public abstract class Mobs
 	{
 		setPosition_(new Vector2(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2));
 		num_direction_=0;
-		
+		//System.err.println("life ="+vie);
 		if(h>=0)
 			setSize_h_(h);
 		else
@@ -122,10 +122,12 @@ public abstract class Mobs
 	//fonction de perte de vie. test: EnVie()? si oui return true sinon faux
 	public boolean subir_Degat(int d)
 	{
-		degat_ -= d;
-		if(degat_ <= 0)
+		life_ -= d;
+		//System.err.println(life_);
+		if(life_ <= 0)
+		{
 			return false;
-		
+		}
 		return true;
 	}
 	
