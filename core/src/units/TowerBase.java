@@ -3,6 +3,7 @@ package units;
 import com.badlogic.gdx.math.Vector2;
 
 import Utilitaires.CollisionBox;
+import Utilitaires.StructureEnnemi;
 
 public class TowerBase extends TowerType 
 {
@@ -29,11 +30,10 @@ public class TowerBase extends TowerType
 	}
 
 
-	public  boolean onExecute()
+	public  StructureEnnemi onExecute( float speed)
 	{
-		return super.onExecute();
+		 return super.onExecute(speed);
 	}
-	
 	/*public TowerBase(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {
 		super(texture, bulletTexture, bulletSize, x, y);
 		// TODO Auto-generated constructor stub

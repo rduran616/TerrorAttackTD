@@ -3,6 +3,7 @@ package units;
 import com.badlogic.gdx.math.Vector2;
 
 import Utilitaires.CollisionBox;
+import Utilitaires.StructureEnnemi;
 
 public class TowerSlow extends TowerType {
 
@@ -28,10 +29,10 @@ public class TowerSlow extends TowerType {
 		 this.num_Texture(another.num_Texture());
 	}
 
-	public  boolean onExecute()
+	public  StructureEnnemi onExecute( float speed)
 	{
-		return super.onExecute();
-	}
+		 return super.onExecute(speed);
+		}
 
 	
 	

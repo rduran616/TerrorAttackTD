@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import Utilitaires.AStar;
 import Utilitaires.Noeud;
+import Utilitaires.StructureEnnemi;
 import Utilitaires.TickHorloge;
 import units.Mobs;
 import units.MobsAir;
@@ -43,7 +44,7 @@ public class TdJeu extends StateJeu
 		
 		sb_ = new SpriteBatch();
 		num_vague_=1;
-		rythme_creation_mobs_ =10000; //en msseconde
+		rythme_creation_mobs_ =5000; //en msseconde
 		
 		tick_ = new TickHorloge(rythme_creation_mobs_);
 		
@@ -277,8 +278,8 @@ public class TdJeu extends StateJeu
 			//dessin des tours -> parcours toutes la carte n*m
 			for(int i=0;i < values_.carte().length;i++)//pour chaque tour faire...
 			{
-			//	try
-			//	{
+				try
+				{
 					//pour chaque mob de la case faire...
 					for(int k=0; k < values_.carte()[i].getMobs_size_();k++)
 					{
@@ -296,38 +297,62 @@ public class TdJeu extends StateJeu
 					{
 						//Recuperation de la tour
 						t = values_.carte()[i].getUnits_().get(j); 
+						
+						
 						//tir + rotation
-						t.onExecute();
+						StructureEnnemi str = t.onExecute(2f);
+						if(str!=null)
+						{
+							//duplication
+							Tir tir = new Tir(values_.tir_Modele_());
+							//parametrage
+							Vector2 vitesse2 = new Vector2(1,1);
+							tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_);
+							//lancement
+							values_.shots().add(tir);
+							System.err.println("tir");
+						}
 						//dessin	
 						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 						values_.tower_sprite(t.num_Texture()).draw(sb_);
 					}	
-				/*}
+				}
 				catch(Exception e)
 				{
 					System.err.println("tour dessin "+e);
-				}*/
+				}
 			}
 						
 			//Dessin des tir
-			for(int i=0;i < values_.shots().size();i++)
+			int size_shot = values_.shots().size();
+			for(int a=0;a < size_shot;a++)
 			{
-				//System.err.println("mob size = "+values_.mobs().size());
 				try
 				{
 					//recuperation du mob
-					Tir s = values_.shots().get(i); //Recuperation du mob
+					Tir tir = new Tir();
+					tir = values_.shots().get(a);
+					boolean existePlus = tir.onExectute();
+					if(existePlus == true)
+					{
+						values_.shots().remove(a);
+						values_.getPile_shot_().push(tir);
+					}
+
+					//deplacement
 					//animation
-					s.add_Time(Gdx.graphics.getDeltaTime());
-					TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(s.num_Texture(),0).getKeyFrame(s.time(), true);
+					tir.add_Time(Gdx.graphics.getDeltaTime()*2);
+					TextureRegion currentFrame2 = values_.shots_Sprite_().get_Animation(tir.num_Texture(),0).getKeyFrame(tir.time(), false);
 					//placement + dessin	
-					sb_.draw(currentFrame,s.position().x, s.position().y);
+					sb_.draw(currentFrame2,tir.position().x, tir.position().y);
 				}
 				catch(Exception e)
 				{
 					System.err.println("tir dessin "+e);
 				}
 			}
+			
+			
 			
 			//affichage de la tour en cours de placement
 			t = values_.getT_temporaire_();
@@ -336,9 +361,6 @@ public class TdJeu extends StateJeu
 				values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 				values_.tower_sprite(t.num_Texture()).draw(sb_);
 			}
-			
-
-			//dessin des projectiles
 			
 			//dessin des particules
 			

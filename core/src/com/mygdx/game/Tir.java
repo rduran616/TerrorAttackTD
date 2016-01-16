@@ -1,8 +1,7 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-
 import Utilitaires.CollisionBox;
 
 public class Tir 
@@ -14,6 +13,7 @@ public class Tir
 	
 	private Vector2 position_;  	//position dans le monde
 	private Vector2 vitesse_;		//vecteur vitesse de deplcament
+	public float vitesse_projectil_;
 	
 	private float time_changement_anim; //temps entre chaque animation (?)
 	private float time_actu_;			//temps actuel (?)
@@ -52,6 +52,10 @@ public class Tir
 		max_texture_ = modele.max_texture_;
 	}
 
+	public Tir() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void init(int degat, Vector2 position, Vector2 vitesse, float time, float time_destruction)
 	{
 		position(position);
@@ -63,7 +67,21 @@ public class Tir
 	}
 
 	
-	
+	public boolean onExectute()
+	{
+		//test collision
+		
+		//changement position
+		position_.add(vitesse());
+		time_total_ -=Gdx.graphics.getDeltaTime()*1000;//passage en ms
+		System.err.println(time_total_);
+		if(time_total_<0)
+		{
+			return true; //on supprime
+		}
+		
+		return false;
+	}
 	
 	
 	
@@ -128,8 +146,5 @@ public class Tir
 	public void time(float t){ time_ = t;}
 	
 
-	public void add_Time(float deltaTime) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void add_Time(float deltaTime) {time_ += deltaTime;}
 }

@@ -119,7 +119,7 @@ public final class GlobalValues
 	private ArrayList<Mobs> liste_mobs;			//liste des mobs à afficher
 	private Stack<Mobs> pile_mobs_;				//pile contenant les mobs créés mais plus utilisé
 	private Stack<Tir> pile_shot_;				//pile contenant les tirs créés mais plus utilisé
-	private ArrayList<Tir> liste_shots_;		//liste des balles tiré en cours
+	private ArrayList<Tir> liste_shots_ = null;		//liste des balles tiré en cours
 	private String carte_name_;					//nom ou chemin de la carte
 	private int index_unit_selection_;
 	private boolean recalculerChemin_ = false;
@@ -635,7 +635,13 @@ public final class GlobalValues
 	}
 
 
-	public ArrayList<Tir> shots() {
+	public ArrayList<Tir> shots() 
+	{
+		if(liste_shots_ == null)
+		{
+			liste_shots_ = new ArrayList<Tir>();
+		}
+		
 		return liste_shots_;
 	}
 

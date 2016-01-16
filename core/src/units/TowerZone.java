@@ -3,6 +3,7 @@ package units;
 import com.badlogic.gdx.math.Vector2;
 
 import Utilitaires.CollisionBox;
+import Utilitaires.StructureEnnemi;
 
 public class TowerZone extends TowerType 
 {
@@ -33,8 +34,9 @@ public class TowerZone extends TowerType
 	}
 
 
-	public  boolean onExecute()
+	public  StructureEnnemi onExecute( float speed)
 	{
-		return super.onExecute();
+		 return super.onExecute(speed);
 	}
+
 }
