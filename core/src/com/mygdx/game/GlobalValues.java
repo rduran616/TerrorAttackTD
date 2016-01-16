@@ -58,7 +58,11 @@ public final class GlobalValues
 	{
 		super();
 		load();
-		pile_mobs_ = new Stack<Mobs>();
+	//	pile_mobs_ = new Stack<Mobs>();
+		pile_mobs_air_ =  new Stack<MobsAir>();				//pile contenant les mobs créés mais plus utilisé
+		pile_mobs_base_ = new Stack<MobsBasic>();	
+		pile_mobs_lourd_ = new 	Stack<MobsLourd>();	
+		pile_mobs_boss_ = new Stack<MobsBoss>();	
 		pile_shot_ = new Stack<Tir>();
 	}
 
@@ -117,7 +121,12 @@ public final class GlobalValues
 	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
 	//private ArrayList<TowerType> liste_tours;	//liste des tours placées
 	private ArrayList<Mobs> liste_mobs;			//liste des mobs à afficher
-	private Stack<Mobs> pile_mobs_;				//pile contenant les mobs créés mais plus utilisé
+	public Stack<MobsAir> pile_mobs_air_;				//pile contenant les mobs créés mais plus utilisé
+	public Stack<MobsBasic> pile_mobs_base_;	
+	public Stack<MobsLourd> pile_mobs_lourd_;	
+	public Stack<MobsBoss> pile_mobs_boss_;	
+	
+	
 	private Stack<Tir> pile_shot_;				//pile contenant les tirs créés mais plus utilisé
 	private ArrayList<Tir> liste_shots_ = null;		//liste des balles tiré en cours
 	private String carte_name_;					//nom ou chemin de la carte
@@ -586,12 +595,12 @@ public final class GlobalValues
 
 
 	public Stack<Mobs> pile_Mobs_() {
-		return pile_mobs_;
+		return null;
 	}
 
 
 	public void pile_Mobs_(Stack<Mobs> pile_mobs_) {
-		this.pile_mobs_ = pile_mobs_;
+		//this.pile_mobs_ = pile_mobs_;
 	}
 
 

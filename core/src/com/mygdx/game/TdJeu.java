@@ -102,8 +102,8 @@ public class TdJeu extends StateJeu
 				//air
 				case 0:
 					//verification de la disponibilité
-					//if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
-					//{
+					if(values_.pile_mobs_air_.isEmpty()==true) //si non disponible le copier
+					{
 						//copie
 						MobsAir mob0 = new MobsAir(values_.m_air_modele_());
 						//placement dans la map
@@ -113,22 +113,15 @@ public class TdJeu extends StateJeu
 						//values_.mobs().add(mob);
 						values_.carte()[depart.case_()].addMob(mob0);
 						
-					//}
-					/*else //sinon le prendre de la file
-					{
-						//dépile
-						//init
-						//placement dans la map
-						//placement dans la liste
-					}*/
-					
+					}
+
 				break;
 				
 				//basic
 				case 1:
 					//verification de la disponibilité
-					//if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
-					//{
+					if(values_.pile_mobs_base_.isEmpty()==true) //si non disponible le copier
+					{
 						//copie
 						MobsBasic mob1 = new MobsBasic(values_.m_basic_modele_());
 						//placement dans la map
@@ -137,21 +130,15 @@ public class TdJeu extends StateJeu
 						//placement dans la liste
 						//values_.mobs().add(mob);
 						values_.carte()[depart.case_()].addMob(mob1);
-				//	}
-				/*	else //sinon le prendre de la file
-					{
-						//dépile
-						//init
-						//placement dans la map
-						//placement dans la liste
-					}*/
+					}
+
 				break;
 				
 				//lourd
 				case 2:
 					//verification de la disponibilité
-				//	if(values_.pile_Mobs_().isEmpty()==true) //si non disponible le copier
-					//{
+					if(values_.pile_mobs_boss_.isEmpty()==true) //si non disponible le copier
+					{
 						//copie
 						MobsBoss mob2 = new MobsBoss(values_.m_boss_modele_());
 						//placement dans la map
@@ -160,21 +147,15 @@ public class TdJeu extends StateJeu
 						//placement dans la liste
 						//values_.mobs().add(mob);
 						values_.carte()[depart.case_()].addMob(mob2);
-					//}
-					/*else //sinon le prendre de la file
-					{
-						//dépile
-						//init
-						//placement dans la map
-						//placement dans la liste
-					}*/
+					}
+
 				break;
 				
 				//boss
 				case 3:
 					//verification de la disponibilité
-				//	if(values_.pile_Mobs_().isEmpty() == true) //si non disponible le copier
-				//	{
+					if(values_.pile_mobs_lourd_.isEmpty() == true) //si non disponible le copier
+					{
 						//copie
 						MobsLourd mob3 = new MobsLourd(values_.m_lourd_modele_());
 						//placement dans la map
@@ -183,14 +164,8 @@ public class TdJeu extends StateJeu
 						//placement dans la liste
 						//values_.mobs().add(mob);
 						values_.carte()[depart.case_()].addMob(mob3);
-				//	}
-				//	else //sinon le prendre de la file
-				//	{
-						//dépile
-						//init
-						//placement dans la map
-						//placement dans la liste
-				//	}
+					}
+
 				break;
 				
 				default:
@@ -265,7 +240,7 @@ public class TdJeu extends StateJeu
 			    			if(values_.vie()<=0)
 			    				selection_ = StateJeuEnum.FIN;
 			    			
-							values_.pile_Mobs_().push(m);
+							//values_.pile_Mobs_().push(m);
 							values_.carte()[i].remove_Mobs(j);
 			    		}
 			    	}
@@ -303,7 +278,6 @@ public class TdJeu extends StateJeu
 						if(mob.subir_Degat(0)==false)
 						{
 							values_.argent(values_.argent()+mob.getMoney_());
-							values_.pile_Mobs_().push(mob);
 							values_.carte()[i].remove_Mobs(k);
 							
 							break;
@@ -327,14 +301,26 @@ public class TdJeu extends StateJeu
 						StructureEnnemi str = t.onExecute(2f);
 						if(str!=null)
 						{
-							//duplication
-							Tir tir = new Tir(values_.tir_Modele_());
-							//parametrage
-							Vector2 vitesse2 = new Vector2(1,1);
-							tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_);
-							//lancement
-							values_.shots().add(tir);
-							System.err.println("tir");
+							if(values_.getPile_shot_().size()>0)
+							{
+								//recuperation
+								Tir tir = values_.getPile_shot_().pop();
+								//initialisation
+								tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_);
+								//lancement
+								values_.shots().add(tir);
+							}
+							else
+							{
+								//duplication
+								Tir tir = new Tir(values_.tir_Modele_());
+								//parametrage
+								Vector2 vitesse2 = new Vector2(1,1);
+								tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_);
+								//lancement
+								values_.shots().add(tir);
+								//System.err.println("tir");
+							}
 						}
 						//dessin	
 						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
