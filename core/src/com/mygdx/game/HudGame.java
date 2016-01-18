@@ -48,6 +48,7 @@ public class HudGame
 	private int nb_mobs_; 	//nombre d'unité differente (typeenemi)
 	private int nb_towers_; //nombre de tower differente (typetower)  utile pour le hud jeu
 	private int nb_bonus_;	//nombre de bonus different
+	private int pourcent_vente_ = 50;
 	
 	
 	private int size_hud_ = 20;				//valeur en % de la taille du hud par rapport a l'ecran
@@ -71,6 +72,7 @@ public class HudGame
 //	private Stage stage_game_3;				//stage du jeu qd on place un objet
 	private Table main_layout_game_3;		//layout du mode placement 
 	private Label txt_info_2;
+	private Label txt_info_tour_vendre_;
 	private TextButton validate_2;
 	private TextButton cancel_2;
 	
@@ -238,12 +240,14 @@ public class HudGame
 		txt_info_2 = new Label("Vendre?", values_.get_Skin());
 		cancel_2 = new TextButton("Annuler", values_.get_Skin());
 		validate_2 = new TextButton("Valider", values_.get_Skin());
+		txt_info_tour_vendre_ = new Label("", values_.get_Skin());
 
 		cancel_2.addListener(new ClickListener()
 		{
 		       @Override
 		       public void clicked(InputEvent event, float x, float y)
 		       {
+		    	   values_.setT_temporaire_(null);
 		    	   	values_.status(Status.POSITIONNE);
 		       }
 		 });
@@ -269,7 +273,11 @@ public class HudGame
 		    		 {
 	    				if(values_.carte()[cellule].getUnits_().get(i).collision(box) == true)				
 						{
+	    					
 	    					values_.carte()[cellule].getUnits_().remove(i);
+	    					values_.argent(values_.argent() + values_.getT_temporaire_().cout() *  pourcent_vente_/100);
+	    					values_.setT_temporaire_(null);
+	    					
 							break;
 						}		
 		    		 }
@@ -291,7 +299,7 @@ public class HudGame
 		main_layout_game_3.add(txt_info_2).pad(pad_).row();
 		main_layout_game_3.add(validate_2).pad(pad_).row();
 		main_layout_game_3.add(cancel_2).pad(pad_).row();
-		
+		main_layout_game_3.add(txt_info_tour_vendre_).pad(pad_).row();
 		
 		stage_game_.addActor(argent_);
 		stage_game_.addActor(vie_);
@@ -344,6 +352,10 @@ public class HudGame
 		}
 		else
 		{
+			txt_info_tour_vendre_.setText("Tour: "+values_.getT_temporaire_().nom()+
+					"\nvente:"+values_.getT_temporaire_().cout()*pourcent_vente_/100);
+			
+			
 			main_table_game_.setVisible(false);
 			main_layout_game_2.setVisible(false);
 			main_layout_game_3.setVisible(true);

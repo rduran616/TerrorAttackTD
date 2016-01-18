@@ -268,6 +268,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 						values_.setIndex_unit_selection_(cell.get(i)); //cellule qui contient la collision
 						last_position_.x=pos.x;
 						last_position_.y=pos.y;
+						
+						values_.setT_temporaire_(values_.carte()[cell.get(i)].getUnits_().get(j));
 						trouve =true;
 						break;
 					}
