@@ -34,11 +34,11 @@ public abstract class TowerType
 	
 	private int num_texture_;	//numéro de la texture -> on accepte que le tableau de texture est parfaitement ordonnée
 	private String _nom; 		//nom de la tour
-	protected int _cout; 		//son cout
-	protected float _attspeed; 	//vitesse d'attaque
-	protected float _range; 	//rayon d'action
-	protected int _damage; 		//domage
-	protected boolean _air;		// tire sur les ennemies volant?
+	public int _cout; 		//son cout
+	public float _attspeed; 	//vitesse d'attaque
+	public float _range; 	//rayon d'action
+	public int _damage; 		//domage
+	public boolean _air;		// tire sur les ennemies volant?
 	private Matrix3 mat_;		//Matrice de rotation
 	
 	protected TickHorloge countdown;		//compte a rebour pour tirer

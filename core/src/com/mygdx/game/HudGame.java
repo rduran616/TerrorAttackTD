@@ -64,6 +64,7 @@ public class HudGame
 //	private Stage stage_game_2;				//stage du jeu qd on place un objet
 	private Table main_layout_game_2;		//layout du mode placement 
 	private Label txt_info_;
+	private Label txt_info_tour_;
 	private TextButton validate_;
 	private TextButton cancel_;
 	
@@ -156,12 +157,13 @@ public class HudGame
 		argent_.setPosition(values_.get_width()-argent_.getWidth(), values_.get_height()-40);
 		
 		
-		//deuxieme hud				
+		//deuxieme hud	-> placment tour			
 		main_layout_game_2 = new Table();		
 		txt_info_ = new Label("Placement :", values_.get_Skin());
 		cancel_ = new TextButton("Annuler", values_.get_Skin());
 		validate_ = new TextButton("Valider", values_.get_Skin());
-		
+		txt_info_tour_ = new Label("", values_.get_Skin());
+	
 		cancel_.addListener(new ClickListener()
 		{
 		       @Override
@@ -228,6 +230,7 @@ public class HudGame
 		main_layout_game_2.add(txt_info_).pad(pad_).row();
 		main_layout_game_2.add(validate_).pad(pad_).row();
 		main_layout_game_2.add(cancel_).pad(pad_).row();
+		main_layout_game_2.add(txt_info_tour_).pad(pad_).row();
 		
 
 		//troisième hud		
@@ -326,6 +329,15 @@ public class HudGame
 		}
 		else if(values_.status() == Status.NON_POSITIONNE)
 		{
+		
+			txt_info_tour_.setText("Tour: "+values_.getT_temporaire_().nom()+
+						"\ncout:"+values_.getT_temporaire_().cout()+
+						"\ndegat: "+values_.getT_temporaire_()._damage+
+						"\n spe: "+values_.getT_temporaire_()._attspeed/1000+
+						"\n range: "+values_.getT_temporaire_()._range+
+						"\n air: "+values_.getT_temporaire_()._air);
+	
+			
 			main_table_game_.setVisible(false);
 			main_layout_game_2.setVisible(true);
 			main_layout_game_3.setVisible(false);
