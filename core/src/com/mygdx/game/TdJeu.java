@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import Utilitaires.AStar;
 import Utilitaires.Noeud;
+import Utilitaires.ParticleEffectActor;
 import Utilitaires.StructureEnnemi;
 import Utilitaires.TickHorloge;
 import units.Mobs;
@@ -39,16 +40,22 @@ public class TdJeu extends StateJeu
 	
 	ParticleEffect particle_effect_sang;
 	ParticleEffect particle_effect_fumee;
-		
+	ArrayList<ParticleEffect> actor1;
+	ArrayList<ParticleEffect> actor2;
+	
 	public TdJeu()
 	{
+	      
 		//init des particules
 		particle_effect_sang = new ParticleEffect();
 		particle_effect_fumee = new ParticleEffect();
 		
 		particle_effect_sang.load(Gdx.files.internal("particle/sang_particle"), Gdx.files.internal("particle_img")); 
 		//files.internal loads from the "assets" folder
-		particle_effect_fumee.load(Gdx.files.internal("particle/fumee_particle"), Gdx.files.internal("particle_img"));
+		particle_effect_fumee.load(Gdx.files.internal("particle/explosion.p"), Gdx.files.internal("particle_img"));
+		
+		actor1 = new ArrayList<ParticleEffect>();
+		actor2 = new ArrayList<ParticleEffect>();
 		
 		//initialisation des variables
 		selection_ = StateJeuEnum.JEU;
@@ -274,13 +281,6 @@ public class TdJeu extends StateJeu
 			sb_.setProjectionMatrix(values_.camera().combined);//mise à jour de la matrice de projection du batch pour redimentionnement des sprites
 
 
-			
-
-			particle_effect_sang.update(Gdx.graphics.getDeltaTime());
-			particle_effect_fumee.update(Gdx.graphics.getDeltaTime());
-			particle_effect_sang.setPosition(571,449);
-			particle_effect_sang.draw(sb_,Gdx.graphics.getDeltaTime());
-						
 			//dessin des tours -> parcours toutes la carte n*m
 			for(int i=0;i < values_.carte().length;i++)//pour chaque tour faire...
 			{
@@ -340,6 +340,11 @@ public class TdJeu extends StateJeu
 								//System.err.println("tir");
 							}
 						}
+						
+						
+						
+						
+						
 						//dessin	
 						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 						values_.tower_sprite(t.num_Texture()).draw(sb_);
@@ -371,18 +376,19 @@ public class TdJeu extends StateJeu
 					if(existePlus >= 0)//on suprime
 					{
 						//emission de particle
-						
 						if(existePlus==0) //fumée
 						{
-							System.err.println("fumméé");
-							/*particle_effect_fumee.setPosition(tir.position().x,tir.position().y);
-							particle_effect_fumee.draw(sb_,Gdx.graphics.getDeltaTime());*/
+							//System.err.println("fumméé");
+							actor2.add( new ParticleEffect(particle_effect_fumee));
+							actor2.get(actor2.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
+							actor2.get(actor2.size()-1).start();
 						}
 						else//sang
 						{
-							System.err.println("sang");
-							/*particle_effect_sang.setPosition(tir.position().x,tir.position().y);
-							particle_effect_sang.draw(sb_,Gdx.graphics.getDeltaTime());*/
+							//System.err.println("sang");
+							actor1.add( new ParticleEffect(particle_effect_sang));
+							actor1.get(actor1.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
+							actor1.get(actor1.size()-1).start();
 						}
 						
 						values_.shots().remove(a);
@@ -409,7 +415,6 @@ public class TdJeu extends StateJeu
 			}
 			
 			
-			
 			//affichage de la tour en cours de placement
 			t = values_.getT_temporaire_();
 			if(t!=null)
@@ -417,10 +422,32 @@ public class TdJeu extends StateJeu
 				values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 				values_.tower_sprite(t.num_Texture()).draw(sb_);
 			}
+			sb_.end();
 			
 			//dessin des particules
-			
-			
+			sb_.begin();
+	      	for(int i=0;i < actor1.size();i++)
+			{
+				actor1.get(i).update(Gdx.graphics.getDeltaTime());
+				actor1.get(i).draw(sb_);
+				if (actor1.get(i).isComplete())
+				{
+					actor1.get(i).reset();
+					actor1.remove(i);
+				}
+			}
+	      	sb_.end();
+	      	sb_.begin();
+			for(int i=0;i < actor2.size();i++)
+			{
+				actor2.get(i).update(Gdx.graphics.getDeltaTime());
+				actor2.get(i).draw(sb_);
+				if (actor2.get(i).isComplete())
+				{
+					actor2.get(i).reset();
+					actor2.remove(i);
+				}
+			}
 			sb_.end();
 		}
 

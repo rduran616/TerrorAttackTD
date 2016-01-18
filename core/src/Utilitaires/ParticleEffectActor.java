@@ -13,7 +13,7 @@ public class ParticleEffectActor extends Actor
 	      this.effect = effect;
 	   }
 
-	   public void draw(SpriteBatch batch, float parentAlpha) {
+	   public void draw(SpriteBatch batch) {
 	      effect.draw(batch); //define behavior when stage calls Actor.draw()
 	   }
 
