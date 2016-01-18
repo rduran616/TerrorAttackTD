@@ -71,7 +71,7 @@ public class Tir
 	}
 
 	
-	public boolean onExectute(ArrayList<Mobs> case_mob)
+	public int onExectute(ArrayList<Mobs> case_mob)
 	{
 		//test collision
 		
@@ -81,7 +81,7 @@ public class Tir
 		//System.err.println(time_total_);
 		if(time_total_<0)
 		{
-			return true; //on supprime
+			return 0; //on supprime car touché personne
 		}
 		else
 		{
@@ -91,12 +91,12 @@ public class Tir
 				{
 					case_mob.get(i).subir_Degat(this.degat_);
 					System.err.println(this.degat_);
-					return true;
+					return 1; //toucher
 				}			
 			}
 		}
 		
-		return false;
+		return -1; //en route
 	}
 	
 	

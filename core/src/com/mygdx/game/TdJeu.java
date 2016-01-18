@@ -29,7 +29,7 @@ public class TdJeu extends StateJeu
 	StateJeuEnum selection_;
 	SpriteBatch sb_;
 	int num_vague_=1;
-	double rythme_creation_mobs_min = 1000; //en msseconde
+	double rythme_creation_mobs_min = 5000; //en msseconde
 	double rythme_creation_mobs_max= 10000; //en msseconde
 	VagueRand vague_;
 	TickHorloge tick_;
@@ -46,9 +46,9 @@ public class TdJeu extends StateJeu
 		particle_effect_sang = new ParticleEffect();
 		particle_effect_fumee = new ParticleEffect();
 		
-		particle_effect_sang.load(Gdx.files.internal("particle/sang_particle"), Gdx.files.internal("effects")); 
+		particle_effect_sang.load(Gdx.files.internal("particle/sang_particle"), Gdx.files.internal("particle_img")); 
 		//files.internal loads from the "assets" folder
-		particle_effect_fumee.load(Gdx.files.internal("particle/fumee_particle"), Gdx.files.internal("effects"));
+		particle_effect_fumee.load(Gdx.files.internal("particle/fumee_particle"), Gdx.files.internal("particle_img"));
 		
 		//initialisation des variables
 		selection_ = StateJeuEnum.JEU;
@@ -273,6 +273,13 @@ public class TdJeu extends StateJeu
 			sb_.begin();
 			sb_.setProjectionMatrix(values_.camera().combined);//mise à jour de la matrice de projection du batch pour redimentionnement des sprites
 
+
+			
+
+			particle_effect_sang.update(Gdx.graphics.getDeltaTime());
+			particle_effect_fumee.update(Gdx.graphics.getDeltaTime());
+			particle_effect_sang.setPosition(571,449);
+			particle_effect_sang.draw(sb_,Gdx.graphics.getDeltaTime());
 						
 			//dessin des tours -> parcours toutes la carte n*m
 			for(int i=0;i < values_.carte().length;i++)//pour chaque tour faire...
@@ -360,16 +367,33 @@ public class TdJeu extends StateJeu
 						continue;
 
 					ArrayList<Mobs> case_mob =values_.carte()[c].getMobs_();
-					boolean existePlus = tir.onExectute(case_mob);
-					if(existePlus == true)
+					int existePlus = tir.onExectute(case_mob);
+					if(existePlus >= 0)//on suprime
 					{
+						//emission de particle
+						
+						if(existePlus==0) //fumée
+						{
+							System.err.println("fumméé");
+							/*particle_effect_fumee.setPosition(tir.position().x,tir.position().y);
+							particle_effect_fumee.draw(sb_,Gdx.graphics.getDeltaTime());*/
+						}
+						else//sang
+						{
+							System.err.println("sang");
+							/*particle_effect_sang.setPosition(tir.position().x,tir.position().y);
+							particle_effect_sang.draw(sb_,Gdx.graphics.getDeltaTime());*/
+						}
 						
 						values_.shots().remove(a);
 						tir.time(0);
 						values_.getPile_shot_().push(tir);
+						
+						
 						break;
 					}
 	
+					
 
 					//deplacement
 					//animation
