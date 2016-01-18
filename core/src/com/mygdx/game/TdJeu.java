@@ -352,7 +352,9 @@ public class TdJeu extends StateJeu
 					boolean existePlus = tir.onExectute(case_mob);
 					if(existePlus == true)
 					{
+						
 						values_.shots().remove(a);
+						tir.time(0);
 						values_.getPile_shot_().push(tir);
 						break;
 					}

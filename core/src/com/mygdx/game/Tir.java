@@ -67,6 +67,7 @@ public class Tir
 		time_changement_anim = time;
 		time_total_ = time_destruction;
 		time_actu_ = 0;
+		num_texture_ =0;
 	}
 
 	
