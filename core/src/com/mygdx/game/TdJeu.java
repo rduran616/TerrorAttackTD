@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -35,10 +36,20 @@ public class TdJeu extends StateJeu
 	Noeud depart;
 	Noeud arrivee;
 	ArrayList<Noeud> chemin;
-
+	
+	ParticleEffect particle_effect_sang;
+	ParticleEffect particle_effect_fumee;
 		
 	public TdJeu()
 	{
+		//init des particules
+		particle_effect_sang = new ParticleEffect();
+		particle_effect_fumee = new ParticleEffect();
+		
+		particle_effect_sang.load(Gdx.files.internal("particle/sang_particle"), Gdx.files.internal("effects")); 
+		//files.internal loads from the "assets" folder
+		particle_effect_fumee.load(Gdx.files.internal("particle/fumee_particle"), Gdx.files.internal("effects"));
+		
 		//initialisation des variables
 		selection_ = StateJeuEnum.JEU;
 		values_ = GlobalValues.getInstance();
