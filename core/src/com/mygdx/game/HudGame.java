@@ -237,8 +237,19 @@ public class HudGame
 		    	   }
 		    	   else
 		    	   {
+		    		   TowerType t = values_.getT_temporaire_();
+		    		   
+		    		    if(t.nom().equals("air"))
+	    				   	values_.add_uAir(1);
+	   					if(t.nom().equals("base"))
+	   						values_.add_uBase(1);
+	   					if(t.nom().equals("zone"))
+	   						values_.add_uZone(1);
+	   					if(t.nom().equals("slow"))
+	   						values_.add_uSlow(1);
+		    		   
 		    		   System.err.println("position cell = "+cell);
-	    			   values_.carte()[cell].add_Unit(values_.getT_temporaire_());
+	    			   values_.carte()[cell].add_Unit(t);
 	    			   values_.setT_temporaire_(null);
 	    			   values_.status(Status.POSITIONNE); 
 	    			   values_.recalculerChemin_(true);
@@ -359,28 +370,27 @@ public class HudGame
 		       { 
 		    	 try
 		    	 {   
-		    		int nb=0;
-		    		if(values_.getT_temporaire_().nom().equals("air"))
-					{
-		    			values_.t_air_modele_(new TowerAir((TowerAir) values_.t_air_modele_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2)));
-		    			nb=values_.getNb_unite_air_()+1;
-					}
- 					if(values_.getT_temporaire_().nom().equals("base"))
-					{
- 						values_.t_base_modele_(new TowerBase((TowerBase) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4)));
- 						nb = values_.getNb_unite_base_()+1;
-					}
- 					if(values_.getT_temporaire_().nom().equals("zone"))
-					{
- 						values_.t_zone_modele_(new TowerZone((TowerZone) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1)));
- 						nb= values_.getNb_unite_zone_()+1;
-					}
- 					if(values_.getT_temporaire_().nom().equals("slow"))
-					{
- 						values_.t_slow_modele_(new TowerSlow((TowerSlow) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.FOIS, 3)));
- 						nb = values_.getNb_unite_slow_()+1;
-					}
- 					
+		    		 int nb=0;
+			    		if(values_.getT_temporaire_().nom().equals("air"))
+						{
+			    			values_.t_air_modele_(new TowerAir((TowerAir) values_.t_air_modele_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2)));
+			    			nb=values_.getNb_unite_air_();
+						}
+	 					if(values_.getT_temporaire_().nom().equals("base"))
+						{
+	 						values_.t_base_modele_(new TowerBase((TowerBase) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4)));
+	 						nb = values_.getNb_unite_base_();
+						}
+	 					if(values_.getT_temporaire_().nom().equals("zone"))
+						{
+	 						values_.t_zone_modele_(new TowerZone((TowerZone) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1)));
+	 						nb= values_.getNb_unite_zone_();
+						}
+	 					if(values_.getT_temporaire_().nom().equals("slow"))
+						{
+	 						values_.t_slow_modele_(new TowerSlow((TowerSlow) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.FOIS, 3)));
+	 						nb = values_.getNb_unite_slow_();
+						}
  					//maj de toute les tours
 		    		 for(int i =0; i < values_.carte().length;i++)
 		    		 {
@@ -396,7 +406,7 @@ public class HudGame
     						 }
 		    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("slow"))
     						 {
-		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.FOIS, 3);
+		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.FOIS, 3);
     						 }
 		    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("zone"))
     						 {
@@ -465,7 +475,7 @@ public class HudGame
 		}
 		else if(values_.status() == Status.NON_POSITIONNE)
 		{
-		
+			
 			txt_info_tour_.setText("Tour: "+values_.getT_temporaire_().nom()+
 						"\ncout:"+values_.getT_temporaire_().cout()+
 						"\ndegat: "+values_.getT_temporaire_()._damage+
@@ -485,16 +495,29 @@ public class HudGame
 			String nom =values_.getT_temporaire_().nom();
 			
 			if(nom.equals("air"))	
-				nb = values_.getNb_unite_air_()+1;
+			{
+				//values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2);
+				nb = values_.getNb_unite_air_();
+			}
 			if(nom.equals("slow"))	
-				nb = values_.getNb_unite_slow_()+1;
+			{
+				//values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.FOIS, 3);
+				nb = values_.getNb_unite_slow_();
+			}
 			if(nom.equals("zone"))	
-				nb = values_.getNb_unite_zone_()+1;
+			{
+				//values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1);
+				nb = values_.getNb_unite_zone_();
+			}
 			if(nom.equals("base"))	
-				nb = values_.getNb_unite_base_()+1;
+			{
+				//values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4);
+				nb = values_.getNb_unite_base_();
+			}
 
+			System.err.println(nb);
 			txt_info_achat_up_.setText("Tour: "+values_.getT_temporaire_().nom()+
-					"\ncout:"+values_.getT_temporaire_().cout()*nb+
+					"\ncout:"+(values_.getT_temporaire_().cout()*nb)+
 					"\ndegat: "+values_.getT_temporaire_()._damage+
 					"\n spe: "+values_.getT_temporaire_()._attspeed/1000+
 					"\n range: "+values_.getT_temporaire_()._range+
@@ -547,6 +570,7 @@ public class HudGame
 						       { 
 						    	 
 						    	   values_.setT_temporaire_(new TowerAir(values_.t_air_modele_()));		
+						    	   values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2);
 						    	   values_.status(Status.INFO_UPGRADE);
 						    	   values_.setNum_tr_upgrade_(0);
 						       }
@@ -559,7 +583,8 @@ public class HudGame
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       { 
-						    	   values_.setT_temporaire_(new TowerBase(values_.t_base_modele_()));		
+						    	   values_.setT_temporaire_(new TowerBase(values_.t_base_modele_()));
+						    	   values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4);
 						    	   values_.status(Status.INFO_UPGRADE);
 						    	   values_.setNum_tr_upgrade_(1);
 						       }
@@ -572,7 +597,8 @@ public class HudGame
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       { 
-						    	   values_.setT_temporaire_(new TowerSlow(values_.t_slow_modele_()));		
+						    	   values_.setT_temporaire_(new TowerSlow(values_.t_slow_modele_()));	
+						    	   values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.FOIS, 3);
 						    	   values_.status(Status.INFO_UPGRADE);
 						    	   values_.setNum_tr_upgrade_(2);
 						       }
@@ -585,6 +611,7 @@ public class HudGame
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
+						    	   values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1);
 						    	   values_.setT_temporaire_(new TowerZone(values_.t_zone_modele_()));		
 						    	   values_.status(Status.INFO_UPGRADE);
 						    	   values_.setNum_tr_upgrade_(3);

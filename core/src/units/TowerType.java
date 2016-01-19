@@ -261,12 +261,12 @@ public abstract class TowerType
 		
 		if( (flag & DAMAGE) != 0)
 		{
-			System.err.println("DAMAGE1 = "+_damage);
+		//	System.err.println("DAMAGE1 = "+_damage);
 			if(operation == 0)
 			{_damage+=factor;}
 			else
 			{_damage*=factor;}
-			System.err.println("DAMAGE2 = "+_damage);
+			//System.err.println("DAMAGE2 = "+_damage);
 		}
 		
 		if( (flag & AIR) != 0)
