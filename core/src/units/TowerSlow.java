@@ -34,11 +34,7 @@ public class TowerSlow extends TowerType {
 		 return super.onExecute(speed);
 		}
 
-	
-	
-	/*public TowerSlow(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {
-		super(texture, bulletTexture, bulletSize, x, y);
-		// TODO Auto-generated constructor stub
-	}*/
+
+
 	
 }

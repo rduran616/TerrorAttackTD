@@ -20,6 +20,7 @@ import units.MobsAir;
 import units.MobsBasic;
 import units.MobsBoss;
 import units.MobsLourd;
+import units.Status;
 import units.TowerType;
 import units.VagueRand;
 
@@ -255,6 +256,8 @@ public class TdJeu extends StateJeu
 			    		{
 			    			//si arrivé destructionp
 			    			values_.vie(values_.vie()-m.getDegat_());
+			    			
+			    			
 			    			if(values_.vie()<=0)
 			    				selection_ = StateJeuEnum.FIN;
 			    			
@@ -417,7 +420,7 @@ public class TdJeu extends StateJeu
 			
 			//affichage de la tour en cours de placement
 			t = values_.getT_temporaire_();
-			if(t!=null)
+			if(t!=null && values_.status() != Status.INFO_UPGRADE)
 			{
 				values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 				values_.tower_sprite(t.num_Texture()).draw(sb_);

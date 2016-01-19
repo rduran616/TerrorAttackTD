@@ -76,6 +76,13 @@ public class HudGame
 	private TextButton validate_2;
 	private TextButton cancel_2;
 	
+	//hud 4 validation achat upgrade 
+	private Table main_layout_game_4;
+	private TextButton validate_4;
+	private TextButton cancel_4;
+	private Label txt_info_4;
+	private Label txt_info_achat_up_;
+	
 	private int argent_temp;
 	private float pad_;	//pad des boutons
 	
@@ -92,7 +99,7 @@ public class HudGame
 			nb_towers_ = Integer.parseInt(xml_unit_file_internal_.get_Attribute("tower", "value"));
 			nb_bonus_ = Integer.parseInt(xml_unit_file_internal_.get_Attribute("bonus", "value"));
 			
-			System.err.println("nb_tower= "+nb_towers_);
+			//System.err.println("nb_tower= "+nb_towers_);
 		}
 		else
 		{
@@ -183,6 +190,8 @@ public class HudGame
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       {   
+		    	  
+		    	   
 		    	   	//la position dans le monde
 		    	   	Vector3 pos = new Vector3(values_.getT_temporaire_().position().x,values_.getT_temporaire_().position().y,0); 
 					//la case ou on place le bonhomme
@@ -206,13 +215,24 @@ public class HudGame
 		    		   
 		    		   if(colision==false)
 		    		   {
-		    			   System.err.println("positioné");
+		    			   //System.err.println("positioné"); 
 		    			   TowerType t = values_.getT_temporaire_();
+		    			   
+		    			   if(t.nom().equals("air"))
+		    				   	values_.add_uAir(1);
+	    					if(t.nom().equals("base"))
+	    						values_.add_uBase(1);
+	    					if(t.nom().equals("zone"))
+	    						values_.add_uZone(1);
+	    					if(t.nom().equals("slow"))
+	    						values_.add_uSlow(1);
+		    			   
 		    			   t.setCases_adj(new ArrayList<Integer>( Spirale.adjacente2( values_.size_Px(), t.position(), values_.size_n(), values_.size_m(), (int)t.get_range())));
 		    			   values_.carte()[cell].add_Unit(t);
 		    			   values_.setT_temporaire_(null);
 		    			   values_.status(Status.POSITIONNE);
 		    			   values_.recalculerChemin_(true);
+		    			
 		    		   }
 		    	   }
 		    	   else
@@ -222,6 +242,7 @@ public class HudGame
 	    			   values_.setT_temporaire_(null);
 	    			   values_.status(Status.POSITIONNE); 
 	    			   values_.recalculerChemin_(true);
+	    			   
 		    	   }
 		       }
 		 });
@@ -247,6 +268,7 @@ public class HudGame
 		       @Override
 		       public void clicked(InputEvent event, float x, float y)
 		       {
+		    	  
 		    	   values_.setT_temporaire_(null);
 		    	   	values_.status(Status.POSITIONNE);
 		       }
@@ -274,9 +296,20 @@ public class HudGame
 	    				if(values_.carte()[cellule].getUnits_().get(i).collision(box) == true)				
 						{
 	    					
+	    					if(values_.getT_temporaire_().nom().equals("air"))
+	    						values_.sub_uAir(1);
+	    					if(values_.getT_temporaire_().nom().equals("base"))
+	    						values_.sub_uBase(1);
+	    					if(values_.getT_temporaire_().nom().equals("zone"))
+	    						values_.sub_uZone(1);
+	    					if(values_.getT_temporaire_().nom().equals("slow"))
+	    						values_.sub_uSlow(1);
+	    					
+	    					
 	    					values_.carte()[cellule].getUnits_().remove(i);
 	    					values_.argent(values_.argent() + values_.getT_temporaire_().cout() *  pourcent_vente_/100);
 	    					values_.setT_temporaire_(null);
+	    					
 	    					
 							break;
 						}		
@@ -301,11 +334,106 @@ public class HudGame
 		main_layout_game_3.add(cancel_2).pad(pad_).row();
 		main_layout_game_3.add(txt_info_tour_vendre_).pad(pad_).row();
 		
+		
+		//4eme hud : validation achat upgrade
+		main_layout_game_4 = new Table();
+		validate_4 	= new TextButton("Valider", values_.get_Skin());
+		cancel_4 	= new TextButton("Annuler", values_.get_Skin());
+		txt_info_4 = new Label("Améliorer?", values_.get_Skin());
+		txt_info_achat_up_= new Label("", values_.get_Skin());
+		
+		cancel_4.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y)
+		       {
+		    	   values_.setT_temporaire_(null);
+		    	   values_.status(Status.POSITIONNE);
+		       }
+		 });
+		
+		validate_4.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       { 
+		    	 try
+		    	 {   
+		    		int nb=0;
+		    		if(values_.getT_temporaire_().nom().equals("air"))
+					{
+		    			values_.t_air_modele_(new TowerAir((TowerAir) values_.t_air_modele_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2)));
+		    			nb=values_.getNb_unite_air_()+1;
+					}
+ 					if(values_.getT_temporaire_().nom().equals("base"))
+					{
+ 						values_.t_base_modele_(new TowerBase((TowerBase) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4)));
+ 						nb = values_.getNb_unite_base_()+1;
+					}
+ 					if(values_.getT_temporaire_().nom().equals("zone"))
+					{
+ 						values_.t_zone_modele_(new TowerZone((TowerZone) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1)));
+ 						nb= values_.getNb_unite_zone_()+1;
+					}
+ 					if(values_.getT_temporaire_().nom().equals("slow"))
+					{
+ 						values_.t_slow_modele_(new TowerSlow((TowerSlow) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.FOIS, 3)));
+ 						nb = values_.getNb_unite_slow_()+1;
+					}
+ 					
+ 					//maj de toute les tours
+		    		 for(int i =0; i < values_.carte().length;i++)
+		    		 {
+		    			 for(int j=0; j < values_.carte()[i].getUnits_size_();j++)
+		    			 {
+		    				 if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("air"))
+    						 {
+		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2);
+    						 }
+		    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("base"))
+    						 {
+		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4);
+    						 }
+		    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("slow"))
+    						 {
+		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.FOIS, 3);
+    						 }
+		    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("zone"))
+    						 {
+		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1);
+    						 }
+		    			 }
+		    		 }
+
+		    		 values_.argent(values_.argent()- values_.getT_temporaire_().cout() * nb);
+ 					 values_.setT_temporaire_(null);
+			    	 values_.status(Status.POSITIONNE);
+		    	 }
+		    	 catch(Exception e)
+		    	 {
+		    		 System.err.println("hud game upgrade erreur "+e);
+		    	 }
+
+		       }
+		 });
+
+		
+		
+		main_layout_game_4.setSize(values_.get_width()*size_hud_/100,values_.get_height());
+		main_layout_game_4.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
+		main_layout_game_4.add(txt_info_4).pad(pad_).row();
+		main_layout_game_4.add(validate_4).pad(pad_).row();
+		main_layout_game_4.add(cancel_4).pad(pad_).row();
+		main_layout_game_4.add(txt_info_achat_up_).pad(pad_).row();
+		
+		
+		
 		stage_game_.addActor(argent_);
 		stage_game_.addActor(vie_);
 		stage_game_.addActor(main_table_game_);
 		stage_game_.addActor(main_layout_game_2);
 		stage_game_.addActor(main_layout_game_3);
+		stage_game_.addActor(main_layout_game_4);
 	}
 	
 	
@@ -333,7 +461,7 @@ public class HudGame
 			main_table_game_.setVisible(true);
 			main_layout_game_2.setVisible(false);
 			main_layout_game_3.setVisible(false);
-			//return stage_game_;
+			main_layout_game_4.setVisible(false);
 		}
 		else if(values_.status() == Status.NON_POSITIONNE)
 		{
@@ -349,6 +477,34 @@ public class HudGame
 			main_table_game_.setVisible(false);
 			main_layout_game_2.setVisible(true);
 			main_layout_game_3.setVisible(false);
+			main_layout_game_4.setVisible(false);
+		}
+		else if(values_.status() == Status.INFO_UPGRADE)
+		{
+			int nb =0;
+			String nom =values_.getT_temporaire_().nom();
+			
+			if(nom.equals("air"))	
+				nb = values_.getNb_unite_air_()+1;
+			if(nom.equals("slow"))	
+				nb = values_.getNb_unite_slow_()+1;
+			if(nom.equals("zone"))	
+				nb = values_.getNb_unite_zone_()+1;
+			if(nom.equals("base"))	
+				nb = values_.getNb_unite_base_()+1;
+
+			txt_info_achat_up_.setText("Tour: "+values_.getT_temporaire_().nom()+
+					"\ncout:"+values_.getT_temporaire_().cout()*nb+
+					"\ndegat: "+values_.getT_temporaire_()._damage+
+					"\n spe: "+values_.getT_temporaire_()._attspeed/1000+
+					"\n range: "+values_.getT_temporaire_()._range+
+					"\n air: "+values_.getT_temporaire_()._air);
+			
+			main_table_game_.setVisible(false);
+			main_layout_game_2.setVisible(false);
+			main_layout_game_3.setVisible(false);
+			main_layout_game_4.setVisible(true);
+
 		}
 		else
 		{
@@ -359,158 +515,238 @@ public class HudGame
 			main_table_game_.setVisible(false);
 			main_layout_game_2.setVisible(false);
 			main_layout_game_3.setVisible(true);
+			main_layout_game_4.setVisible(false);
 		}
 			
 			return stage_game_;
 	} 
 
 	
+
+	
+	
 	//création des boutons de l'ui principal
 	private void creation_Hud_Objects(ConfigHud hud)
 	{
 		int cpt=0;
 		hud.other(0);
-		for(int i=0;i<hud.nb_button();i++)
+		
+		
+		if(hud.node().equals("upgrade"))
 		{
-			//recuperation des chemins (ou autre, à voir) d'image pour icone bouton
-			TextButton button = new TextButton(Integer.toString(i),values_.get_Skin());
-			if(true)
-	    	{
-				String name;
-				if(hud.estInternal())
-					name = hud.xml_Internal().get_Child_Attribute(hud.node(),"name",hud.other());
-				else
-					name = hud.xml().get_Sub_Node_Item(hud.other(), hud.node(),"name");
-				
-				
-				if(name!=null)
+			for(int i=0; i <4;i++)
+			{
+				TextButton button = new TextButton(Integer.toString(i),values_.get_Skin());
+				switch(i)
 				{
-					if(name.equals("air"))
-					{
+					case 0:
 						button.addListener(new ClickListener()
 						{
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       { 
-						    	   try
-						    	   {			
-						    		   TowerType t = new TowerAir(values_.t_air_modele_());
-						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
-							    	   {
-							    		   argent_temp = values_.argent();
-							    		   values_.argent(values_.argent()-t.cout());
-							    		   
-							    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
-							    		   values_.camera().unproject(pos); //screen to world
-							    		      
-							    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
-							    		   t.position(pos.x, pos.y);
-
-							    		   values_.setT_temporaire_(t);							    		
-							    		   values_.status(Status.NON_POSITIONNE);
-							    	   }
-						    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
+						    	 
+						    	   values_.setT_temporaire_(new TowerAir(values_.t_air_modele_()));		
+						    	   values_.status(Status.INFO_UPGRADE);
+						    	   values_.setNum_tr_upgrade_(0);
 						       }
 						 });
-					}
-					else if(name.equals("zone"))
-					{
+					break;
+					
+					case 1:
 						button.addListener(new ClickListener()
 						{
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       { 
-						    	   try
-						    	   {
-						    		   TowerType t = new TowerZone(values_.t_zone_modele_());
-						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
-							    	   {
-							    		   argent_temp = values_.argent();
-							    		   values_.argent(values_.argent()-t.cout());
-							    		   
-							    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
-							    		   values_.camera().unproject(pos); //screen to world
-							    		      
-							    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
-							    		   t.position(pos.x, pos.y);
-
-							    		   values_.setT_temporaire_(t);							    		
-							    		   values_.status(Status.NON_POSITIONNE);
-							    	   }
-							    	   
-						    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
+						    	   values_.setT_temporaire_(new TowerBase(values_.t_base_modele_()));		
+						    	   values_.status(Status.INFO_UPGRADE);
+						    	   values_.setNum_tr_upgrade_(1);
 						       }
 						 });
-					}
-					else if(name.equals("slow"))
-					{
+					break;
+					
+					case 2:
 						button.addListener(new ClickListener()
 						{
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       { 
-						    	   try
-						    	   {
-						    		   TowerType t = new TowerSlow(values_.t_slow_modele_());
-						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
-							    	   {
-							    		   argent_temp = values_.argent();
-							    		   values_.argent(values_.argent()-t.cout());
-							    		   
-							    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
-							    		   values_.camera().unproject(pos); //screen to world
-							    		      
-							    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
-							    		   t.position(pos.x, pos.y);
-
-							    		   values_.setT_temporaire_(t);							    		
-							    		   values_.status(Status.NON_POSITIONNE);
-							    	   }
-						    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
+						    	   values_.setT_temporaire_(new TowerSlow(values_.t_slow_modele_()));		
+						    	   values_.status(Status.INFO_UPGRADE);
+						    	   values_.setNum_tr_upgrade_(2);
 						       }
 						 });
-					}
-					else if(name.equals("base"))
-					{
+					break;
+					
+					case 3:
 						button.addListener(new ClickListener()
 						{
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
-						       { 
-						    	   try
-						    	   {
-						    		   TowerType t = new TowerBase(values_.t_base_modele_());
-						    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
-							    	   {
-							    		   argent_temp = values_.argent();
-							    		   values_.argent(values_.argent()-t.cout());
-							    		   
-							    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
-							    		   values_.camera().unproject(pos); //screen to world
-							    		      
-							    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
-							    		   t.position(pos.x, pos.y);
-
-							    		   values_.setT_temporaire_(t);							    		
-							    		   values_.status(Status.NON_POSITIONNE);
-							    	   }
-						    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
+						       {
+						    	   values_.setT_temporaire_(new TowerZone(values_.t_zone_modele_()));		
+						    	   values_.status(Status.INFO_UPGRADE);
+						    	   values_.setNum_tr_upgrade_(3);
 						       }
 						 });
+					break;
+				}
+				
+				hud.table().add(button).pad(hud.pad()).height(hud.height()).width(hud.width());
+				cpt++;
+				hud.other(cpt);
+				
+				if(cpt%hud.column()==0)
+					hud.table().row();
+			}
+		}
+		else
+		{
+			for(int i=0;i<hud.nb_button();i++)
+			{
+				//recuperation des chemins (ou autre, à voir) d'image pour icone bouton
+				TextButton button = new TextButton(Integer.toString(i),values_.get_Skin());
+				if(true)
+		    	{
+					String name;
+					if(hud.estInternal())
+						name = hud.xml_Internal().get_Child_Attribute(hud.node(),"name",hud.other());
+					else
+						name = hud.xml().get_Sub_Node_Item(hud.other(), hud.node(),"name");
+					
+					// si on trouve dans le xml
+					if(name!=null)
+					{
+						if(name.equals("air"))
+						{
+							button.addListener(new ClickListener()
+							{
+							       @Override
+							       public void clicked(InputEvent event, float x, float y) 
+							       { 
+							    	   try
+							    	   {	
+							    		   TowerType t = new TowerAir(values_.t_air_modele_());
+							    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
+								    	   {
+								    		   argent_temp = values_.argent();
+								    		   values_.argent(values_.argent()-t.cout());
+								    		   
+								    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
+								    		   values_.camera().unproject(pos); //screen to world
+								    		      
+								    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
+								    		   t.position(pos.x, pos.y);
+	
+								    		   values_.setT_temporaire_(t);							    		
+								    		   values_.status(Status.NON_POSITIONNE);
+								    	   }
+							    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
+							       }
+							 });
+						}
+						else if(name.equals("zone"))
+						{
+							button.addListener(new ClickListener()
+							{
+							       @Override
+							       public void clicked(InputEvent event, float x, float y) 
+							       { 
+							    	   try
+							    	   {
+							    		   TowerType t = new TowerZone(values_.t_zone_modele_());
+							    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
+								    	   {
+								    		   argent_temp = values_.argent();
+								    		   values_.argent(values_.argent()-t.cout());
+								    		   
+								    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
+								    		   values_.camera().unproject(pos); //screen to world
+								    		      
+								    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
+								    		   t.position(pos.x, pos.y);
+	
+								    		   values_.setT_temporaire_(t);							    		
+								    		   values_.status(Status.NON_POSITIONNE);
+								    	   }
+								    	   
+							    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
+							       }
+							 });
+						}
+						else if(name.equals("slow"))
+						{
+							button.addListener(new ClickListener()
+							{
+							       @Override
+							       public void clicked(InputEvent event, float x, float y) 
+							       { 
+							    	   try
+							    	   {
+							    		   TowerType t = new TowerSlow(values_.t_slow_modele_());
+							    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
+								    	   {
+								    		   argent_temp = values_.argent();
+								    		   values_.argent(values_.argent()-t.cout());
+								    		   
+								    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
+								    		   values_.camera().unproject(pos); //screen to world
+								    		      
+								    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
+								    		   t.position(pos.x, pos.y);
+	
+								    		   values_.setT_temporaire_(t);							    		
+								    		   values_.status(Status.NON_POSITIONNE);
+								    	   }
+							    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
+							       }
+							 });
+						}
+						else if(name.equals("base"))
+						{
+							button.addListener(new ClickListener()
+							{
+							       @Override
+							       public void clicked(InputEvent event, float x, float y) 
+							       { 
+							    	   try
+							    	   {
+							    		   TowerType t = new TowerBase(values_.t_base_modele_());
+							    		   if(values_.status() != Status.NON_POSITIONNE && values_.argent() >= t.cout())
+								    	   {
+								    		   argent_temp = values_.argent();
+								    		   values_.argent(values_.argent()-t.cout());
+								    		   
+								    		   Vector3 pos = new Vector3(values_.get_width()/2, values_.get_height()/2,0);//milieu de l'ecran
+								    		   values_.camera().unproject(pos); //screen to world
+								    		      
+								    		   t.box().set_Collision_box((int)pos.x, (int)pos.x,t.size_H(),t.size_W());
+								    		   t.position(pos.x, pos.y);
+	
+								    		   values_.setT_temporaire_(t);							    		
+								    		   values_.status(Status.NON_POSITIONNE);
+								    	   }
+							    	   }catch(Exception e){System.err.println("hudgame listner erro: "+e);}
+							       }
+							 });
+						}
 					}
 				}
+	
+				hud.table().add(button).pad(hud.pad()).height(hud.height()).width(hud.width());
+				cpt++;
+				hud.other(cpt);
+				
+				if(cpt%hud.column()==0)
+					hud.table().row();
 			}
-
-			hud.table().add(button).pad(hud.pad()).height(hud.height()).width(hud.width());
-			cpt++;
-			hud.other(cpt);
-			
-			if(cpt%hud.column()==0)
-				hud.table().row();
 		}
 	}	
 	
 
 	public float pad(){return pad_;}
 	public void pad(float p){pad_=p;}
+
+
 }

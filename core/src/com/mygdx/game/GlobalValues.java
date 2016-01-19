@@ -7,6 +7,7 @@ import java.util.Stack;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
@@ -112,6 +113,12 @@ public final class GlobalValues
 	private MobsLourd m_lourd_modele_;
 	
 	private Tir tir_modele_;
+	private int num_tr_upgrade_ =-1;
+	
+	private int nb_unite_air_ =0;
+	private int nb_unite_zone_ =0;
+	private int nb_unite_slow_ =0;
+	private int nb_unite_base_ =0;
 	
 	
 	//carte
@@ -527,6 +534,12 @@ public final class GlobalValues
 	public TowerZone t_zone_modele_(){return t_zone_modele_;}
 	public TowerSlow t_slow_modele_(){return t_slow_modele_;}
 	
+	public void t_air_modele_(TowerAir t){t_air_modele_ = t;}
+	public void t_base_modele_(TowerBase t){t_base_modele_ = t;}
+	public void t_zone_modele_(TowerZone t){t_zone_modele_ = t;}
+	public void t_slow_modele_(TowerSlow t){t_slow_modele_= t;}
+	
+	
 	public MobsAir m_air_modele_(){return m_air_modele_;}
 	public MobsBasic m_basic_modele_(){return m_basic_modele_;}
 	public MobsBoss m_boss_modele_(){return m_boss_modele_;}
@@ -679,5 +692,118 @@ public final class GlobalValues
 		this.shot_sprites_ = shots_sprite_;
 	}
 
+
+	public  void update_Image(SpriteConteneur model,int index, String path_new_img)
+	{
+		model.sprite(index).setTexture(new Texture(Gdx.files.internal(path_new_img)));
+	}
+
+
+	public int getNum_tr_upgrade_() {
+		return num_tr_upgrade_;
+	}
+
+
+	public void setNum_tr_upgrade_(int num_tr_upgrade_) {
+		this.num_tr_upgrade_ = num_tr_upgrade_;
+	}
+
+
+	public int getNb_unite_air_() 
+	{
+		return nb_unite_air_;
+	}
+
+
+	public void setNb_unite_air_(int nb_unite_air_) 
+	{
+		this.nb_unite_air_ = nb_unite_air_;
+	}
 	
+	public void add_uAir(int nb)
+	{
+		this.nb_unite_air_+=nb;
+	}
+	
+	public void sub_uAir(int nb)
+	{
+		
+		this.nb_unite_air_-=nb;
+		if(nb_unite_air_<0)
+			nb_unite_air_=0;
+	}
+
+
+	public int getNb_unite_zone_() 
+	{
+		return nb_unite_zone_;
+	}
+
+
+	public void setNb_unite_zone_(int nb_unite_zone_) 
+	{
+		this.nb_unite_zone_ = nb_unite_zone_;
+	}
+	
+	public void add_uZone(int nb)
+	{
+		this.nb_unite_zone_+=nb;
+	}
+	
+	public void sub_uZone(int nb)
+	{
+		this.nb_unite_zone_-=nb;
+		if(nb_unite_zone_<0)
+			nb_unite_zone_=0;
+	}
+
+
+	public int getNb_unite_slow_() 
+	{
+		return nb_unite_slow_;
+	}
+
+
+	public void setNb_unite_slow_(int nb_unite_slow_) 
+	{
+		this.nb_unite_slow_ = nb_unite_slow_;
+	}
+
+	public void add_uSlow(int nb)
+	{
+		this.nb_unite_slow_+=nb;
+	}
+	
+	public void sub_uSlow(int nb)
+	{
+		this.nb_unite_slow_-=nb;
+		if(nb_unite_slow_<0)
+			nb_unite_slow_=0;
+	}
+
+	public int getNb_unite_base_() 
+	{
+		return nb_unite_base_;
+	}
+
+
+	public void setNb_unite_base_(int nb_unite_base_) 
+	{
+		this.nb_unite_base_ = nb_unite_base_;
+	}
+	
+	public void add_uBase(int nb)
+	{
+		this.nb_unite_base_+=nb;
+	}
+	
+	public void sub_uBase(int nb)
+	{
+		this.nb_unite_base_-=nb;
+		if(nb_unite_base_<0)
+			nb_unite_base_=0;
+	}
+	
+
+	public void argent_plus(int val){argent_+=val;}
 }

@@ -90,7 +90,7 @@ public class Tir
 				if(this.bbox_.collision(case_mob.get(i).getBbox_()))
 				{
 					case_mob.get(i).subir_Degat(this.degat_);
-					System.err.println(this.degat_);
+					System.err.println("degat = "+this.degat_);
 					return 1; //toucher
 				}			
 			}

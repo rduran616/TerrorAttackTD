@@ -14,10 +14,6 @@ public class TowerZone extends TowerType
 		super(cout,att_speed,damage,range,h,w,air,n_txt,nom,box);
 	}
 	
-	/*public TowerZone(String texture, String bulletTexture, Vector2 bulletSize, int x, int y) {
-		super(texture, bulletTexture, bulletSize, x, y);
-		// TODO Auto-generated constructor stub
-	}*/
 
 	public TowerZone(TowerZone another) 
 	{
@@ -38,5 +34,7 @@ public class TowerZone extends TowerType
 	{
 		 return super.onExecute(speed);
 	}
+
+	
 
 }

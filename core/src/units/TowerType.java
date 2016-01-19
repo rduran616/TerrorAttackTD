@@ -23,6 +23,17 @@ import Utilitaires.TickHorloge;
 
 public abstract class TowerType 
 {
+	
+	//define flag
+	public static final int ARGENT	=	1;
+	public static final int SPEED	=	2;
+	public static final int RANGE	=	4;
+	public static final int DAMAGE =	8;
+	public static final int AIR	=	16;
+	
+	public static final int PLUS = 0;
+	public static final int FOIS = 1;
+	
 	private GlobalValues values_;
 	
 	//attribut commun à chaque tour
@@ -216,11 +227,59 @@ public abstract class TowerType
 		
 	}
 	
-	//méthode de rotation vers la première cible trouvé
-	public void onShot(int index)
+
+	public TowerType update_Values(int flag,int operation, float factor)
 	{
+		if( (flag & ARGENT) != 0)
+		{
+			System.err.println("argent");
+			if(operation == 0)
+			{_cout+=factor;}
+			else
+			{_cout*=factor;}
+		}
 		
+		if( (flag & SPEED) != 0)
+		{
+			if(operation == 0)
+			{
+				_attspeed-=factor;
+				if(_attspeed<=0)
+					_attspeed = 1;
+			}
+			else
+			{_attspeed/=factor;}
+		}
+		
+		if( (flag & RANGE) != 0)
+		{
+			if(operation == 0)
+			{_range+=factor;}
+			else
+			{_range*=factor;}
+		}
+		
+		if( (flag & DAMAGE) != 0)
+		{
+			System.err.println("DAMAGE1 = "+_damage);
+			if(operation == 0)
+			{_damage+=factor;}
+			else
+			{_damage*=factor;}
+			System.err.println("DAMAGE2 = "+_damage);
+		}
+		
+		if( (flag & AIR) != 0)
+		{
+			if(_air == true)
+				_air = false;
+			else
+			 _air = true;
+		}
+		
+		return this;
 	}
+	
 	
 	public int cout(){return _cout;}
 

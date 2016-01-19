@@ -153,6 +153,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 			selection_ = StateMEnuEnum.MENU;
 		}
 
+		
+		
 		// choix de l'etat et action en fonction de l'état du jeu
 		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia
 		

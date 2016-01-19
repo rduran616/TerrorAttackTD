@@ -123,7 +123,6 @@ public abstract class Mobs
 	public boolean subir_Degat(int d)
 	{
 		life_ -= d;
-		//System.err.println(life_);
 		if(life_ <= 0)
 		{
 			return false;
