@@ -806,4 +806,29 @@ public final class GlobalValues
 	
 
 	public void argent_plus(int val){argent_+=val;}
+	
+	
+	public boolean collision_Avec_Tour(TowerType t)
+	{
+		//la position dans le monde
+	   	Vector3 pos = new Vector3(t.position().x,t.position().y,0); 
+		//la case ou on place le bonhomme
+			int cell = get_Index_Cellule((int)pos.x,(int)pos.y);
+
+	   //vérification collision 
+	   ArrayList<TowerType> list_tower = carte()[cell].getUnits_();
+	   if(list_tower.size()>0)
+	   {
+		   for(int i=0; i < list_tower.size();i++)
+		   {
+			   CollisionBox b = t.box(); 
+			   if(list_tower.get(i).collision(b))
+			   {
+				   return true; 
+			   }
+		   }
+	   }
+	   return false;
+	}
+	
 }

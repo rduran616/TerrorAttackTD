@@ -4,13 +4,22 @@ import java.util.ArrayList;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
-
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import Utilitaires.AStar;
+import Utilitaires.Circle;
 import Utilitaires.Noeud;
 import Utilitaires.ParticleEffectActor;
 import Utilitaires.StructureEnnemi;
@@ -43,6 +52,19 @@ public class TdJeu extends StateJeu
 	ParticleEffect particle_effect_fumee;
 	ArrayList<ParticleEffect> actor1;
 	ArrayList<ParticleEffect> actor2;
+	
+	
+	String simple_vertex_shader = null;
+	String vertex_shader_color = null;
+    String green_pixel_shader = null;
+    String red_pixel_shader = null;
+    String color_pixel_shader = null;
+    ShaderProgram shaderProgram_placement_ok = null;
+    ShaderProgram shaderProgram_placement_ko = null;
+    ShaderProgram color_shader = null;
+    
+    Texture simple_texture;
+
 	
 	public TdJeu()
 	{
@@ -87,6 +109,23 @@ public class TdJeu extends StateJeu
 		//tracer chemin
 	//	chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
 		values_.recalculerChemin_(true);
+		
+		//shaders
+		simple_vertex_shader = Gdx.files.internal("shaders/vertexShaders/simpleVertex.glsl").readString();
+		vertex_shader_color = Gdx.files.internal("shaders/vertexShaders/vertex.glsl").readString();
+		
+		green_pixel_shader = Gdx.files.internal("shaders/pixelShaders/green.glsl").readString();
+        red_pixel_shader =  Gdx.files.internal("shaders/pixelShaders/red.glsl").readString();
+        color_pixel_shader =  Gdx.files.internal("shaders/pixelShaders/color.glsl").readString();
+        
+        shaderProgram_placement_ok = new ShaderProgram(simple_vertex_shader,green_pixel_shader);
+        shaderProgram_placement_ko = new ShaderProgram(simple_vertex_shader,red_pixel_shader);   
+        color_shader =  new ShaderProgram(vertex_shader_color,color_pixel_shader);
+
+        
+        simple_texture = new Texture(Gdx.files.internal("simpleTexture.png"));
+        
+  
 	}
 	
 	
@@ -410,25 +449,66 @@ public class TdJeu extends StateJeu
 					TextureRegion currentFrame2 = values_.shots_Sprite_().get_Animation(tir.num_Texture(),0).getKeyFrame(tir.time(), false);
 					//placement + dessin	
 					sb_.draw(currentFrame2,tir.position().x, tir.position().y);
-			/*	}
-				catch(Exception e)
-				{
-					System.err.println("tir dessin "+e);
-				}*/
 			}
 			
+			sb_.end();
 			
 			//affichage de la tour en cours de placement
 			t = values_.getT_temporaire_();
 			if(t!=null && values_.status() != Status.INFO_UPGRADE)
 			{
-				values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
+				sb_.begin();
+
+				int pas = 32;
+				Vector2 c  = new Vector2(t.position().x+t.size_W()/2,t.position().y+t.size_H()/2);
+				float[] verts;
+				boolean col = false;
+				col = values_.collision_Avec_Tour(t);
+				Color color;
+				if(col == true)
+					color = new Color(0.8f,0f,0f,0.3f);
+				else
+					color = new Color(0.0f,0.8f,0f,0.3f);
+				
+				verts = Circle.make_Circle_Float_Color(t._range*values_.size_Px(), c, pas,color);
+				Mesh mesh = new Mesh( true, pas+1, pas*3,
+		                new VertexAttribute( VertexAttributes.Usage.Position, 3, "a_position" ),
+		                new VertexAttribute( VertexAttributes.Usage.ColorPacked, 4, "a_color" ),
+		                new VertexAttribute( VertexAttributes.Usage.TextureCoordinates, 2, "a_texCoord0"));
+
+
+				//set configuration pour le bind de la texture
+				Gdx.gl.glEnable(GL20.GL_BLEND);
+			    Gdx.gl.glBlendFunc(GL20.GL_BLEND_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
+			    //Selection du shader color ( attention: le mesh a besoin d'une texture )
+				sb_.setShader(color_shader);
+				//creation du mesh
+			    mesh.setVertices(verts);
+			    mesh.setIndices(Circle.get_Indice(pas));
+			    //collage de la texture
+			    simple_texture.bind();
+			    //rendu
+			    mesh.render(color_shader, GL20.GL_TRIANGLES);
+			    //desactivation
+			    Gdx.gl.glDisable(GL20.GL_BLEND);
+			    
+			    //utilisation d'un autre shader
+			    if(col == false)
+			    	sb_.setShader(shaderProgram_placement_ok);
+			    else
+			    	sb_.setShader(shaderProgram_placement_ko);
+			    
+			    values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 				values_.tower_sprite(t.num_Texture()).draw(sb_);
+				
+
+			    sb_.end();
 			}
-			sb_.end();
+			//sb_.end();
 			
 			//dessin des particules
 			sb_.begin();
+			sb_.setShader(null);
 	      	for(int i=0;i < actor1.size();i++)
 			{
 				actor1.get(i).update(Gdx.graphics.getDeltaTime());
@@ -464,5 +544,4 @@ public class TdJeu extends StateJeu
 		else
 			return selection_;
 	}
-
 }
