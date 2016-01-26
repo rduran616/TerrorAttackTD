@@ -8,6 +8,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
@@ -142,7 +143,7 @@ public final class GlobalValues
 	
 	//private Texture img_;  					//texture carte
 	private TiledMap tiledMap_; 				//carte
-	private TiledMapRenderer tiledMapRenderer_;	//rendu de la carte
+	private OrthogonalTiledMapRenderer tiledMapRenderer_;	//rendu de la carte
 	private MapProperties prop_;				//propriétés de la carte
     
     //gestion de la caméra
@@ -224,6 +225,10 @@ public final class GlobalValues
 			return ErrorEnum.UNINITIALIZED;
 	}
 	
+	public TiledMap tiled_Map_(){return tiledMap_;}
+	public OrthogonalTiledMapRenderer tiled_Map(){return tiledMapRenderer_;}
+	public SpriteBatch batch(){return batch;}
+	
 	public ErrorEnum tiled_Map_Render()
 	{
 		if(tiledMapRenderer_ != null)
@@ -234,11 +239,23 @@ public final class GlobalValues
 		else
 			return ErrorEnum.UNINITIALIZED;
 	}
+	
 
-	public ErrorEnum init_tile_map(String name)
+	
+	public ErrorEnum init_tile_map(String name, SpriteBatch b )
 	{
 		tiledMap_ = new TmxMapLoader().load(name);
-        tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_);
+		if(b == null)
+		{  
+			batch = new SpriteBatch();
+			tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_, batch);
+		}
+		else
+		{
+			batch = new SpriteBatch();
+			batch = b;
+			tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_, batch);
+		}
         
         if(tiledMap_ != null)
         	prop_ = tiledMap_.getProperties();
@@ -253,8 +270,12 @@ public final class GlobalValues
 		float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
         try 
         {
+        	if(batch == null)
+    			batch = new SpriteBatch();
+        	
+        	
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
-            tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,aspectRatio);
+            tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,aspectRatio,batch);
 
             size_px_	= tiledMap_.getProperties().get("tileheight",Integer.class);
     		size_n_		= tiledMap_.getProperties().get("height",Integer.class);

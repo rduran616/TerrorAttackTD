@@ -40,8 +40,8 @@ public class TdJeu extends StateJeu
 	StateJeuEnum selection_;
 	SpriteBatch sb_;
 	int num_vague_=1;
-	double rythme_creation_mobs_min = 5000; //en msseconde
-	double rythme_creation_mobs_max= 10000; //en msseconde
+	double rythme_creation_mobs_min = 500; //en msseconde
+	double rythme_creation_mobs_max= 1000; //en msseconde
 	VagueRand vague_;
 	TickHorloge tick_;
 	Noeud depart;
@@ -59,12 +59,17 @@ public class TdJeu extends StateJeu
     String green_pixel_shader = null;
     String red_pixel_shader = null;
     String color_pixel_shader = null;
+    String cartoon_pixel_shader = null;
+    String bruit_pixel_shader = null;
     ShaderProgram shaderProgram_placement_ok = null;
     ShaderProgram shaderProgram_placement_ko = null;
     ShaderProgram color_shader = null;
+    ShaderProgram cartoon_shader = null;
+    ShaderProgram bruit_shader = null;
     
     Texture simple_texture;
-
+    Texture draw_texture;
+    Texture bruit_texture;
 	
 	public TdJeu()
 	{
@@ -117,14 +122,23 @@ public class TdJeu extends StateJeu
 		green_pixel_shader = Gdx.files.internal("shaders/pixelShaders/green.glsl").readString();
         red_pixel_shader =  Gdx.files.internal("shaders/pixelShaders/red.glsl").readString();
         color_pixel_shader =  Gdx.files.internal("shaders/pixelShaders/color.glsl").readString();
+        cartoon_pixel_shader =  Gdx.files.internal("shaders/pixelShaders/cartoonEffect.glsl").readString();
+        bruit_pixel_shader =  Gdx.files.internal("shaders/pixelShaders/tvBruit.glsl").readString();
         
         shaderProgram_placement_ok = new ShaderProgram(simple_vertex_shader,green_pixel_shader);
         shaderProgram_placement_ko = new ShaderProgram(simple_vertex_shader,red_pixel_shader);   
         color_shader =  new ShaderProgram(vertex_shader_color,color_pixel_shader);
-
+        cartoon_shader =  new ShaderProgram(simple_vertex_shader,cartoon_pixel_shader);
+        if(cartoon_shader.isCompiled() == false)
+        	System.err.println("Erreur shader compilation: "+cartoon_shader.getLog());
+        
+        bruit_shader =  new ShaderProgram(simple_vertex_shader,bruit_pixel_shader);
+        if(bruit_shader.isCompiled() == false)
+        	System.err.println("Erreur shader compilation: "+bruit_shader.getLog());
         
         simple_texture = new Texture(Gdx.files.internal("simpleTexture.png"));
-        
+        draw_texture = new Texture(Gdx.files.internal("drawTexture.jpg"));
+        bruit_texture = new Texture(Gdx.files.internal("StaticSnow.png"));
   
 	}
 	
@@ -132,7 +146,6 @@ public class TdJeu extends StateJeu
 	@Override
 	public StateJeuEnum exectute() 
 	{
-		
 		/*********************crétaion de l'ia***************************************/
 		
 		//Création des mobs
@@ -145,13 +158,12 @@ public class TdJeu extends StateJeu
 			values_.recalculerChemin_(false);
 		}
 		
-				
 		//si on est dans le bon temps on peut creer un ennemi
 		if(tick_.tick())
 		{
 			//choix de l'ennemi
 			int m = vague_.get_Ennemi();
-			
+		
 			//calcul position de départ
 			Vector2  position = new Vector2(values_.carte()[depart.case_()].centre());
 			//creation et placement		
@@ -223,14 +235,12 @@ public class TdJeu extends StateJeu
 						//values_.mobs().add(mob);
 						values_.carte()[depart.case_()].addMob(mob3);
 					}
-
 				break;
 				
 				default:
 					System.err.println(":(");
 					break;
 			}
-			
 		}
 		else
 		{
@@ -295,16 +305,13 @@ public class TdJeu extends StateJeu
 			    		{
 			    			//si arrivé destructionp
 			    			values_.vie(values_.vie()-m.getDegat_());
-			    			
-			    			
+			    				
 			    			if(values_.vie()<=0)
 			    				selection_ = StateJeuEnum.FIN;
 			    			
-							//values_.pile_Mobs_().push(m);
 							values_.carte()[i].remove_Mobs(j);
 			    		}
 			    	}
-		    	//}catch(Exception e){System.err.println("erreur tdjeux ia mob : "+e);}
 		    	}
 		    }
 		    
@@ -313,19 +320,27 @@ public class TdJeu extends StateJeu
 			
 		
 		//dessin des images
-		values_.camera_Update();
 		if(sb_!=null)
 		{ 
 			TowerType t;
 			Mobs mob;
 			
+			sb_ = (SpriteBatch) values_.tiled_Map().getBatch();
 			sb_.begin();
 			sb_.setProjectionMatrix(values_.camera().combined);//mise à jour de la matrice de projection du batch pour redimentionnement des sprites
-
+			
+			cartoon_shader.setUniformf("coef0", 0.8f);
+			cartoon_shader.setUniformf("coef1", 0.8f);
+			cartoon_shader.setUniformf("coef2", 30f);
+			cartoon_shader.setUniformf("ligthness", 70f);
+			cartoon_shader.setUniformf("brightness", 2.5f);
+			cartoon_shader.setUniformf("iGlobalTime", Gdx.graphics.getDeltaTime());	
+			sb_.setShader(cartoon_shader);
 
 			//dessin des tours -> parcours toutes la carte n*m
 			for(int i=0;i < values_.carte().length;i++)//pour chaque tour faire...
 			{
+				sb_.setShader(null);
 				try
 				{
 					//pour chaque mob de la case faire...
@@ -333,8 +348,7 @@ public class TdJeu extends StateJeu
 					{
 						//Recuperation de la tour
 						mob = values_.carte()[i].getMobs_().get(k); 
-						//System.err.println("life ="+mob.getLife_());
-						
+
 						if(mob.subir_Degat(0)==false)
 						{
 							values_.argent(values_.argent()+mob.getMoney_());
@@ -342,12 +356,13 @@ public class TdJeu extends StateJeu
 							
 							break;
 						}
-						
-						//dessin	
+
+						//maj animation
 						mob.add_Time(Gdx.graphics.getDeltaTime());
 						TextureRegion currentFrame = values_.mob_sprite_anime().get_Animation(mob.getNum_texture_(),mob.getNum_direction_()).getKeyFrame(mob.getTime_(), true);
 						//dessin	
 						sb_.draw(currentFrame,mob.getPosition_().x, mob.getPosition_().y);
+						
 					}
 					
 					//pour chaque tour de la case faire...
@@ -383,10 +398,6 @@ public class TdJeu extends StateJeu
 							}
 						}
 						
-						
-						
-						
-						
 						//dessin	
 						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 						values_.tower_sprite(t.num_Texture()).draw(sb_);
@@ -402,53 +413,50 @@ public class TdJeu extends StateJeu
 			int size_shot = values_.shots().size();
 			for(int a=0;a < size_shot;a++)
 			{
-				//try
-				//{
-					//recuperation du tir
-					Tir tir = new Tir();
-					tir = values_.shots().get(a);
-					
-					
-					int c = values_.get_Index_Cellule((int)tir.position().x,(int)tir.position().y);
-					if(c<0 || c>= values_.size_m()*values_.size_n())
-						continue;
+				//recuperation du tir
+				Tir tir = new Tir();
+				tir = values_.shots().get(a);
+				
+				
+				int c = values_.get_Index_Cellule((int)tir.position().x,(int)tir.position().y);
+				if(c<0 || c>= values_.size_m()*values_.size_n())
+					continue;
 
-					ArrayList<Mobs> case_mob =values_.carte()[c].getMobs_();
-					int existePlus = tir.onExectute(case_mob);
-					if(existePlus >= 0)//on suprime
+				ArrayList<Mobs> case_mob =values_.carte()[c].getMobs_();
+				int existePlus = tir.onExectute(case_mob);
+				if(existePlus >= 0)//on suprime
+				{
+					//emission de particle
+					if(existePlus==0) //fumée
 					{
-						//emission de particle
-						if(existePlus==0) //fumée
-						{
-							//System.err.println("fumméé");
-							actor2.add( new ParticleEffect(particle_effect_fumee));
-							actor2.get(actor2.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
-							actor2.get(actor2.size()-1).start();
-						}
-						else//sang
-						{
-							//System.err.println("sang");
-							actor1.add( new ParticleEffect(particle_effect_sang));
-							actor1.get(actor1.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
-							actor1.get(actor1.size()-1).start();
-						}
-						
-						values_.shots().remove(a);
-						tir.time(0);
-						values_.getPile_shot_().push(tir);
-						
-						
-						break;
+						//System.err.println("fumméé");
+						actor2.add( new ParticleEffect(particle_effect_fumee));
+						actor2.get(actor2.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
+						actor2.get(actor2.size()-1).start();
 					}
-	
+					else//sang
+					{
+						//System.err.println("sang");
+						actor1.add( new ParticleEffect(particle_effect_sang));
+						actor1.get(actor1.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
+						actor1.get(actor1.size()-1).start();
+					}
 					
+					values_.shots().remove(a);
+					tir.time(0);
+					values_.getPile_shot_().push(tir);
+					
+					
+					break;
+				}
 
-					//deplacement
-					//animation
-					tir.add_Time(Gdx.graphics.getDeltaTime()*2);
-					TextureRegion currentFrame2 = values_.shots_Sprite_().get_Animation(tir.num_Texture(),0).getKeyFrame(tir.time(), false);
-					//placement + dessin	
-					sb_.draw(currentFrame2,tir.position().x, tir.position().y);
+
+				//deplacement
+				//animation
+				tir.add_Time(Gdx.graphics.getDeltaTime()*2);
+				TextureRegion currentFrame2 = values_.shots_Sprite_().get_Animation(tir.num_Texture(),0).getKeyFrame(tir.time(), false);
+				//placement + dessin	
+				sb_.draw(currentFrame2,tir.position().x, tir.position().y);
 			}
 			
 			sb_.end();
@@ -501,11 +509,10 @@ public class TdJeu extends StateJeu
 			    values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
 				values_.tower_sprite(t.num_Texture()).draw(sb_);
 				
-
+				sb_.setShader(null);
 			    sb_.end();
 			}
-			//sb_.end();
-			
+
 			//dessin des particules
 			sb_.begin();
 			sb_.setShader(null);
@@ -531,6 +538,7 @@ public class TdJeu extends StateJeu
 					actor2.remove(i);
 				}
 			}
+			sb_.setShader(null);
 			sb_.end();
 		}
 
@@ -544,4 +552,47 @@ public class TdJeu extends StateJeu
 		else
 			return selection_;
 	}
+	
+	
+
+
+	private float[] square_Vertices(float width, float height, float x, float y) 
+	{
+		float[] verts = new float[20];
+		int i = 0;
+
+		verts[i++] = 0+x; // x1
+		verts[i++] = 0+y; // y1
+		verts[i++] = 0;
+		verts[i++] = 1f; // u1
+		verts[i++] = 1f; // v1
+
+		verts[i++] = 0+x; // x2
+		verts[i++] = height+y; // y2
+		verts[i++] = 0;
+		verts[i++] = 0f; // u2
+		verts[i++] = 1f; // v2
+
+		verts[i++] = width+x; // x3
+		verts[i++] = height+y; // y2
+		verts[i++] = 0;
+		verts[i++] = 0f; // u3
+		verts[i++] = 0f; // v3
+
+		verts[i++] = width+x; // x4
+		verts[i++] = 0 +y; // y4
+		verts[i++] = 0;
+		verts[i++] = 1f; // u4
+		verts[i++] = 0f; // v4
+
+		return verts;
+	}
+
+	private short[] square_Index()
+	{
+		short[] tab = {0,1,2,2,3,0};	
+		return tab;
+	}
+
+
 }

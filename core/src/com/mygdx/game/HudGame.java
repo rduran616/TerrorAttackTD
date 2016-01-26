@@ -611,8 +611,8 @@ public class HudGame
 						       @Override
 						       public void clicked(InputEvent event, float x, float y) 
 						       {
+						    	   values_.setT_temporaire_(new TowerZone(values_.t_zone_modele_()));
 						    	   values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1);
-						    	   values_.setT_temporaire_(new TowerZone(values_.t_zone_modele_()));		
 						    	   values_.status(Status.INFO_UPGRADE);
 						    	   values_.setNum_tr_upgrade_(3);
 						       }

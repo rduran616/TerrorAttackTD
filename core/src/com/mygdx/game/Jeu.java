@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
@@ -49,8 +51,24 @@ public class Jeu extends StateMenu  implements InputProcessor
 	
 	//hud fin
 	
+	
+	String simple_vertex_shader = null;
+    String cartoon_pixel_shader = null;
+    ShaderProgram cartoon_shader = null;
+    
+    Texture simple_texture;
+    Texture draw_texture;
+    Texture tv_texture;
+	
 	public Jeu()
 	{
+		simple_vertex_shader = Gdx.files.internal("shaders/vertexShaders/simpleVertex.glsl").readString();
+		cartoon_pixel_shader =  Gdx.files.internal("shaders/pixelShaders/cartoonEffect.glsl").readString();
+		cartoon_shader =  new ShaderProgram(simple_vertex_shader,cartoon_pixel_shader);
+		tv_texture = new Texture(Gdx.files.internal("StaticSnow.png"));
+		
+		
+		
 		//initialisation des variables
 		selection_ = StateMEnuEnum.JEU;
 		values_ = GlobalValues.getInstance();
@@ -91,9 +109,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		//dessin du jeu
 		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
 		{
-			//viewport de la map
-			//Gdx.gl.glViewport( values_.get_width()*size_hud_/100,0,values_.get_width(),values_.get_height());
-
+			values_.tiled_Map().getBatch().setShader(cartoon_shader);		
 			//dessin de la carte
 			if(values_.camera_Update() != ErrorEnum.OK)
 			{	
@@ -115,16 +131,13 @@ public class Jeu extends StateMenu  implements InputProcessor
 				selection_ = StateMEnuEnum.JEU;
 				System.err.println("Erreur rendu carte");
 			}
-			
+
 	        //dessins du reste
 			 if(etat_jeu_ == StateJeuEnum.JEU )
 			 {
 				//dessin uid
-				// Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth()*size_hud_/100,Gdx.graphics.getHeight());//viewport du hud interactif			 
 				 hud_game_.argent();
 				 hud_game_.vie();
-				 hud_game_.stage().draw();
-
 			 }
 			 else if(etat_jeu_ == StateJeuEnum.PAUSE)
 			 {
@@ -153,10 +166,15 @@ public class Jeu extends StateMenu  implements InputProcessor
 			selection_ = StateMEnuEnum.MENU;
 		}
 
-		
-		
 		// choix de l'etat et action en fonction de l'état du jeu
 		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia
+		 if(etat_jeu_ == StateJeuEnum.JEU )
+		 {
+			//dessin uid
+			 hud_game_.argent();
+			 hud_game_.vie();
+			 hud_game_.stage().draw();
+		 }
 		
 		//Changer de menu
 		if(selection_ != StateMEnuEnum.JEU)
