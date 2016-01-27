@@ -2,8 +2,9 @@ package com.mygdx.game;
 
 import java.util.ArrayList;
 
-
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
@@ -78,9 +79,35 @@ public class TdJeu extends StateJeu
 		particle_effect_sang = new ParticleEffect();
 		particle_effect_fumee = new ParticleEffect();
 		
-		particle_effect_sang.load(Gdx.files.internal("particle/sang_particle"), Gdx.files.internal("particle_img")); 
-		//files.internal loads from the "assets" folder
-		particle_effect_fumee.load(Gdx.files.internal("particle/explosion.p"), Gdx.files.internal("particle_img"));
+		try
+		{
+			particle_effect_sang.load(Gdx.files.internal("particle/sang_particle"), Gdx.files.internal("particle_img")); 
+			//files.internal loads from the "assets" folder
+			particle_effect_fumee.load(Gdx.files.internal("particle/explosion.p"), Gdx.files.internal("particle_img"));
+		}
+		catch(Exception e)
+		{
+			FileHandle file_effect;
+			FileHandle file_effect1;
+			FileHandle file_img;
+			
+			if(Gdx.app.getType() == ApplicationType.Android)
+			{
+				file_effect = new FileHandle("particle/sang_particle");
+				file_effect1 = new FileHandle("particle/explosion.p");
+				file_img = new FileHandle("particle_img");
+			}
+			else
+			{
+				file_effect = new FileHandle("../android/assets/particle/sang_particle");
+				file_effect1 = new FileHandle("../android/assets/particle/explosion.p");
+				file_img = new FileHandle("../android/assets/particle_img");
+			}
+			
+			particle_effect_sang.load(file_effect, file_img); 
+			//files.internal loads from the "assets" folder
+			particle_effect_fumee.load(file_effect1, file_img);
+		}
 		
 		actor1 = new ArrayList<ParticleEffect>();
 		actor2 = new ArrayList<ParticleEffect>();
