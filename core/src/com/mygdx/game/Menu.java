@@ -75,8 +75,10 @@ public class Menu extends StateMenu implements InputProcessor
 		jeu_bouton.addListener(new ClickListener()
 		{
 		       @Override
-		       public void clicked(InputEvent event, float x, float y) {
+		       public void clicked(InputEvent event, float x, float y) 
+		       {
 		    	   selection_ = StateMEnuEnum.JEU;
+		    	   
 		       }
 		 });
 		
@@ -214,5 +216,12 @@ public class Menu extends StateMenu implements InputProcessor
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -160,4 +160,10 @@ public class TdChoixNiveau extends StateJeu
 			return selection_;
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

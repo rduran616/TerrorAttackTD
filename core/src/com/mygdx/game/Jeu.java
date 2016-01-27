@@ -24,8 +24,6 @@ public class Jeu extends StateMenu  implements InputProcessor
 	//multiplexer de stage -> avoir plusieur stage en 1 ( interaction monde et hud)
 	InputMultiplexer multiplexer = new InputMultiplexer();
 
-	
-	
 	//var global
 	GlobalValues values_;		
 	StateMEnuEnum selection_;
@@ -99,11 +97,15 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		tick_ = new TickHorloge(30); //30fps max
 		finger = new FingerTransformMap(0.01);
+		
+		//initialisation du jeu
+		init();
 	}
 
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
+		
 		Gdx.input.setCatchBackKey(true);
 
 		//dessin du jeu
@@ -149,7 +151,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 			 }
 			 else if(etat_jeu_ == StateJeuEnum.FIN)
 			 {
-				//dessin uid
+				 init();
 			 }
 			 
 			 //Activation touche si pas deja fait
@@ -167,14 +169,40 @@ public class Jeu extends StateMenu  implements InputProcessor
 		}
 
 		// choix de l'etat et action en fonction de l'état du jeu
-		etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia
+		 if(etat_jeu_ == StateJeuEnum.PAUSE )
+		 {
+			 etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia + dessin
+			 if(etat_jeu_ == StateJeuEnum.JEU)
+			 {
+				 hud_game_.setEtat_jeu_(StateJeuEnum.JEU);
+				 Gdx.input.setInputProcessor(multiplexer);
+			 }
+			 else if(etat_jeu_ == StateJeuEnum.RETOUR)
+			 {
+				 hud_game_.setEtat_jeu_(StateJeuEnum.JEU);
+			 }
+		 }
+		 else
+			 etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia + dessin
+		 
+		 
+		 
+		 
 		 if(etat_jeu_ == StateJeuEnum.JEU )
 		 {
 			//dessin uid
 			 hud_game_.argent();
 			 hud_game_.vie();
+			 
+			 if(values_.vie()==0)
+				 etat_jeu_ = StateJeuEnum.FIN;
+			 
+			 if(hud_game_.getEtat_jeu_() == StateJeuEnum.PAUSE)
+				 etat_jeu_ = StateJeuEnum.PAUSE;
+			 
 			 hud_game_.stage().draw();
 		 }
+
 		
 		//Changer de menu
 		if(selection_ != StateMEnuEnum.JEU)
@@ -360,4 +388,14 @@ public class Jeu extends StateMenu  implements InputProcessor
 		return false;
 	}
 
+	
+	public void init()
+	{
+		values_.vie(20);
+		values_.argent(10);
+		etat_jeu_ = StateJeuEnum.CHOIX;
+		selection_ = StateMEnuEnum.JEU;
+		jeu_[3].init();
+	}
+	
 }

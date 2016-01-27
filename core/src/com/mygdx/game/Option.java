@@ -132,4 +132,10 @@ public class Option extends StateMenu implements InputProcessor
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }

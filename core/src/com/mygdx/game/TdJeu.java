@@ -11,18 +11,17 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+
 
 import Utilitaires.AStar;
 import Utilitaires.Circle;
 import Utilitaires.Noeud;
-import Utilitaires.ParticleEffectActor;
 import Utilitaires.StructureEnnemi;
 import Utilitaires.TickHorloge;
 import units.Mobs;
@@ -174,7 +173,7 @@ public class TdJeu extends StateJeu
 	public StateJeuEnum exectute() 
 	{
 		/*********************crétaion de l'ia***************************************/
-		
+	
 		//Création des mobs
 		if(vague_.nb_Ennemis()<=0)
 			vague_.new_Vague();
@@ -356,10 +355,11 @@ public class TdJeu extends StateJeu
 			sb_.begin();
 			sb_.setProjectionMatrix(values_.camera().combined);//mise à jour de la matrice de projection du batch pour redimentionnement des sprites
 			
-			cartoon_shader.setUniformf("coef0", 0.8f);
-			cartoon_shader.setUniformf("coef1", 0.8f);
+			cartoon_shader.setUniformf("coef0", 0.7f);
+			cartoon_shader.setUniformf("coef1", 0.9f);
+			cartoon_shader.setUniformf("coef3", 0.8f);
 			cartoon_shader.setUniformf("coef2", 30f);
-			cartoon_shader.setUniformf("ligthness", 70f);
+			cartoon_shader.setUniformf("ligthness", 80f);
 			cartoon_shader.setUniformf("brightness", 2.5f);
 			cartoon_shader.setUniformf("iGlobalTime", Gdx.graphics.getDeltaTime());	
 			sb_.setShader(cartoon_shader);
@@ -581,7 +581,10 @@ public class TdJeu extends StateJeu
 	}
 	
 	
-
+	public void init()
+	{
+		selection_ = StateJeuEnum.JEU;
+	}
 
 	private float[] square_Vertices(float width, float height, float x, float y) 
 	{

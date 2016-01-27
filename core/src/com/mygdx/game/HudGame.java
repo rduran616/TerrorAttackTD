@@ -50,17 +50,18 @@ public class HudGame
 	private int nb_bonus_;	//nombre de bonus different
 	private int pourcent_vente_ = 50;
 	
+	private StateJeuEnum etat_jeu_ = StateJeuEnum.JEU;
 	
 	private int size_hud_ = 20;				//valeur en % de la taille du hud par rapport a l'ecran
 	
 	private Stage stage_game_;				//stage du jeu qd on est spectateur
-//	private Layout main_layout_game_;		//layout du hud du jeu ( layout du mode jeu)
 	private Table main_table_game_;			//layout principale du hud du jeu
 	private Label label_tour_;				//label pour placement tour
 	private Label label_bonus_;				//label pour placement tour
 	private Label label_amelioration_;		//label pour amelioratin générale des tours
 	private Label vie_;
 	private Label argent_;
+	private TextButton pause_;
 	
 //	private Stage stage_game_2;				//stage du jeu qd on place un objet
 	private Table main_layout_game_2;		//layout du mode placement 
@@ -140,6 +141,20 @@ public class HudGame
 			
 		hud.table(main_table_game_);
 		
+		pause_ = new TextButton("pause", values_.get_Skin());
+		pause_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       { 
+		    	   etat_jeu_ = StateJeuEnum.PAUSE;
+		       }
+		 });
+		
+		
+		
+		
+		main_table_game_.add(pause_).row();
 		main_table_game_.add(label_tour_);
 		main_table_game_.row();
 		hud.node("tower");
@@ -774,6 +789,20 @@ public class HudGame
 
 	public float pad(){return pad_;}
 	public void pad(float p){pad_=p;}
+
+
+
+
+	public StateJeuEnum getEtat_jeu_() {
+		return etat_jeu_;
+	}
+
+
+
+
+	public void setEtat_jeu_(StateJeuEnum etat_jeu_) {
+		this.etat_jeu_ = etat_jeu_;
+	}
 
 
 }

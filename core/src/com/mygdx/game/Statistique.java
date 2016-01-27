@@ -126,4 +126,10 @@ public class Statistique extends StateMenu implements InputProcessor
 		return false;
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
