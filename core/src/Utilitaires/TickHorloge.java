@@ -1,5 +1,7 @@
 package Utilitaires;
 
+import com.badlogic.gdx.Gdx;
+
 /*
  * CLASSE QUI PERMET DE GERER LES TICKS D HORLOGE
  */

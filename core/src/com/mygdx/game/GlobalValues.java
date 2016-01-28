@@ -396,6 +396,8 @@ public final class GlobalValues
 	}
 	
 
+	public void reinit_modele(){get_Units_Model();}
+	
 	private void get_Units_Model()
 	{
 

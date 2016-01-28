@@ -224,7 +224,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 	{
 		if(keycode == Keys.BACK)
 		{
-			System.err.println("test");
+			//System.err.println("test");
 			etat_jeu_ = StateJeuEnum.CHOIX;
 			selection_ = StateMEnuEnum.MENU;
 	    }
@@ -358,11 +358,6 @@ public class Jeu extends StateMenu  implements InputProcessor
 
 				values_.getT_temporaire_().position_add(Tx, -Ty);
 			}
-			/*else
-			{
-				finger.finger_Zoom(screenX, screenY, pointer);
-				finger.finger_Move(screenX, screenY, pointer);*/
-			//}
 		}
 		else 
 		{
@@ -391,8 +386,8 @@ public class Jeu extends StateMenu  implements InputProcessor
 	
 	public void init()
 	{
-		values_.vie(20);
-		values_.argent(10);
+		values_.vie(1000);
+		values_.argent(100);
 		etat_jeu_ = StateJeuEnum.CHOIX;
 		selection_ = StateMEnuEnum.JEU;
 		

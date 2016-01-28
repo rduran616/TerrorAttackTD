@@ -40,8 +40,10 @@ public class TdFin extends StateJeu
 		retour_.addListener(new ClickListener()
 		{
 		       @Override
-		       public void clicked(InputEvent event, float x, float y) {
+		       public void clicked(InputEvent event, float x, float y) 
+		       {
 		    	   selection_ = StateJeuEnum.RETOUR;
+		    	   values_.reinit_modele();
 		       }
 		 });
 		layout_table.add(label_victoire).width(values_.get_width()).pad(10).row();

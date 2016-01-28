@@ -9,6 +9,12 @@ i:default.png:26179:image/png
 i:drawTexture.jpg:34387:image/jpeg
 t:font.fnt:15430:application/unknown
 i:font.png:6796:image/png
+d:Lang:0:application/unknown
+i:Lang/fr_flag.png:13410:image/png
+b:Lang/MyBundle.properties:584:application/unknown
+b:Lang/MyBundle_en.properties:0:application/unknown
+b:Lang/MyBundle_fr.properties:573:application/unknown
+i:Lang/uk_flag.png:10929:image/png
 d:map:0:application/unknown
 b:map/carte1_test.tmx:1762:application/unknown
 i:map/tileset.png:148196:image/png

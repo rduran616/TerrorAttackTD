@@ -46,6 +46,7 @@ public class TdPause extends StateJeu
 		       public void clicked(InputEvent event, float x, float y) 
 		       { 
 		    	   selection_ = StateJeuEnum.RETOUR;
+		    	   values_.reinit_modele();
 		       }
 		 });
 		
