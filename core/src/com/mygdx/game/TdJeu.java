@@ -584,6 +584,7 @@ public class TdJeu extends StateJeu
 	public void init()
 	{
 		selection_ = StateJeuEnum.JEU;
+		
 	}
 
 	private float[] square_Vertices(float width, float height, float x, float y) 

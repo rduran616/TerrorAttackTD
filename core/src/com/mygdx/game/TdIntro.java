@@ -35,8 +35,8 @@ public class TdIntro extends StateJeu
 	@Override
 	public void init() 
 	{
-		// TODO Auto-generated method stub
-		
+
+
 	}
 
 }

@@ -148,9 +148,11 @@ public class Quitter extends StateMenu implements InputProcessor
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
+	public void init() 
+	{
+		oui_bouton.setText(values_.localisation().get("oui"));
+		non_bouton.setText(values_.localisation().get("non"));
+		label_quitter.setText(values_.localisation().get("fin_app"));
 	}
 
 }

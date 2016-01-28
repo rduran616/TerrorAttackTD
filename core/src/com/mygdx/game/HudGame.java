@@ -560,7 +560,32 @@ public class HudGame
 	} 
 
 	
-
+	public void update_lang()
+	{
+		vie_.setText(values_.localisation().get("vie"));
+		vie_.setPosition(values_.get_width()-vie_.getWidth(), values_.get_height()-20);
+		argent_.setText(values_.localisation().get("argent"));
+		argent_.setPosition(values_.get_width()-argent_.getWidth(), values_.get_height()-40);
+		
+		
+		label_tour_.setText(values_.localisation().get("tour"));
+		label_bonus_.setText(values_.localisation().get("bonus"));
+		label_amelioration_.setText(values_.localisation().get("amelio"));
+		
+		txt_info_.setText(values_.localisation().get("placement"));
+		cancel_.setText(values_.localisation().get("annuler"));
+		validate_.setText(values_.localisation().get("valider"));
+		
+		txt_info_2.setText(values_.localisation().get("vendre"));
+		cancel_2.setText(values_.localisation().get("annuler"));
+		validate_2.setText(values_.localisation().get("valider"));
+		
+		validate_4.setText(values_.localisation().get("valider"));
+		cancel_4.setText(values_.localisation().get("annuler"));
+		txt_info_4.setText(values_.localisation().get("amelio")+"?");
+		
+		pause_.setText(values_.localisation().get("pause"));
+	}
 	
 	
 	//création des boutons de l'ui principal

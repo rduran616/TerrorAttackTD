@@ -71,8 +71,10 @@ public class TdFin extends StateJeu
 
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
+	public void init() 
+	{
+		retour_.setText(values_.localisation().get("retour")); 
+		label_victoire.setText(values_.localisation().get("victoire")+"\n"+values_.localisation().get("gagner"));
 		
 	}
 }

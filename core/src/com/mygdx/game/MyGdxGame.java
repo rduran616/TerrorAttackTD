@@ -47,7 +47,11 @@ public class MyGdxGame extends ApplicationAdapter
 		//rendu du menu
 		menu_en_cours = main_menu[menu_en_cours.ordinal()].changer_Etat();
 		if(menu_en_cours == StateMEnuEnum.MENU)
-			main_menu[1].init();
+		{
+			for(int i=0; i < main_menu.length;i++)
+				main_menu[i].init();
+		}
+		
 	}
 	
 	@Override

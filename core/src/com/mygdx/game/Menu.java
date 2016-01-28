@@ -220,8 +220,11 @@ public class Menu extends StateMenu implements InputProcessor
 
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
+	public void init() 
+	{
+		jeu_bouton.setText(values_.localisation().get("jeu")); 
+		option_bouton.setText(values_.localisation().get("option"));
+		stat_bouton.setText(values_.localisation().get("stat"));	
+		quitter_bouton.setText(values_.localisation().get("quitter"));
 	}
 }

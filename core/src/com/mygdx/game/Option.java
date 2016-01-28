@@ -3,12 +3,17 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Option extends StateMenu implements InputProcessor
@@ -19,41 +24,138 @@ public class Option extends StateMenu implements InputProcessor
 	Table layout_table;
 	Stage stage;				
 	TextButton retour_;
+	TextButton valider_;
+	Label chose_;
+	Label lang_;
+	TextButton gauche_;
+	TextButton droite_ ;
 	InputMultiplexer multiplexer = new InputMultiplexer();
-
+	Image drapeau_;
 	
+	private int num_lang_ = 0;
+
 	public Option()
 	{
+		
+		
 		selection_ = StateMEnuEnum.OPTION;
 		values_ = GlobalValues.getInstance();
+		num_lang_ = Integer.parseInt( values_.localisation().get("value"));
 		
 		//creation zone affichage du menu
 		stage = new Stage(new ScreenViewport()); 
 		
 		//boutons et label
 		layout_table = new Table();
-		layout_table.setSize(values_.get_width(),values_.get_width());
-		retour_=new TextButton(values_.localisation().get("retour"), values_.get_Skin());//init du bouton retour 
+		layout_table.setSize(values_.get_width() -values_.get_width()*10/100,values_.get_height() -values_.get_height()*60/100 );
+		layout_table.setPosition(values_.get_width()-values_.get_width()*95/100, values_.get_height()  -values_.get_height()*60/100 );
+		gauche_ = new TextButton("<",values_.get_Skin());
+		droite_ = new TextButton(">",values_.get_Skin());
 		
+		Texture txt  = new Texture(Gdx.files.internal("Lang/"+values_.localisation().get("flag")));
+		Sprite sprite = new Sprite(txt);
+		drapeau_ = new Image(sprite);
+		
+		gauche_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       {
+		    	   int val = Integer.parseInt(values_.localisation().get("value"));
+		    	   val --;
+		    	   
+		    	   val = val%2;
+		    	   changement_langue(val);
+		       }
+		 });
+		
+		droite_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       {
+		    	   int val = Integer.parseInt(values_.localisation().get("value"));
+		    	   val ++;
+		    	   
+		    	   val = val%2;
+		    	   changement_langue(val);
+		       }
+		 });
+
+		
+		layout_table.add(gauche_).pad(10);
+		layout_table.add(drapeau_);
+		layout_table.add(droite_).pad(10);
+		
+		
+		retour_=new TextButton(values_.localisation().get("annuler")+" \\ "+values_.localisation().get("retour"), values_.get_Skin());//init du bouton retour 
+		valider_ =new TextButton(values_.localisation().get("appliquer"), values_.get_Skin());//init du bouton retour
+		chose_ = new Label(values_.localisation().get("choisir_langage"),values_.get_Skin());
+		lang_ = new Label(values_.localisation().get("lang"),values_.get_Skin());
 		
 		retour_.addListener(new ClickListener()
 		{
 		       @Override
-		       public void clicked(InputEvent event, float x, float y) {
+		       public void clicked(InputEvent event, float x, float y) 
+		       {
+		    	   selection_ = StateMEnuEnum.MENU;
+		    	   changement_langue(num_lang_);
+		       }
+		 });
+		
+		valider_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       {
 		    	   selection_ = StateMEnuEnum.MENU;
 		       }
 		 });
 		
-		layout_table.add(retour_).width(values_.get_width()).pad(10);
+
+		chose_.setPosition(values_.get_width()/2  - chose_.getWidth()/2, values_.get_height()-values_.get_height()*10/100);
+		valider_.setWidth(values_.get_width()*40/100);
+		retour_.setWidth(values_.get_width()*40/100);
+		valider_.setPosition(values_.get_width()/2 - valider_.getWidth() - values_.get_width() * 1/100, values_.get_height()-values_.get_height()*90/100);
+		retour_.setPosition(values_.get_width()/2 , values_.get_height()-values_.get_height()*90/100);
+		lang_.setPosition(values_.get_width()/2 - lang_.getWidth()/2,values_.get_height()-values_.get_height()*70/100);
+		
+		
+		stage.addActor(chose_);
 		stage.addActor(layout_table);
+		stage.addActor(lang_);
+		stage.addActor(valider_);
+		stage.addActor(retour_);
 		
 		multiplexer.addProcessor(this);
 		multiplexer.addProcessor(stage);
-		//Gdx.input.setCatchBackKey(true);
-		//Gdx.input.setInputProcessor(stage);
-		
-
 	}
+	
+	private void changement_langue(int val)
+	{
+		switch(val)
+		{
+			case 0: //anglais
+				values_.localisation().init_Langage("Lang/MyBundle", "", "", "");
+			break;
+
+			case 1: //francais
+				values_.localisation().init_Langage("Lang/MyBundle","fr", "", "");
+			break;
+		}
+		
+		
+		Texture txt  = new Texture(Gdx.files.internal("Lang/"+values_.localisation().get("flag")));
+		Sprite sprite = new Sprite(txt);
+		drapeau_.setDrawable(new SpriteDrawable(new Sprite(txt)));
+		
+		lang_.setText(values_.localisation().get("lang"));
+		lang_.setPosition(values_.get_width()/2 - lang_.getWidth()/2,values_.get_height()-values_.get_height()*70/100);
+		retour_.setText(values_.localisation().get("annuler")+" \\ "+values_.localisation().get("retour"));
+		valider_.setText(values_.localisation().get("appliquer"));
+		chose_.setText(values_.localisation().get("choisir_langage"));
+	}
+	
 	
 	@Override
 	public StateMEnuEnum changer_Etat() 
@@ -134,8 +236,21 @@ public class Option extends StateMenu implements InputProcessor
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
+	public void init() 
+	{
+		if(values_.localisation() != null)
+		{
+			num_lang_ = Integer.parseInt( values_.localisation().get("value"));
+			changement_langue(num_lang_);
+		}
+	}
+
+	
+	public int getNum_lang() {
+		return num_lang_;
+	}
+
+	public void setNum_lang(int num_lang_) {
+		this.num_lang_ = num_lang_;
 	}
 }

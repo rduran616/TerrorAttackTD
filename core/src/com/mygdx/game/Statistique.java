@@ -127,9 +127,9 @@ public class Statistique extends StateMenu implements InputProcessor
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
+	public void init() 
+	{
+		retour_.setText(values_.localisation().get("retour")); 
 	}
 
 }

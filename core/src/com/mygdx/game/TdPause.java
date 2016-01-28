@@ -29,6 +29,9 @@ public class TdPause extends StateJeu
 		values_ = GlobalValues.getInstance();
 		
 		retour_ = new TextButton(values_.localisation().get("retour"),values_.get_Skin());
+		menu_ = new TextButton(values_.localisation().get("retour")+" "+values_.localisation().get("main_menu")+"?",values_.get_Skin());
+		
+		
 		retour_.addListener(new ClickListener()
 		{
 		       @Override
@@ -36,8 +39,7 @@ public class TdPause extends StateJeu
 		       { 
 		    	   selection_ = StateJeuEnum.JEU;
 		       }
-		 });
-		menu_ = new TextButton(values_.localisation().get("retour")+" "+values_.localisation().get("main_menu")+"?",values_.get_Skin());
+		 });	
 		menu_.addListener(new ClickListener()
 		{
 		       @Override
@@ -85,8 +87,12 @@ public class TdPause extends StateJeu
 
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
+	public void init() 
+	{
+
+		retour_.setText(values_.localisation().get("retour"));
+		menu_.setText(values_.localisation().get("retour")+" "+values_.localisation().get("main_menu")+"?");
+		label_.setText(values_.localisation().get("pause"));
 		
 	}
 

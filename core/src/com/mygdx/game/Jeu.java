@@ -395,7 +395,11 @@ public class Jeu extends StateMenu  implements InputProcessor
 		values_.argent(10);
 		etat_jeu_ = StateJeuEnum.CHOIX;
 		selection_ = StateMEnuEnum.JEU;
-		jeu_[3].init();
+		
+		for(int i=0; i< jeu_.length;i++)
+			jeu_[i].init();
+		
+		hud_game_.update_lang();
 	}
 	
 }
