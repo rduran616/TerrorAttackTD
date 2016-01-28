@@ -34,8 +34,8 @@ public class TdFin extends StateJeu
 		//boutons et label
 		layout_table = new Table();
 		layout_table.setSize(values_.get_width(),values_.get_width());
-		retour_=new TextButton("Retour", values_.get_Skin());//init du bouton retour 
-		label_victoire = new Label("Victoire :fete:",values_.get_Skin());
+		retour_=new TextButton(values_.localisation().get("retour"), values_.get_Skin());//init du bouton retour 
+		label_victoire = new Label(values_.localisation().get("victoire")+"\n"+values_.localisation().get("gagner"),values_.get_Skin());
 		
 		retour_.addListener(new ClickListener()
 		{

@@ -66,10 +66,10 @@ public class Menu extends StateMenu implements InputProcessor
 		menu_stage = new Stage(new ScreenViewport()); 
 	
 		//creation des boutons
-		jeu_bouton=new TextButton("Jouer", skin_bouton);//init du bouton Jeu 
-		option_bouton=new TextButton("Option", skin_bouton);//init du bouton Option 
-		stat_bouton=new TextButton("Statistique", skin_bouton);	//init du bouton Stat 
-		quitter_bouton=new TextButton("Quitter", skin_bouton);//init du bouton Quitter
+		jeu_bouton=new TextButton(values_.localisation().get("jeu"), skin_bouton);//init du bouton Jeu 
+		option_bouton=new TextButton(values_.localisation().get("option"), skin_bouton);//init du bouton Option 
+		stat_bouton=new TextButton(values_.localisation().get("stat"), skin_bouton);	//init du bouton Stat 
+		quitter_bouton=new TextButton(values_.localisation().get("quitter"), skin_bouton);//init du bouton Quitter
 
 		//création des listenners
 		jeu_bouton.addListener(new ClickListener()

@@ -28,7 +28,7 @@ public class TdPause extends StateJeu
 		selection_ = StateJeuEnum.PAUSE;
 		values_ = GlobalValues.getInstance();
 		
-		retour_ = new TextButton("Retour au jeu",values_.get_Skin());
+		retour_ = new TextButton(values_.localisation().get("retour"),values_.get_Skin());
 		retour_.addListener(new ClickListener()
 		{
 		       @Override
@@ -37,7 +37,7 @@ public class TdPause extends StateJeu
 		    	   selection_ = StateJeuEnum.JEU;
 		       }
 		 });
-		menu_ = new TextButton("Retour au Menu principal",values_.get_Skin());
+		menu_ = new TextButton(values_.localisation().get("retour")+" "+values_.localisation().get("main_menu")+"?",values_.get_Skin());
 		menu_.addListener(new ClickListener()
 		{
 		       @Override
@@ -48,7 +48,7 @@ public class TdPause extends StateJeu
 		 });
 		
 
-		label_ = new Label("Pause",values_.get_Skin());
+		label_ = new Label(values_.localisation().get("pause"),values_.get_Skin());
 		stage_ = new Stage();
 		main_table_ = new Table();
 		main_table_.setSize(values_.get_width(),values_.get_height());

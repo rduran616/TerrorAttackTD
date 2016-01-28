@@ -120,9 +120,9 @@ public class HudGame
 		main_table_game_.setSize(values_.get_width()*size_hud_/100,values_.get_height());
 		//layout_table_tower_.setPosition(0,0);
 		
-		label_tour_				= new Label("Tours :", values_.get_Skin());
-		label_bonus_			= new Label("Bonus :", values_.get_Skin());
-		label_amelioration_		= new Label("Upgra :", values_.get_Skin());
+		label_tour_				= new Label(values_.localisation().get("tour"), values_.get_Skin());
+		label_bonus_			= new Label(values_.localisation().get("bonus"), values_.get_Skin());
+		label_amelioration_		= new Label(values_.localisation().get("amelio"), values_.get_Skin());
 		stage_game_				= new Stage(new ScreenViewport());
 				
 		//placement des boutons
@@ -141,7 +141,7 @@ public class HudGame
 			
 		hud.table(main_table_game_);
 		
-		pause_ = new TextButton("pause", values_.get_Skin());
+		pause_ = new TextButton(values_.localisation().get("pause"), values_.get_Skin());
 		pause_.addListener(new ClickListener()
 		{
 		       @Override
@@ -175,17 +175,17 @@ public class HudGame
 		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
 		
 		//autre informations
-		vie_ = new Label("Vie :", values_.get_Skin());
+		vie_ = new Label(values_.localisation().get("vie"), values_.get_Skin());
 		vie_.setPosition(values_.get_width()-vie_.getWidth(), values_.get_height()-20);
-		argent_ = new Label("Argent :", values_.get_Skin());
+		argent_ = new Label(values_.localisation().get("argent"), values_.get_Skin());
 		argent_.setPosition(values_.get_width()-argent_.getWidth(), values_.get_height()-40);
 		
 		
 		//deuxieme hud	-> placment tour			
 		main_layout_game_2 = new Table();		
-		txt_info_ = new Label("Placement :", values_.get_Skin());
-		cancel_ = new TextButton("Annuler", values_.get_Skin());
-		validate_ = new TextButton("Valider", values_.get_Skin());
+		txt_info_ = new Label(values_.localisation().get("placement"), values_.get_Skin());
+		cancel_ = new TextButton(values_.localisation().get("annuler"), values_.get_Skin());
+		validate_ = new TextButton(values_.localisation().get("valider"), values_.get_Skin());
 		txt_info_tour_ = new Label("", values_.get_Skin());
 	
 		cancel_.addListener(new ClickListener()
@@ -284,9 +284,9 @@ public class HudGame
 
 		//troisième hud		
 		main_layout_game_3 = new Table();		
-		txt_info_2 = new Label("Vendre?", values_.get_Skin());
-		cancel_2 = new TextButton("Annuler", values_.get_Skin());
-		validate_2 = new TextButton("Valider", values_.get_Skin());
+		txt_info_2 = new Label(values_.localisation().get("vendre"), values_.get_Skin());
+		cancel_2 = new TextButton(values_.localisation().get("annuler"), values_.get_Skin());
+		validate_2 = new TextButton(values_.localisation().get("valider"), values_.get_Skin());
 		txt_info_tour_vendre_ = new Label("", values_.get_Skin());
 
 		cancel_2.addListener(new ClickListener()
@@ -363,9 +363,9 @@ public class HudGame
 		
 		//4eme hud : validation achat upgrade
 		main_layout_game_4 = new Table();
-		validate_4 	= new TextButton("Valider", values_.get_Skin());
-		cancel_4 	= new TextButton("Annuler", values_.get_Skin());
-		txt_info_4 = new Label("Améliorer?", values_.get_Skin());
+		validate_4 	= new TextButton(values_.localisation().get("valider"), values_.get_Skin());
+		cancel_4 	= new TextButton(values_.localisation().get("annuler"), values_.get_Skin());
+		txt_info_4 = new Label(values_.localisation().get("amelio")+"?", values_.get_Skin());
 		txt_info_achat_up_= new Label("", values_.get_Skin());
 		
 		cancel_4.addListener(new ClickListener()
@@ -466,7 +466,7 @@ public class HudGame
 	
 	public void argent()
 	{
-		argent_.setText("Argent :"+Integer.toString(values_.argent()));
+		argent_.setText(values_.localisation().get("argent")+": "+Integer.toString(values_.argent()));
 		argent_.setPosition(values_.get_width()-argent_.getWidth()*2, values_.get_height()-40);
 	}
 	
@@ -474,7 +474,7 @@ public class HudGame
 	
 	public void vie()
 	{
-		vie_.setText("Vie :"+Integer.toString(values_.vie()));
+		vie_.setText(values_.localisation().get("vie")+": "+Integer.toString(values_.vie()));
 		vie_.setPosition(values_.get_width()-argent_.getWidth()*2, values_.get_height()-20);
 	}
 	
@@ -491,12 +491,12 @@ public class HudGame
 		else if(values_.status() == Status.NON_POSITIONNE)
 		{
 			
-			txt_info_tour_.setText("Tour: "+values_.getT_temporaire_().nom()+
-						"\ncout:"+values_.getT_temporaire_().cout()+
-						"\ndegat: "+values_.getT_temporaire_()._damage+
-						"\n spe: "+values_.getT_temporaire_()._attspeed/1000+
-						"\n range: "+values_.getT_temporaire_()._range+
-						"\n air: "+values_.getT_temporaire_()._air);
+			txt_info_tour_.setText(values_.localisation().get("tour")+": "+values_.getT_temporaire_().nom()+
+						"\n"+values_.localisation().get("cout")+": "+values_.getT_temporaire_().cout()+
+						"\n"+values_.localisation().get("degat")+": "+values_.getT_temporaire_()._damage+
+						"\n"+values_.localisation().get("vitesse_att")+": "+values_.getT_temporaire_()._attspeed/1000+
+						"\n"+values_.localisation().get("range")+": "+values_.getT_temporaire_()._range+
+						"\n"+values_.localisation().get("aa")+": "+values_.getT_temporaire_()._air);
 	
 			
 			main_table_game_.setVisible(false);
@@ -531,12 +531,12 @@ public class HudGame
 			}
 
 			System.err.println(nb);
-			txt_info_achat_up_.setText("Tour: "+values_.getT_temporaire_().nom()+
-					"\ncout:"+(values_.getT_temporaire_().cout()*nb)+
-					"\ndegat: "+values_.getT_temporaire_()._damage+
-					"\n spe: "+values_.getT_temporaire_()._attspeed/1000+
-					"\n range: "+values_.getT_temporaire_()._range+
-					"\n air: "+values_.getT_temporaire_()._air);
+			txt_info_achat_up_.setText("Tour: "+values_.getT_temporaire_().nom()+": "+
+					"\n "+values_.localisation().get("cout")+": "+(values_.getT_temporaire_().cout()*nb)+
+					"\n "+values_.localisation().get("degat")+": "+values_.getT_temporaire_()._damage+
+					"\n "+values_.localisation().get("vitesse_att")+": "+values_.getT_temporaire_()._attspeed/1000+
+					"\n "+values_.localisation().get("range")+": "+values_.getT_temporaire_()._range+
+					"\n "+values_.localisation().get("aa")+": "+values_.getT_temporaire_()._air);
 			
 			main_table_game_.setVisible(false);
 			main_layout_game_2.setVisible(false);
@@ -546,8 +546,8 @@ public class HudGame
 		}
 		else
 		{
-			txt_info_tour_vendre_.setText("Tour: "+values_.getT_temporaire_().nom()+
-					"\nvente:"+values_.getT_temporaire_().cout()*pourcent_vente_/100);
+			txt_info_tour_vendre_.setText(values_.localisation().get("tour")+": "+values_.getT_temporaire_().nom()+
+					"\n"+values_.localisation().get("vendre")+": "+values_.getT_temporaire_().cout()*pourcent_vente_/100);
 			
 			
 			main_table_game_.setVisible(false);
@@ -790,19 +790,12 @@ public class HudGame
 	public float pad(){return pad_;}
 	public void pad(float p){pad_=p;}
 
-
-
-
 	public StateJeuEnum getEtat_jeu_() {
 		return etat_jeu_;
 	}
 
-
-
-
 	public void setEtat_jeu_(StateJeuEnum etat_jeu_) {
 		this.etat_jeu_ = etat_jeu_;
 	}
-
 
 }

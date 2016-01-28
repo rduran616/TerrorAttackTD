@@ -33,7 +33,7 @@ public class Option extends StateMenu implements InputProcessor
 		//boutons et label
 		layout_table = new Table();
 		layout_table.setSize(values_.get_width(),values_.get_width());
-		retour_=new TextButton("Retour", values_.get_Skin());//init du bouton retour 
+		retour_=new TextButton(values_.localisation().get("retour"), values_.get_Skin());//init du bouton retour 
 		
 		
 		retour_.addListener(new ClickListener()

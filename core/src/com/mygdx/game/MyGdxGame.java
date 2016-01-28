@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.GL20;
 
+import Utilitaires.Localisation;
+
 public class MyGdxGame extends ApplicationAdapter 
 {
 	//SpriteBatch batch;
@@ -17,9 +19,6 @@ public class MyGdxGame extends ApplicationAdapter
 	public void create () 
 	{
 		System.err.println("create");
-		
-		//batch = new SpriteBatch();
-		//img = new Texture("badlogic.jpg");
 		
 		main_menu 	 = new StateMenu[5];
 		main_menu[0] = new Menu();

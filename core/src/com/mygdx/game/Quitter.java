@@ -39,9 +39,9 @@ public class Quitter extends StateMenu implements InputProcessor
 		stage = new Stage(new ScreenViewport()); 
 		
 		//boutons et label
-		oui_bouton=new TextButton("Oui", skin_bouton);//init du bouton Jeu 
-		non_bouton=new TextButton("Non", skin_bouton);//init du bouton Option 
-		label_quitter = new Label("Voulez vous quitter?", skin_bouton);
+		oui_bouton=new TextButton(values_.localisation().get("oui"), skin_bouton);//init du bouton Jeu 
+		non_bouton=new TextButton(values_.localisation().get("non"), skin_bouton);//init du bouton Option 
+		label_quitter = new Label(values_.localisation().get("fin_app"), skin_bouton);
 		
 		//création des listenners
 		oui_bouton.addListener(new ClickListener()

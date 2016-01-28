@@ -2,10 +2,12 @@ package com.mygdx.game;
 
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Stack;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -19,9 +21,11 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.SerializationException;
 
 import Utilitaires.CollisionBox;
+import Utilitaires.Localisation;
 import Utilitaires.ReadXml;
 import Utilitaires.TypeFlag;
 import units.Mobs;
@@ -60,7 +64,6 @@ public final class GlobalValues
 	{
 		super();
 		load();
-	//	pile_mobs_ = new Stack<Mobs>();
 		pile_mobs_air_ =  new Stack<MobsAir>();				//pile contenant les mobs créés mais plus utilisé
 		pile_mobs_base_ = new Stack<MobsBasic>();	
 		pile_mobs_lourd_ = new 	Stack<MobsLourd>();	
@@ -121,7 +124,6 @@ public final class GlobalValues
 	private int nb_unite_slow_ =0;
 	private int nb_unite_base_ =0;
 	
-	
 	//carte
 	private int ennemi_max_=1000;				//nombre max d'ennemi
 	private int size_n_ = 32;					//nombre de carreaux de la carte en width
@@ -158,6 +160,12 @@ public final class GlobalValues
 	private Status status_; //status indiquant si on peux créé ou non un objet
 	private float  vitesse_projectil_ = 1 ; //x case par sec
 
+	
+	//localisation
+	private Localisation localisation;
+	
+	
+	
 		
 	/**** Méthodes *****/
 	
@@ -358,7 +366,10 @@ public final class GlobalValues
 		System.err.println("reload_asset");
 		//creation d'un skin ( fond des boutons )
 		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
-		get_Units_Model();
+		get_Units_Model();//recuperation des images
+		
+		localisation = new Localisation("Lang/MyBundle","","","");
+		
 		return ErrorEnum.OK;
 	}
 	
@@ -373,19 +384,11 @@ public final class GlobalValues
 		//creation d'un skin ( fond des boutons )
 		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
 		
-		//creation carte de base et des conteneurs d'objets
-	/*	if(size_n_ > 0 && size_m_ > 0 )
-		{
-			carte_ = new TypeObjet[size_n_ * size_m_]; //nombre de case total de la carte
-			//liste_tours = new Tower[size_n_ * size_m_ - 2]; //nombre de tour possibles - 2 car point de dépar et arrivée 
-		}*/
-		
 		liste_mobs = new ArrayList<Mobs>();//[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
 		liste_shots_ = new ArrayList<Tir>();
-
-		argent_ = 100; //pas ici
-		vie_ = 1000; //pas ici
 		status_ = Status.POSITIONNE;
+		
+		localisation = new Localisation("Lang/MyBundle","","","");
 		
 		get_Units_Model();
 		
@@ -850,6 +853,16 @@ public final class GlobalValues
 		   }
 	   }
 	   return false;
+	}
+
+
+	public Localisation localisation() {
+		return localisation;
+	}
+
+
+	public void localisation(Localisation localisation) {
+		this.localisation = localisation;
 	}
 	
 }
