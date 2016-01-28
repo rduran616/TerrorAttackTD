@@ -13,7 +13,7 @@ void main()
 {
         vec4 color = texture2D(u_texture, v_texCoords);
         float gray = (color.r + color.g + color.b) / 3.0;
-        vec3 greenscale = vec3(0,gray,0);
+        vec3 greenscale = vec3(0.0,gray,0.0);
         
         gl_FragColor = vec4(greenscale.rgb, color.a);
 

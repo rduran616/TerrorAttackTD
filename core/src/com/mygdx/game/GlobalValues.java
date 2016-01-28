@@ -866,5 +866,14 @@ public final class GlobalValues
 	public void localisation(Localisation localisation) {
 		this.localisation = localisation;
 	}
+
+
+	public Object tower_sprite() 
+	{
+		if(tower_sprite_ == null)
+			return null;
+		else
+			return tower_sprite_;
+	}
 	
 }

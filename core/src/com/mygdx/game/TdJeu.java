@@ -156,16 +156,11 @@ public class TdJeu extends StateJeu
         color_shader =  new ShaderProgram(vertex_shader_color,color_pixel_shader);
         cartoon_shader =  new ShaderProgram(simple_vertex_shader,cartoon_pixel_shader);
         if(cartoon_shader.isCompiled() == false)
-        	System.err.println("Erreur shader compilation: "+cartoon_shader.getLog());
+        	System.err.println("Erreur shader compilation:cartoon_shader "+cartoon_shader.getLog());
         
-        bruit_shader =  new ShaderProgram(simple_vertex_shader,bruit_pixel_shader);
-        if(bruit_shader.isCompiled() == false)
-        	System.err.println("Erreur shader compilation: "+bruit_shader.getLog());
-        
+
         simple_texture = new Texture(Gdx.files.internal("simpleTexture.png"));
         draw_texture = new Texture(Gdx.files.internal("drawTexture.jpg"));
-        bruit_texture = new Texture(Gdx.files.internal("StaticSnow.png"));
-  
 	}
 	
 	
@@ -533,8 +528,14 @@ public class TdJeu extends StateJeu
 			    else
 			    	sb_.setShader(shaderProgram_placement_ko);
 			    
-			    values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
-				values_.tower_sprite(t.num_Texture()).draw(sb_);
+			    
+			    if(values_ != null)
+			    if(values_.tower_sprite() != null && t != null && t.position() != null)
+			    {
+				    values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
+					values_.tower_sprite(t.num_Texture()).draw(sb_);
+					
+			    }else{System.err.println("tower_sprite = null pointeur ");}
 				
 				sb_.setShader(null);
 			    sb_.end();
