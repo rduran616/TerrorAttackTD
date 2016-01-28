@@ -383,63 +383,80 @@ public class HudGame
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       { 
-		    	 try
-		    	 {   
-		    		 int nb=0;
+			    	 try
+			    	 {   
+			    		 int nb=0;
 			    		if(values_.getT_temporaire_().nom().equals("air"))
 						{
-			    			values_.t_air_modele_(new TowerAir((TowerAir) values_.t_air_modele_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2)));
 			    			nb=values_.getNb_unite_air_();
+			    			if(values_.argent()- values_.getT_temporaire_().cout() * nb <0)
+			    			{	values_.status(Status.POSITIONNE);
+		    				return;}
+			    			values_.t_air_modele_(new TowerAir((TowerAir) values_.t_air_modele_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2)));
 						}
 	 					if(values_.getT_temporaire_().nom().equals("base"))
 						{
-	 						values_.t_base_modele_(new TowerBase((TowerBase) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4)));
 	 						nb = values_.getNb_unite_base_();
+	 						if(values_.argent()- values_.getT_temporaire_().cout() * nb <0)
+	 						{	values_.status(Status.POSITIONNE);
+		    				return;}
+	 						
+	 						values_.t_base_modele_(new TowerBase((TowerBase) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4)));
 						}
 	 					if(values_.getT_temporaire_().nom().equals("zone"))
 						{
-	 						values_.t_zone_modele_(new TowerZone((TowerZone) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1)));
 	 						nb= values_.getNb_unite_zone_();
+	 						if(values_.argent()- values_.getT_temporaire_().cout() * nb <0)
+	 						{	values_.status(Status.POSITIONNE);
+		    				return;}
+	 						
+	 						values_.t_zone_modele_(new TowerZone((TowerZone) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1)));	
 						}
 	 					if(values_.getT_temporaire_().nom().equals("slow"))
 						{
-	 						values_.t_slow_modele_(new TowerSlow((TowerSlow) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.FOIS, 3)));
 	 						nb = values_.getNb_unite_slow_();
+	 						if(values_.argent()- values_.getT_temporaire_().cout() * nb <0)
+	 						{	values_.status(Status.POSITIONNE);
+			    				return;}
+	 						values_.t_slow_modele_(new TowerSlow((TowerSlow) values_.getT_temporaire_().update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.FOIS, 3))); 						
 						}
- 					//maj de toute les tours
-		    		 for(int i =0; i < values_.carte().length;i++)
-		    		 {
-		    			 for(int j=0; j < values_.carte()[i].getUnits_size_();j++)
-		    			 {
-		    				 if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("air"))
-    						 {
-		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2);
-    						 }
-		    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("base"))
-    						 {
-		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4);
-    						 }
-		    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("slow"))
-    						 {
-		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.FOIS, 3);
-    						 }
-		    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("zone"))
-    						 {
-		    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1);
-    						 }
-		    			 }
-		    		 }
+	 					
+	 					//maj de toute les tours
+			    		 for(int i =0; i < values_.carte().length;i++)
+			    		 {
+			    			 for(int j=0; j < values_.carte()[i].getUnits_size_();j++)
+			    			 {
+			    				 if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("air"))
+	    						 {
+			    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.PLUS, 2);
+	    						 }
+			    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("base"))
+	    						 {
+			    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.SPEED , TowerType.PLUS, 4);
+	    						 }
+			    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("slow"))
+	    						 {
+			    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE , TowerType.FOIS, 3);
+	    						 }
+			    				 else if(values_.carte()[i].getUnits_().get(j).nom().equals(values_.getT_temporaire_().nom()) && values_.getT_temporaire_().nom().equals("zone"))
+	    						 {
+			    					values_.carte()[i].getUnits_().get(j).update_Values(TowerType.ARGENT | TowerType.DAMAGE | TowerType.RANGE, TowerType.PLUS, 1);
+	    						 }
+			    			 }
+			    		 }
+	
 
-		    		 values_.argent(values_.argent()- values_.getT_temporaire_().cout() * nb);
- 					 values_.setT_temporaire_(null);
-			    	 values_.status(Status.POSITIONNE);
-		    	 }
-		    	 catch(Exception e)
-		    	 {
-		    		 System.err.println("hud game upgrade erreur "+e);
-		    	 }
-
-		       }
+		    			 values_.argent(values_.argent()- values_.getT_temporaire_().cout() * nb);
+		    			 values_.setT_temporaire_(null);
+		    			 values_.status(Status.POSITIONNE);
+			    		 
+			    	 }
+			    	 catch(Exception e)
+			    	 {
+			    		 System.err.println("hud game upgrade erreur "+e);
+			    	 }
+		    	   }
+		       
 		 });
 
 		
