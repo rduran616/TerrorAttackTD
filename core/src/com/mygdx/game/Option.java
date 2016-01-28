@@ -156,7 +156,6 @@ public class Option extends StateMenu implements InputProcessor
 		chose_.setText(values_.localisation().get("choisir_langage"));
 	}
 	
-	
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
