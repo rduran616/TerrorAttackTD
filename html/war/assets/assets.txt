@@ -10,10 +10,10 @@ i:drawTexture.jpg:34387:image/jpeg
 t:font.fnt:15430:application/unknown
 i:font.png:6796:image/png
 d:Lang:0:application/unknown
-i:Lang/fr_flag.png:13410:image/png
-b:Lang/MyBundle.properties:584:application/unknown
+i:Lang/fr_flag.png:1128:image/png
+b:Lang/MyBundle.properties:602:application/unknown
 b:Lang/MyBundle_en.properties:0:application/unknown
-b:Lang/MyBundle_fr.properties:573:application/unknown
+b:Lang/MyBundle_fr.properties:595:application/unknown
 i:Lang/uk_flag.png:10929:image/png
 d:map:0:application/unknown
 b:map/carte1_test.tmx:1762:application/unknown
@@ -27,7 +27,7 @@ d:particle_img:0:application/unknown
 i:particle_img/particle.png:1821:image/png
 d:shaders:0:application/unknown
 d:shaders/pixelShaders:0:application/unknown
-t:shaders/pixelShaders/cartoonEffect.glsl:1464:application/unknown
+t:shaders/pixelShaders/cartoonEffect.glsl:1481:application/unknown
 t:shaders/pixelShaders/color.glsl:226:application/unknown
 t:shaders/pixelShaders/green.glsl:415:application/unknown
 t:shaders/pixelShaders/red.glsl:410:application/unknown
@@ -37,6 +37,9 @@ t:shaders/vertexShaders/simpleVertex.glsl:340:application/unknown
 t:shaders/vertexShaders/vertex.glsl:284:application/unknown
 i:simpleTexture.png:254:image/png
 i:StaticSnow.png:159176:image/png
+t:switch.json:0:application/unknown
+t:switch_skin.atlas:349:application/unknown
+i:switch_skin.png:13909:image/png
 b:Thumbs.db:259072:application/unknown
 i:tileset.png:148196:image/png
 i:ui.png:2604:image/png

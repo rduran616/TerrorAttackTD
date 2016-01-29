@@ -118,7 +118,7 @@ public class ReadInternalXML
 	{
 		try
 		{
-			Array<Element> items = xml_element_.getChildrenByName(node); //tower
+			Array<Element> items = xml_element_.getChildrenByName(node); 
 			return items.size;
 
 		}

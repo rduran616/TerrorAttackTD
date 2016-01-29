@@ -30,12 +30,8 @@ public class MyGdxGame extends ApplicationAdapter
 		menu_en_cours = StateMEnuEnum.MENU;
 		
 		
-		//rechargement des valeurs critiques en cas de relance du pgm ( android )
-		if(Gdx.app.getType() == ApplicationType.Android)
-		{
-			GlobalValues values = GlobalValues.getInstance();
-			values.reload_asset();
-		}
+		GlobalValues values = GlobalValues.getInstance();
+		values.load();
 	}
 
 	@Override
@@ -70,7 +66,8 @@ public class MyGdxGame extends ApplicationAdapter
 	public void resume()
 	{
 		System.err.println("resume");
-		GlobalValues.getInstance().reload_asset();
+
+		GlobalValues.getInstance().load();
 	}
 
 	@Override

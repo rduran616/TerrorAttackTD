@@ -28,14 +28,14 @@ vec4 rayon(vec4 couleur)
 	float modulo = 3.0;
 	float m =mod(y,modulo);
 
-	if(m==0.0)
+	if(m>=0.0 && m<1.0)
 		color = vec4(coef0,coef0,coef0-0.2,1);
-	else if(m==1.0)
+	else if(m>=1.0 && m<2.0)
 		color =  vec4(coef1,coef1,coef1-0.2,1);
-	else if(m==2.0)
+	else if(m>=2.0)
 		color =  vec4(coef3,coef3,coef3-0.2,1);
 		
-		return color;
+	return color;
 }
 
 float snoise(vec2 co)

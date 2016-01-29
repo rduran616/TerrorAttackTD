@@ -33,15 +33,15 @@ public class SpriteConteneur
 				ReadInternalXML xml = new ReadInternalXML(file);
 				if(xml!=null)
 				{
-					int nb_ = xml.get_Number_Child(mainNode); //recup nombre de sous noeud
-					System.err.println(nb_);
+					int nb_ = Integer.parseInt(xml.get_Attribute(mainNode, "value"));//recup nombre de sous noeud
+					//System.err.println(nb_);
 					for(int i=0;i<nb_;i++)//pour chaque noeud recuperer le sprite et le stocker
 					{
 						String path = xml.get_Child_Attribute(mainNode, value, i);
-						System.err.println(path);
+						//System.err.println("path "+path);
 						try
 						{
-							System.err.println(path);
+							//System.err.println(path);
 							Texture tps_txture = new Texture(Gdx.files.internal(path));
 							Sprite tps =new Sprite(tps_txture);
 							sprite_array_.add(tps);

@@ -2,26 +2,22 @@ package com.mygdx.game;
 
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Stack;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.SerializationException;
 
 import Utilitaires.CollisionBox;
@@ -63,6 +59,9 @@ public final class GlobalValues
 	private GlobalValues() 
 	{
 		super();
+		
+		assets = new AssetManager();
+		
 		load();
 		pile_mobs_air_ =  new Stack<MobsAir>();				//pile contenant les mobs créés mais plus utilisé
 		pile_mobs_base_ = new Stack<MobsBasic>();	
@@ -89,6 +88,8 @@ public final class GlobalValues
 	}
 	
 	/**** Attributs *****/
+	
+	private AssetManager assets;
 	
 	//général
 	private int height_	= 0; 			//resolution en w et h en px
@@ -320,7 +321,6 @@ public final class GlobalValues
 	
 	public void camera_Position(float x, float y)
 	{
-		System.err.println("position");
 		camera_.position.set(x,y,0);
 	}
 	
@@ -366,8 +366,11 @@ public final class GlobalValues
 	public ErrorEnum reload_asset()
 	{
 		System.err.println("reload_asset");
+		
+		main_Loading();
+		
 		//creation d'un skin ( fond des boutons )
-		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
+		skin_bouton_ = assets.get("uiskin.json",Skin.class); //valeur par defaut
 		get_Units_Model();//recuperation des images
 		
 		localisation = new Localisation("Lang/MyBundle","","","");
@@ -376,15 +379,29 @@ public final class GlobalValues
 	}
 	
 	
+	public void main_Loading()
+	{
+		assets.load("uiskin.json", Skin.class);
+		//while(!assets.update());
+		
+		assets.finishLoading();
+		System.err.println("fin chargement");
+	}
+	
+	
 	public ErrorEnum load()
 	{
 		System.err.println("load");
+		
+		main_Loading();
 		
 		height_ = Gdx.graphics.getHeight();
 		width_ 	= Gdx.graphics.getWidth();
 			
 		//creation d'un skin ( fond des boutons )
-		skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
+		//skin_bouton_= new Skin();
+		skin_bouton_ = assets.get("uiskin.json",Skin.class);
+		//skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
 		
 		liste_mobs = new ArrayList<Mobs>();//[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte
 		liste_shots_ = new ArrayList<Tir>();
@@ -404,8 +421,7 @@ public final class GlobalValues
 	{
 
 		if(Gdx.app.getType() == ApplicationType.Android)
-		{
-			
+		{			
 			mobs_sprite_  = new SpriteConteneurAnimation("Config/units.xml", "mobs", "src_andro",TypeFlag.FILEHANDLE_INTERNAL,4,4,time);
 			tower_sprite_ = new SpriteConteneur("Config/units.xml", "tower", "src_andro",TypeFlag.FILEHANDLE_INTERNAL);
 			shot_sprites_ = new SpriteConteneurAnimation("Config/units.xml","tir","src_andro",TypeFlag.FILEHANDLE_INTERNAL,12,1,time);
@@ -426,7 +442,7 @@ public final class GlobalValues
 				int n_txt=Integer.parseInt(xml.get_Child_Attribute("mobs", "n_texture", i));
 				
 				bbox = new CollisionBox(0,0,w,h);
-//				System.err.println("vie ="+vie);
+
 				if(n.equals("air"))
 					m_air_modele_= new MobsAir(vie, vit, money, degat,h,w,air,n_txt,n,bbox);
 				else if(n.equals("basic"))
@@ -499,7 +515,6 @@ public final class GlobalValues
 				int air=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "air"));
 				int n_txt=Integer.parseInt(xml.get_Sub_Node_Item(i,"mobs", "n_texture"));
 
-				//System.err.println("vie ="+vie);
 				bbox = new CollisionBox(0,0,w,h);
 				
 				if(n.equals("air"))
@@ -886,6 +901,16 @@ public final class GlobalValues
 
 	public void setShader_enable(boolean shader_enable) {
 		this.shader_enable = shader_enable;
+	}
+
+
+	public AssetManager getAssets() {
+		return assets;
+	}
+
+
+	public void setAssets(AssetManager assets) {
+		this.assets = assets;
 	}
 	
 }

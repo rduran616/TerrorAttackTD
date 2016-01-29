@@ -1,0 +1,26 @@
+
+switch_skin.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+off
+  rotate: false
+  xy: 1, 1
+  size: 145, 50
+  orig: 145, 50
+  offset: 0, 0
+  index: -1
+on
+  rotate: false
+  xy: 148, 1
+  size: 145, 50
+  orig: 145, 50
+  offset: 0, 0
+  index: -1
+ default
+  rotate: false
+  xy: 148, 1
+  size: 145, 50
+  orig: 145, 50
+  offset: 0, 0
+  index: -1
