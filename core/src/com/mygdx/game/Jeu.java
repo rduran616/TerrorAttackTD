@@ -401,5 +401,17 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		hud_game_.update_lang();
 	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

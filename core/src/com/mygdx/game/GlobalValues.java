@@ -60,14 +60,21 @@ public final class GlobalValues
 	{
 		super();
 		
-		assets = new AssetManager();
+		if(assets==null)
+			assets = new AssetManager();
 		
 		load();
-		pile_mobs_air_ =  new Stack<MobsAir>();				//pile contenant les mobs créés mais plus utilisé
-		pile_mobs_base_ = new Stack<MobsBasic>();	
-		pile_mobs_lourd_ = new 	Stack<MobsLourd>();	
-		pile_mobs_boss_ = new Stack<MobsBoss>();	
-		pile_shot_ = new Stack<Tir>();
+		
+		if(pile_mobs_air_==null)
+			pile_mobs_air_ =  new Stack<MobsAir>();				//pile contenant les mobs créés mais plus utilisé
+		if(pile_mobs_base_==null)
+			pile_mobs_base_ = new Stack<MobsBasic>();
+		if(pile_mobs_lourd_==null)
+			pile_mobs_lourd_ = new 	Stack<MobsLourd>();	
+		if(pile_mobs_boss_==null)
+			pile_mobs_boss_ = new Stack<MobsBoss>();	
+		if(pile_shot_==null)
+			pile_shot_ = new Stack<Tir>();
 	}
 
 	
@@ -179,7 +186,10 @@ public final class GlobalValues
     public boolean is_Alive(){if(vie_>0 )return true; else return false;}
     
     public Skin get_Skin(){return skin_bouton_;}
-	
+    public void Set_Skin(Skin s){skin_bouton_ = s;}
+    public void skin_Dispose(){skin_bouton_.dispose();}
+    
+    
     public int get_height(){return height_;}
     public int get_width(){return width_;}
     public void set_height(int h){height_ = h;}
@@ -401,6 +411,7 @@ public final class GlobalValues
 		//creation d'un skin ( fond des boutons )
 		//skin_bouton_= new Skin();
 		skin_bouton_ = assets.get("uiskin.json",Skin.class);
+		System.err.println("skin affecté");
 		//skin_bouton_ = new Skin( Gdx.files.internal( "uiskin.json" )); //valeur par defaut
 		
 		liste_mobs = new ArrayList<Mobs>();//[ennemi_max_]; //nombre d'ennemi max en même temps sur la carte

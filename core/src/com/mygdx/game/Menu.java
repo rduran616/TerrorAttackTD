@@ -221,10 +221,35 @@ public class Menu extends StateMenu implements InputProcessor
 
 	@Override
 	public void init() 
-	{
+	{	
+
 		jeu_bouton.setText(values_.localisation().get("jeu")); 
 		option_bouton.setText(values_.localisation().get("option"));
 		stat_bouton.setText(values_.localisation().get("stat"));	
 		quitter_bouton.setText(values_.localisation().get("quitter"));
+	}
+
+
+	@Override
+	public void load() 
+	{
+		// TODO Auto-generated method stub
+		
+		while(!values_.getAssets().update());
+		
+		System.err.println("test");
+		jeu_bouton.setSkin(values_.get_Skin());
+		option_bouton.setSkin(values_.get_Skin());
+		stat_bouton.setSkin(values_.get_Skin());	
+		quitter_bouton.setSkin(values_.get_Skin());
+		
+	}
+
+
+	@Override
+	public void dispose() 
+	{
+		// TODO Auto-generated method stub
+		values_.skin_Dispose();
 	}
 }

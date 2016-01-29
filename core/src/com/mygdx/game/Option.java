@@ -295,4 +295,16 @@ public class Option extends StateMenu implements InputProcessor
 	public void setNum_lang(int num_lang_) {
 		this.num_lang_ = num_lang_;
 	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
 }

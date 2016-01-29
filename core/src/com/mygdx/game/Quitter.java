@@ -155,4 +155,16 @@ public class Quitter extends StateMenu implements InputProcessor
 		label_quitter.setText(values_.localisation().get("fin_app"));
 	}
 
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

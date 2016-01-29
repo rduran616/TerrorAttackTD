@@ -6,4 +6,8 @@ abstract class StateMenu
 
 	public abstract void init();
 	
+	public abstract void load();
+	
+	public abstract void dispose();
+	
 }

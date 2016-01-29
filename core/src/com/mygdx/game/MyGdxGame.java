@@ -29,9 +29,11 @@ public class MyGdxGame extends ApplicationAdapter
 		
 		menu_en_cours = StateMEnuEnum.MENU;
 		
-		
 		GlobalValues values = GlobalValues.getInstance();
 		values.load();
+		
+		for(int i=0; i < main_menu.length;i++)
+			main_menu[i].load();
 	}
 
 	@Override
@@ -68,11 +70,16 @@ public class MyGdxGame extends ApplicationAdapter
 		System.err.println("resume");
 
 		GlobalValues.getInstance().load();
+		
+		for(int i=0; i < main_menu.length;i++)
+			main_menu[i].load();
 	}
 
 	@Override
 	public void dispose()
 	{
 		System.err.println("dispose");
+		for(int i=0; i < main_menu.length;i++)
+			main_menu[i].dispose();
 	}
 }

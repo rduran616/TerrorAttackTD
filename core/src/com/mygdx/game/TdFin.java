@@ -79,4 +79,18 @@ public class TdFin extends StateJeu
 		label_victoire.setText(values_.localisation().get("victoire")+"\n"+values_.localisation().get("gagner"));
 		
 	}
+
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
 }
