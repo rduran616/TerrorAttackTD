@@ -111,7 +111,12 @@ public class Jeu extends StateMenu  implements InputProcessor
 		//dessin du jeu
 		if(etat_jeu_ == StateJeuEnum.JEU || etat_jeu_ == StateJeuEnum.PAUSE)
 		{
-			values_.tiled_Map().getBatch().setShader(cartoon_shader);		
+			
+			if(values_.isShader_enable())
+				values_.tiled_Map().getBatch().setShader(cartoon_shader);
+			else
+				values_.tiled_Map().getBatch().setShader(null);
+			
 			//dessin de la carte
 			if(values_.camera_Update() != ErrorEnum.OK)
 			{	

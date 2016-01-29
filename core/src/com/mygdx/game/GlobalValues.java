@@ -129,6 +129,8 @@ public final class GlobalValues
 	private int size_n_ = 32;					//nombre de carreaux de la carte en width
 	private int size_m_ = 32;					//nombre de carreaux de la carte en height
 	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
+	private boolean shader_enable =true;
+	
 	//private ArrayList<TowerType> liste_tours;	//liste des tours placées
 	private ArrayList<Mobs> liste_mobs;			//liste des mobs à afficher
 	public Stack<MobsAir> pile_mobs_air_;				//pile contenant les mobs créés mais plus utilisé
@@ -874,6 +876,16 @@ public final class GlobalValues
 			return null;
 		else
 			return tower_sprite_;
+	}
+
+
+	public boolean isShader_enable() {
+		return shader_enable;
+	}
+
+
+	public void setShader_enable(boolean shader_enable) {
+		this.shader_enable = shader_enable;
 	}
 	
 }

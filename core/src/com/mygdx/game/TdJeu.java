@@ -350,15 +350,20 @@ public class TdJeu extends StateJeu
 			sb_.begin();
 			sb_.setProjectionMatrix(values_.camera().combined);//mise à jour de la matrice de projection du batch pour redimentionnement des sprites
 			
-			cartoon_shader.setUniformf("coef0", 0.7f);
-			cartoon_shader.setUniformf("coef1", 0.9f);
-			cartoon_shader.setUniformf("coef3", 0.8f);
-			cartoon_shader.setUniformf("coef2", 30f);
-			cartoon_shader.setUniformf("ligthness", 80f);
-			cartoon_shader.setUniformf("brightness", 2.5f);
-			cartoon_shader.setUniformf("iGlobalTime", Gdx.graphics.getDeltaTime());	
-			sb_.setShader(cartoon_shader);
-
+			if(values_.isShader_enable())
+			{
+				cartoon_shader.setUniformf("coef0", 0.7f);
+				cartoon_shader.setUniformf("coef1", 0.9f);
+				cartoon_shader.setUniformf("coef3", 0.8f);
+				cartoon_shader.setUniformf("coef2", 30f);
+				cartoon_shader.setUniformf("ligthness", 80f);
+				cartoon_shader.setUniformf("brightness", 2.5f);
+				cartoon_shader.setUniformf("iGlobalTime", Gdx.graphics.getDeltaTime());	
+				sb_.setShader(cartoon_shader);
+			}
+			else
+				sb_.setShader(null);
+			
 			//dessin des tours -> parcours toutes la carte n*m
 			for(int i=0;i < values_.carte().length;i++)//pour chaque tour faire...
 			{

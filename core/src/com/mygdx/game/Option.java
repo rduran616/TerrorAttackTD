@@ -5,15 +5,20 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Option extends StateMenu implements InputProcessor
@@ -25,12 +30,17 @@ public class Option extends StateMenu implements InputProcessor
 	Stage stage;				
 	TextButton retour_;
 	TextButton valider_;
+	ImageButton shader_button_;
+	Label shader_switch_label_;
 	Label chose_;
 	Label lang_;
 	TextButton gauche_;
 	TextButton droite_ ;
 	InputMultiplexer multiplexer = new InputMultiplexer();
 	Image drapeau_;
+	
+	TextureAtlas atlas;
+	Skin skin;
 	
 	private int num_lang_ = 0;
 
@@ -121,9 +131,41 @@ public class Option extends StateMenu implements InputProcessor
 		lang_.setPosition(values_.get_width()/2 - lang_.getWidth()/2,values_.get_height()-values_.get_height()*70/100);
 		
 		
+		atlas = new TextureAtlas(Gdx.files.internal("switch_skin.atlas"));
+		skin = new Skin();
+		skin.addRegions(atlas);
+
+		shader_button_ = new ImageButton(skin.getDrawable("on"),skin.getDrawable("off"),skin.getDrawable("off"));
+		shader_switch_label_ = new Label(values_.localisation().get("shader"),values_.get_Skin());	
+		shader_button_.setWidth(shader_button_.getWidth() - shader_button_.getWidth() * 60/100);
+		shader_button_.setHeight(shader_button_.getHeight() - shader_button_.getHeight() * 60/100);
+		shader_button_.setPosition(values_.get_width()-values_.get_width()*25/100,values_.get_height() - values_.get_height()* 80/100);
+		shader_switch_label_.setPosition(values_.get_width()-values_.get_width()*88/100,values_.get_height() - values_.get_height()* 80/100);
+		
+		shader_button_.addListener(new ClickListener()
+		{
+		       @Override
+		       public void clicked(InputEvent event, float x, float y) 
+		       {
+		    	   
+		    	   if(values_.isShader_enable())
+		    	   {
+		    		   values_.setShader_enable(false);
+		    	   }
+		    	   else
+		    	   {
+		    		   System.err.println("on");
+		    	   }
+		       }
+		 });
+		
 		stage.addActor(chose_);
 		stage.addActor(layout_table);
 		stage.addActor(lang_);
+		
+		stage.addActor(shader_switch_label_);
+		stage.addActor(shader_button_);
+		
 		stage.addActor(valider_);
 		stage.addActor(retour_);
 		
@@ -154,6 +196,7 @@ public class Option extends StateMenu implements InputProcessor
 		retour_.setText(values_.localisation().get("annuler")+" \\ "+values_.localisation().get("retour"));
 		valider_.setText(values_.localisation().get("appliquer"));
 		chose_.setText(values_.localisation().get("choisir_langage"));
+		shader_switch_label_.setText(values_.localisation().get("shader"));
 	}
 	
 	@Override
