@@ -237,7 +237,6 @@ public class Menu extends StateMenu implements InputProcessor
 		
 		while(!values_.getAssets().update());
 		
-		System.err.println("test");
 		jeu_bouton.setSkin(values_.get_Skin());
 		option_bouton.setSkin(values_.get_Skin());
 		stat_bouton.setSkin(values_.get_Skin());	
@@ -249,7 +248,6 @@ public class Menu extends StateMenu implements InputProcessor
 	@Override
 	public void dispose() 
 	{
-		// TODO Auto-generated method stub
 		values_.skin_Dispose();
 	}
 }

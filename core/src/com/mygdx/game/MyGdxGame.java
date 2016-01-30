@@ -2,6 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.GL20;
 
@@ -12,28 +15,30 @@ public class MyGdxGame extends ApplicationAdapter
 	//SpriteBatch batch;
 	//Texture img;
 	
-	StateMenu main_menu[]; //creation du menu 
+	ArrayList<StateMenu> main_menu; //creation du menu 
 	StateMEnuEnum menu_en_cours; //gestion numéro etat du menu
 	
 	@Override
 	public void create () 
 	{
-		System.err.println("create");
+		System.err.println("create game");
 		
-		main_menu 	 = new StateMenu[5];
-		main_menu[0] = new Menu();
-		main_menu[1] = new Jeu();
-		main_menu[2] = new Statistique();
-		main_menu[3] = new Option();
-		main_menu[4] = new Quitter();
+		main_menu  = null;
+		
+		main_menu 	 = new ArrayList<StateMenu>();
+		main_menu.add( new Menu());
+		main_menu.add( new Jeu());
+		main_menu.add( new Statistique());
+		main_menu.add( new Option());
+		main_menu.add( new Quitter());
 		
 		menu_en_cours = StateMEnuEnum.MENU;
 		
 		GlobalValues values = GlobalValues.getInstance();
 		values.load();
 		
-		for(int i=0; i < main_menu.length;i++)
-			main_menu[i].load();
+		for(int i=0; i < main_menu.size();i++)
+			main_menu.get(i).load();
 	}
 
 	@Override
@@ -43,11 +48,11 @@ public class MyGdxGame extends ApplicationAdapter
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		//rendu du menu
-		menu_en_cours = main_menu[menu_en_cours.ordinal()].changer_Etat();
+		menu_en_cours = main_menu.get(menu_en_cours.ordinal()).changer_Etat();
 		if(menu_en_cours == StateMEnuEnum.MENU)
 		{
-			for(int i=0; i < main_menu.length;i++)
-				main_menu[i].init();
+			for(int i=0; i < main_menu.size();i++)
+				main_menu.get(i).init();
 		}
 		
 	}
@@ -71,15 +76,20 @@ public class MyGdxGame extends ApplicationAdapter
 
 		GlobalValues.getInstance().load();
 		
-		for(int i=0; i < main_menu.length;i++)
-			main_menu[i].load();
+		for(int i=0; i < main_menu.size();i++)
+			main_menu.get(i).load();
 	}
 
 	@Override
 	public void dispose()
 	{
-		System.err.println("dispose");
-		for(int i=0; i < main_menu.length;i++)
-			main_menu[i].dispose();
+		System.err.println("dispose main_menu");
+		for(int i=0; i < main_menu.size();i++)
+			main_menu.get(i).dispose();
+		
+		for(int i=0; i < main_menu.size();i++)
+			main_menu.remove(i);
+		
+		System.err.println(" ");
 	}
 }

@@ -42,6 +42,9 @@ public class Option extends StateMenu implements InputProcessor
 	TextureAtlas atlas;
 	Skin skin;
 	
+	boolean isChange = false;
+	boolean isEnable = false;
+	
 	private int num_lang_ = 0;
 
 	public Option()
@@ -110,6 +113,20 @@ public class Option extends StateMenu implements InputProcessor
 		       {
 		    	   selection_ = StateMEnuEnum.MENU;
 		    	   changement_langue(num_lang_);
+		    	   
+		    	   if(isChange==true)//est ce que j'ai clické?
+		    	   {
+		    		   if(values_.isShader_enable()) //est ce que le shader est activé?
+			    	   {
+			    		   shader_button_.setChecked(false);//je met a jour l'iamge
+			    	   }
+			    	   else
+			    	   {
+			    		   shader_button_.setChecked(true);
+			    	   }  
+		    	   }
+		    	   
+		    	   isChange=false;
 		       }
 		 });
 		
@@ -119,6 +136,8 @@ public class Option extends StateMenu implements InputProcessor
 		       public void clicked(InputEvent event, float x, float y) 
 		       {
 		    	   selection_ = StateMEnuEnum.MENU;
+		    	   isChange=false;
+		    	   values_.setShader_enable(isEnable);
 		       }
 		 });
 		
@@ -147,14 +166,16 @@ public class Option extends StateMenu implements InputProcessor
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       {
-		    	   
-		    	   if(values_.isShader_enable())
+		    	   isChange = true;
+		    	   if(isEnable)
 		    	   {
-		    		   values_.setShader_enable(false);
+		    		   isEnable = false;
+		    		   shader_button_.setChecked(true);
 		    	   }
 		    	   else
 		    	   {
-		    		   System.err.println("on");
+		    		   isEnable = true;
+		    		   shader_button_.setChecked(false);
 		    	   }
 		       }
 		 });
@@ -285,6 +306,9 @@ public class Option extends StateMenu implements InputProcessor
 			num_lang_ = Integer.parseInt( values_.localisation().get("value"));
 			changement_langue(num_lang_);
 		}
+		
+		isChange = false;
+		isEnable = values_.isShader_enable();
 	}
 
 	
@@ -297,9 +321,11 @@ public class Option extends StateMenu implements InputProcessor
 	}
 
 	@Override
-	public void load() {
+	public void load() 
+	{
 		// TODO Auto-generated method stub
-		
+		isChange = false;
+		isEnable = values_.isShader_enable();	
 	}
 
 	@Override
