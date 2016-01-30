@@ -248,6 +248,6 @@ public class Menu extends StateMenu implements InputProcessor
 	@Override
 	public void dispose() 
 	{
-		values_.skin_Dispose();
+		//values_.skin_Dispose();
 	}
 }

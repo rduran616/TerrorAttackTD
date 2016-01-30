@@ -71,15 +71,18 @@ public class Quitter extends StateMenu implements InputProcessor
 		
 		//activation de la zone
 		//Gdx.input.setInputProcessor(stage);
-		multiplexer.addProcessor(this);
+		
 		multiplexer.addProcessor(stage);
+		multiplexer.addProcessor(this);
 	}
 	
 	@Override
 	public StateMEnuEnum changer_Etat() 
 	{
 		//Gdx.input.setInputProcessor(stage);
+		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setInputProcessor(multiplexer);
+		
 		stage.draw();
 
 		//Changer de menu
@@ -98,8 +101,8 @@ public class Quitter extends StateMenu implements InputProcessor
 	{
 		if(keycode == Keys.BACK)
 		{
-			System.err.println("option");
-			//Gdx.input.setCatchBackKey(false);
+			System.err.println("option return key");
+			Gdx.input.setCatchBackKey(false);
 			selection_ = StateMEnuEnum.MENU;
 	    }
 		return false;
@@ -153,18 +156,19 @@ public class Quitter extends StateMenu implements InputProcessor
 		oui_bouton.setText(values_.localisation().get("oui"));
 		non_bouton.setText(values_.localisation().get("non"));
 		label_quitter.setText(values_.localisation().get("fin_app"));
+		
+		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override
-	public void load() {
-		// TODO Auto-generated method stub
-		
+	public void load() 
+	{
 	}
 
 	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
+	public void dispose() 
+	{
+		Gdx.input.setCatchBackKey(false);
 	}
 
 }
