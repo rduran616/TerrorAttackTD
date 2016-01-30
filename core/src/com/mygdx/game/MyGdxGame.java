@@ -26,16 +26,17 @@ public class MyGdxGame extends ApplicationAdapter
 		main_menu  = null;
 		
 		main_menu 	 = new ArrayList<StateMenu>();
-		main_menu.add( new Menu());
-		main_menu.add( new Jeu());
-		main_menu.add( new Statistique());
-		main_menu.add( new Option());
-		main_menu.add( new Quitter());
-		
-		menu_en_cours = StateMEnuEnum.MENU;
 		
 		GlobalValues values = GlobalValues.getInstance();
 		values.load();
+		
+		main_menu.add(new Menu());
+		main_menu.add(new Jeu());
+		main_menu.add(new Statistique());
+		main_menu.add(new Option());
+		main_menu.add(new Quitter());
+		
+		menu_en_cours = StateMEnuEnum.MENU;
 		
 		for(int i=0; i < main_menu.size();i++)
 			main_menu.get(i).load();
@@ -89,6 +90,8 @@ public class MyGdxGame extends ApplicationAdapter
 		
 		for(int i=0; i < main_menu.size();i++)
 			main_menu.remove(i);
+		
+		GlobalValues.disposeInstance();
 		
 		System.err.println(" ");
 	}

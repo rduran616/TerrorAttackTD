@@ -94,6 +94,22 @@ public final class GlobalValues
 	    return GlobalValues.instance;
 	}
 	
+	public final static void disposeInstance() 
+	{
+	    if (GlobalValues.instance != null) 
+	    {
+	    	//dispose all
+	    	
+	    	
+	    	
+	    	GlobalValues.instance = null;
+	    }
+	}
+	
+	
+	
+	
+	
 	/**** Attributs *****/
 	
 	private AssetManager assets;
