@@ -407,7 +407,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 	@Override
 	public boolean scrolled(int amount)
 	{
-		values_.zoom(amount*0.1);
+		values_.zoom(amount*0.1,3,1);
 		return false;
 	}
 

@@ -16,8 +16,8 @@ public class FingerTransformMap
 	 private int y_max_ =1000;
 	 
 	 //limite zoom
-	 private int zoom_max_ = 0;
-	 private int zoom_min_ =0;
+	 private double zoom_max_ = 0;
+	 private double zoom_min_ =0;
 	 
 	 //gestion des doigts
 	 private int numberOfFingers = 0;	//nombre de doight sur l'ecran
@@ -86,18 +86,16 @@ public class FingerTransformMap
 			 
 			float distance = fingerOne.dst(fingerTwo);
 			float factor = distance / lastDistance;
-			
-			
 			 
 			if (lastDistance > distance) 
 			{
 				if(values_!=null)
-					values_.zoom(0.1f);
+					values_.zoom(0.1f,zoom_max_,zoom_min_);
 			}
 			else if (lastDistance < distance) 
 			{
 				if(values_!=null)
-					values_.zoom(-0.1f);
+					values_.zoom(-0.1f,zoom_max_,zoom_min_);
 			}
 	
 			lastDistance = distance;

@@ -357,26 +357,22 @@ public final class GlobalValues
 	{
 		if(camera_!=null)
 		{
-			//if(camera_.position.x+x>200*camera_.zoom && camera_.position.x+x < (Gdx.graphics.getHeight()+40)*camera_.zoom)// brut, mais délimite la map
-				{camera_.translate(x, y);}
-			//if(camera_.position.y+y>200*camera_.zoom && camera_.position.y+y<(Gdx.graphics.getWidth())*camera_.zoom) // est à adapter avec le zoom!
-				//{camera_.translate(0, y);}
-			
+			camera_.translate(x, y);
 			camera_.update();
-			
-		    
+
 			return ErrorEnum.OK;
 		}
 		
 		return ErrorEnum.UNINITIALIZED;
 	}
 
-	public ErrorEnum zoom(double d)
+	public ErrorEnum zoom(double d, double z_mx, double z_min)
 	{
 		if(camera_!=null)
 		{
-			if((camera_.zoom + d ) < zoom_max_ && (camera_.zoom + d) > zoom_min_)
+			if((camera_.zoom + d ) < z_mx && (camera_.zoom + d) >= z_min)
 				camera_.zoom+=d;
+				System.err.println("zoom ="+camera_.zoom);
 			
 			return ErrorEnum.OK;
 		}
