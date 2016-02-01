@@ -103,7 +103,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		tick_ = new TickHorloge(30); //30fps max
 		finger = new FingerTransformMap(0.01);
-		finger.set_Range(0,1024,0,1024,10,10);
+		finger.set_Range( values_.get_width()/2,values_.size_n()*values_.size_Px() - values_.get_width()/2, values_.get_height()/2,values_.size_m()*values_.size_Px() - values_.get_height()/2,10,10);
 		
 		//initialisation du jeu
 		init();
