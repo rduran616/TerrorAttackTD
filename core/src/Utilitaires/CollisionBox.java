@@ -80,6 +80,36 @@ public final class CollisionBox
 		}
 	}
 	
+	public void set_Collision_box(float x, float y, float w, float h)
+	{
+		if(x>=0 && y>=0 && h>=0 && w>=0)
+		{
+			x_=(int)x;
+			y_=(int)y;
+			h_=(int)h;
+			w_=(int)w;
+		}
+		else
+		{
+			x_=0;
+			y_=0;
+			h_=0;
+			w_=0;
+		}
+	}
+	
+	public void set_Collision_box(CollisionBox box2)
+	{
+		if(box2!= null)
+		{
+			x_=box2.get_X();
+			y_=box2.get_Y();
+			h_=box2.get_H();
+			w_=box2.get_W();
+		}
+	}
+	
+	
 	public void show()
 	{
 		//System.err.println(x_+" "+y_+" "+w_+" "+h_);

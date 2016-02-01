@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
@@ -57,6 +60,9 @@ public class Jeu extends StateMenu  implements InputProcessor
     Texture simple_texture;
     Texture draw_texture;
     Texture tv_texture;
+    
+    
+    ShapeRenderer shapeRenderer;
 	
 	public Jeu()
 	{
@@ -65,7 +71,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		cartoon_shader =  new ShaderProgram(simple_vertex_shader,cartoon_pixel_shader);
 		tv_texture = new Texture(Gdx.files.internal("StaticSnow.png"));
 		
-		
+		shapeRenderer = new ShapeRenderer();
 		
 		//initialisation des variables
 		selection_ = StateMEnuEnum.JEU;
@@ -97,6 +103,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		tick_ = new TickHorloge(30); //30fps max
 		finger = new FingerTransformMap(0.01);
+		finger.set_Range(0,1024,0,1024,10,10);
 		
 		//initialisation du jeu
 		init();
@@ -139,6 +146,21 @@ public class Jeu extends StateMenu  implements InputProcessor
 				System.err.println("Erreur rendu carte");
 			}
 
+			
+			shapeRenderer.setProjectionMatrix(values_.camera().combined);
+			int length = values_.carte().length;
+			for(int i=0; i < length;i++) //pour chaque case
+			{
+				//tracé les carreaux
+				shapeRenderer.begin(ShapeType.Line);
+				Color c = Color.RED;
+	            shapeRenderer.setColor(c);
+	            int a = (int)values_.carte()[i].getPosition().x* values_.size_Px() + 0;
+	            int b = (int)values_.carte()[i].getPosition().y* values_.size_Px() + 0;
+	            shapeRenderer.rect(a,b,values_.size_Px(),values_.size_Px());
+	            shapeRenderer.end();            
+			}
+			
 	        //dessins du reste
 			 if(etat_jeu_ == StateJeuEnum.JEU )
 			 {
@@ -270,10 +292,10 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		Vector3 pos2 = new Vector3(screenX,screenY,0);
 		values_.camera().unproject(pos2);
-		int x2 = (int) (pos2.x / values_.size_n());
-		int y2= (int) (pos2.y / values_.size_m());
+		int x2 = (int) (pos2.x / values_.size_n()); //index lignes
+		int y2= (int) (pos2.y / values_.size_m());  //index colones
 		int cellule2 = ((x2) * values_.size_m()) +  y2 ; 
-		System.err.println("x ="+screenX+" y="+screenY+" cellule= "+cellule2);
+		System.err.println("Sourisx ="+screenX+" Sourisy="+screenY+" index x ="+x2+" y="+y2+" cellule= "+cellule2); //position souris ecran
 		
 		
 		
@@ -302,9 +324,10 @@ public class Jeu extends StateMenu  implements InputProcessor
 			if(indice_gauche>= 0 && indice_gauche<values_.size_m() * values_.size_n() && indice_gauche%values_.size_m() !=values_.size_m()-1)
 				cell.add(indice_gauche);
               
+//cases adj non prise en compte
+/*System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule+ "  map cellule= "+values_.carte()[cellule].getNum_case_()+"  coordo centre ="+values_.carte()[cellule].centre()+
+"  cell adj= "+cell.get(0)+" "+cell.get(1)+" "+cell.get(2)+" "+cell.get(3)+" "+cell.get(4));*/
 
-			System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule+ "  mpa cellule= "+values_.carte()[cellule].getNum_case_()+"  coordo centre ="+values_.carte()[cellule].centre()+
-					"  cell adj= "+cell.get(0)+" "+cell.get(1)+" "+cell.get(2)+" "+cell.get(3)+" "+cell.get(4));
 			
 			CollisionBox box =new CollisionBox((int)pos.x-5,(int)pos.y-5,10,10);
 			boolean trouve = false;

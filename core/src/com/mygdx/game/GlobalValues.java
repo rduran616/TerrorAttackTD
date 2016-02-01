@@ -304,7 +304,7 @@ public final class GlobalValues
 	
 	public void init_tile_map()
 	{
-		float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
+		//float aspectRatio = (float)Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
         try 
         {
         	if(batch == null)
@@ -312,7 +312,7 @@ public final class GlobalValues
         	
         	
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
-            tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,aspectRatio,batch);
+            tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,1,batch);
 
             size_px_	= tiledMap_.getProperties().get("tileheight",Integer.class);
     		size_n_		= tiledMap_.getProperties().get("height",Integer.class);
@@ -332,8 +332,9 @@ public final class GlobalValues
 	{
 		float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        camera_ = new OrthographicCamera(600, 600 * (h / w)); //j'aime pas. d'ou sort 600*600?
-		camera_.position.set(camera_.viewportWidth / 2f, camera_.viewportHeight / 2f, 0);
+        camera_ = new OrthographicCamera(w,h);
+		camera_.position.set(this.size_n()*this.size_Px() / 2f, this.size_m()*this.size_Px() / 2f, 0);
+
         camera_.update(); 
         
         batch = new SpriteBatch();
@@ -356,10 +357,10 @@ public final class GlobalValues
 	{
 		if(camera_!=null)
 		{
-			if(camera_.position.x+x>200*camera_.zoom && camera_.position.x+x < (Gdx.graphics.getHeight()+40)*camera_.zoom)// brut, mais délimite la map
-				{camera_.translate(x, 0);}
-			if(camera_.position.y+y>200*camera_.zoom && camera_.position.y+y<(Gdx.graphics.getWidth())*camera_.zoom) // est à adapter avec le zoom!
-				{camera_.translate(0, y);}
+			//if(camera_.position.x+x>200*camera_.zoom && camera_.position.x+x < (Gdx.graphics.getHeight()+40)*camera_.zoom)// brut, mais délimite la map
+				{camera_.translate(x, y);}
+			//if(camera_.position.y+y>200*camera_.zoom && camera_.position.y+y<(Gdx.graphics.getWidth())*camera_.zoom) // est à adapter avec le zoom!
+				//{camera_.translate(0, y);}
 			
 			camera_.update();
 			

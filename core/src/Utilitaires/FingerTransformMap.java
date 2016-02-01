@@ -10,22 +10,22 @@ import com.mygdx.game.GlobalValues;
 public class FingerTransformMap 
 {
 	 //parcours de la carte
-	 int x_min_ =0;
-	 int x_max_ =1000;
-	 int y_min_ =0;
-	 int y_max_ =1000;
+	 private int x_min_ =0;
+	 private int x_max_ =1000;
+	 private int y_min_ =0;
+	 private int y_max_ =1000;
 	 
 	 //limite zoom
-	 int zoom_max = 0;
-	 int zoom_min =0;
+	 private int zoom_max_ = 0;
+	 private int zoom_min_ =0;
 	 
 	 //gestion des doigts
-	 int numberOfFingers = 0;	//nombre de doight sur l'ecran
-	 int fingerOnePointer;		//doigt numero 0
-	 int fingerTwoPointer;		//doigt numero 1
-	 float lastDistance = 1;	//distance entre les doigts
-	 Vector3 fingerOne = new Vector3();		// coordon�e du doigt 0
-	 Vector3 fingerTwo = new Vector3();		//coordonn�e du doigt 1
+	 private int numberOfFingers = 0;	//nombre de doight sur l'ecran
+	 private int fingerOnePointer;		//doigt numero 0
+	 private int fingerTwoPointer;		//doigt numero 1
+	 private float lastDistance = 1;	//distance entre les doigts
+	 private Vector3 fingerOne = new Vector3();		// coordon�e du doigt 0
+	 private Vector3 fingerTwo = new Vector3();		//coordonn�e du doigt 1
 	 GlobalValues values_;					//valeur globale + camera
 	 MapProperties map_prop_;				//propri�t� de la carte
 	 
@@ -42,20 +42,6 @@ public class FingerTransformMap
 	 {
 		 values_ = GlobalValues.getInstance();
 		 factor(f);
-		 map_prop_ = values_.map_Properties();
-		 
-	/*	 if(map_prop_ != null)
-		 {
-			 //values_.size_m();
-			 
-			 x_min_ = map_prop_;
-			 x_max_ = map_prop_;
-			 y_min_ = map_prop_;
-			 y_max_ = map_prop_;
-
-			 zoom_max = map_prop_;
-			 zoom_min =map_prop_; 
-		 }*/
 	 }
 	 
 	 
@@ -136,13 +122,29 @@ public class FingerTransformMap
 			 fingerOnePointer = pointer;
 			 Vector3 positon_actuel = new Vector3(fingerOne.x,fingerOne.y,0);
 			 fingerOne.set(x, y, 0);
-			 
 			 Vector3 translation = new Vector3(positon_actuel.x-fingerOne.x,positon_actuel.y-fingerOne.y,0); 
-			 values_.camera_Translate(translation.x, -translation.y);
+			 
+			// System.err.println("pos camera = "+(values_.camera().position.x + translation.x) +" "+(values_.camera().position.y +  translation.y+" xmin= "+y_min_+" max= "+y_max_));
+			 if((values_.camera().position.x + translation.x) >= x_min_ && (values_.camera().position.x + translation.x) < x_max_)
+				 	values_.camera_Translate(translation.x, 0);
+			 if((values_.camera().position.y - translation.y) >= y_min_ && (values_.camera().position.y - translation.y) < y_max_ )
+					values_.camera_Translate(0,-translation.y);
 			 
 		 }
 	 }
 	 
 	 public void factor(double f){if(f != 0 ){factor_=f;}else{factor_=1;}}
+
+	public void set_Range(int x_min, int x_max, int y_min, int y_max, int zoom_min, int zoom_max) 
+	{
+		
+		 x_min_ =x_min;
+		 x_max_ =x_max;
+		 y_min_ =y_min;
+		 y_max_ =y_max;
+		 
+		 zoom_max_ =zoom_max;
+		 zoom_min_ =zoom_min;
+	}
 	 
 }
