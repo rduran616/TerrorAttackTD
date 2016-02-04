@@ -489,8 +489,8 @@ public class TdJeu extends StateJeu
 				if(c<0 || c>= values_.size_m()*values_.size_n())
 					continue;
 
-				ArrayList<Mobs> case_mob =values_.carte()[c].getMobs_();
-				int existePlus = tir.onExectute(case_mob);
+				ArrayList<Mobs> case_mob =values_.carte()[c].getMobs_(); //ts les mobs de la case
+				int existePlus = tir.onExectute(case_mob); //tir sur mob
 				if(existePlus >= 0)//on suprime
 				{
 					//emission de particle

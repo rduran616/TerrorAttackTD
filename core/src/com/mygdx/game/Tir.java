@@ -74,17 +74,19 @@ public class Tir
 	public int onExectute(ArrayList<Mobs> case_mob)
 	{
 		//test collision
+		bbox_.set_X((int) position_.x);
+		bbox_.set_Y((int) position_.y);
 		
 		//changement position
 		position_.add(vitesse());
 		time_total_ -=Gdx.graphics.getDeltaTime()*1000;//passage en ms
-		//System.err.println(time_total_);
 		if(time_total_<0)
 		{
 			return 0; //on supprime car touché personne
 		}
 		else
 		{
+			
 			for(int i =0; i <case_mob.size();i++)
 			{
 				if(this.bbox_.collision(case_mob.get(i).getBbox_()))
@@ -122,8 +124,11 @@ public class Tir
 		return position_;
 	}
 
-	public void position(Vector2 position_) {
-		this.position_ = position_;
+	public void position(Vector2 position) 
+	{
+		this.position_ = position;
+		bbox_.set_X((int) position.x);
+		bbox_.set_Y((int) position.y);
 	}
 
 	public Vector2 vitesse() {
