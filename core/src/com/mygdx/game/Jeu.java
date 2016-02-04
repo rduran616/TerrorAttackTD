@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 import Utilitaires.CollisionBox;
@@ -147,19 +148,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 			}
 
 			
-			shapeRenderer.setProjectionMatrix(values_.camera().combined);
-			int length = values_.carte().length;
-			for(int i=0; i < length;i++) //pour chaque case
-			{
-				//tracé les carreaux
-				shapeRenderer.begin(ShapeType.Line);
-				Color c = Color.RED;
-	            shapeRenderer.setColor(c);
-	            int a = (int)values_.carte()[i].getPosition().x* values_.size_Px() + 0;
-	            int b = (int)values_.carte()[i].getPosition().y* values_.size_Px() + 0;
-	            shapeRenderer.rect(a,b,values_.size_Px(),values_.size_Px());
-	            shapeRenderer.end();            
-			}
+			if(values_.debug==true)
+				draw_shape();
+			
 			
 	        //dessins du reste
 			 if(etat_jeu_ == StateJeuEnum.JEU )
@@ -243,6 +234,37 @@ public class Jeu extends StateMenu  implements InputProcessor
 			return selection_;
 	}
 	
+	
+	public void draw_shape()
+	{
+		shapeRenderer.setProjectionMatrix(values_.camera().combined);
+		int length = values_.carte().length;
+		for(int i=0; i < length;i++) //pour chaque case
+		{
+			//tracé les carreaux
+				shapeRenderer.begin(ShapeType.Line);
+				Color c = Color.RED;
+	            shapeRenderer.setColor(c);
+	            int a = (int)values_.carte()[i].getPosition().x* values_.size_Px() + 0;
+	            int b = (int)values_.carte()[i].getPosition().y* values_.size_Px() + 0;
+	            shapeRenderer.rect(a,b,values_.size_Px(),values_.size_Px());
+	            shapeRenderer.end();            
+			}
+			
+			
+			shapeRenderer.begin(ShapeType.Line);
+			Color c = Color.BLUE;
+            shapeRenderer.setColor(c);
+
+            values_.camera().zoom = MathUtils.clamp(values_.camera().zoom, 0.1f, (values_.size_m()*values_.size_n()*values_.size_Px())/values_.camera().viewportWidth);
+            float effectiveViewportWidth =  values_.camera().viewportWidth *  values_.camera().zoom;
+            float effectiveViewportHeight =  values_.camera().viewportHeight *  values_.camera().zoom;
+ 
+            int a = (int) values_.camera().position.x-(int)effectiveViewportWidth/2;
+            int b = (int) values_.camera().position.y-(int)effectiveViewportHeight/2;
+            shapeRenderer.rect(a+32,b+32,effectiveViewportWidth-64,effectiveViewportHeight-64);
+            shapeRenderer.end();   
+	}
 	
 	public static Vector3 get_Last_Position(){return last_position_;}
 

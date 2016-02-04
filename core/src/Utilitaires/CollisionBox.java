@@ -64,38 +64,18 @@ public final class CollisionBox
 	
 	public void set_Collision_box(int x, int y, int w, int h)
 	{
-		if(x>=0 && y>=0 && h>=0 && w>=0)
-		{
-			x_=x;
-			y_=y;
-			h_=h;
-			w_=w;
-		}
-		else
-		{
-			x_=0;
-			y_=0;
-			h_=0;
-			w_=0;
-		}
+		x_=x;
+		y_=y;
+		h_=h;
+		w_=w;
 	}
 	
 	public void set_Collision_box(float x, float y, float w, float h)
 	{
-		if(x>=0 && y>=0 && h>=0 && w>=0)
-		{
-			x_=(int)x;
-			y_=(int)y;
-			h_=(int)h;
-			w_=(int)w;
-		}
-		else
-		{
-			x_=0;
-			y_=0;
-			h_=0;
-			w_=0;
-		}
+		x_=(int)x;
+		y_=(int)y;
+		h_=(int)h;
+		w_=(int)w;
 	}
 	
 	public void set_Collision_box(CollisionBox box2)

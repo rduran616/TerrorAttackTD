@@ -615,7 +615,7 @@ public final class GlobalValues
 	public Status status(){return status_;}
 	public void status(Status s){status_=s;}
 	
-
+	public boolean debug = true;
 	
 	public void size_Px(int px){size_px_=px;}
 	public void size_n(int n){size_n_=n;}

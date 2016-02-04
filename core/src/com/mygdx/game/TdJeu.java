@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -352,11 +353,7 @@ public class TdJeu extends StateJeu
 			sb_.begin();
 			sb_.setProjectionMatrix(values_.camera().combined);//mise à jour de la matrice de projection du batch pour redimentionnement des sprites
 			
-			
-			
-			
-			
-			 if(box_viewport==null)
+			if(box_viewport==null)
 		    {
 		    	Vector3 vec = new Vector3(values_.camera().position);
 		    	values_.camera().unproject(vec);
@@ -364,10 +361,14 @@ public class TdJeu extends StateJeu
 		    }
 		    else
 		    {
-		    	Vector3 vec = new Vector3(values_.camera().position);
-		    	//values_.camera().unproject(vec);
-		    	box_viewport.set_Collision_box(vec.x,vec.y,values_.camera().viewportWidth,values_.camera().viewportHeight);
-		    	//System.err.println(box_viewport.get_X()+"  "+box_viewport.get_Y()+" "+box_viewport.get_W()+" "+box_viewport.get_H());
+		    	float zoom = MathUtils.clamp(values_.camera().zoom, 0.1f, (values_.size_m()*values_.size_n()*values_.size_Px())/values_.camera().viewportWidth);
+	            float effectiveViewportWidth =  values_.camera().viewportWidth * zoom;
+	            float effectiveViewportHeight =  values_.camera().viewportHeight *  zoom;
+	            
+	            int a = (int) values_.camera().position.x-(int)effectiveViewportWidth/2;
+	            int b = (int) values_.camera().position.y-(int)effectiveViewportHeight/2;
+	            
+		    	box_viewport.set_Collision_box(a,b,effectiveViewportWidth,effectiveViewportHeight);
 		    }
 
 			
@@ -392,8 +393,8 @@ public class TdJeu extends StateJeu
 			{
 				
 				sb_.setShader(null);
-				try
-				{
+				//try
+				//{
 					//pour chaque mob de la case faire...
 					for(int k=0; k < values_.carte()[i].getMobs_size_();k++)
 					{
@@ -414,7 +415,6 @@ public class TdJeu extends StateJeu
 						
 						mob.getBbox_().set_X((int)mob.getPosition_().x);
 						mob.getBbox_().set_Y((int)mob.getPosition_().y);
-					//	mob.getBbox_().print();
 						if(box_viewport.collision(mob.getBbox_())==true)
 						{
 							cpt2++;
@@ -433,8 +433,7 @@ public class TdJeu extends StateJeu
 					{
 						//Recuperation de la tour
 						t = values_.carte()[i].getUnits_().get(j); 
-						
-						
+
 						//tir + rotation
 						StructureEnnemi str = t.onExecute(2f);
 						if(str!=null)
@@ -457,23 +456,25 @@ public class TdJeu extends StateJeu
 								tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_);
 								//lancement
 								values_.shots().add(tir);
-								//System.err.println("tir");
 							}
 						}
 						
 						//dessin	
-						values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
-						values_.tower_sprite(t.num_Texture()).draw(sb_);
+						if(box_viewport.collision(t.box())==true)
+						{
+							values_.tower_sprite(t.num_Texture()).setPosition(t.position().x,t.position().y);			
+							values_.tower_sprite(t.num_Texture()).draw(sb_);
+						}
 					}	
-				}
+			/*	}
 				catch(Exception e)
 				{
 					System.err.println("tour dessin "+e);
-				}
+				}*/
 			}
 					
 			
-			//System.err.println("cpt = "+cpt2+"/"+cpt1);
+		//	System.err.println("cpt = "+cpt2+"/"+cpt1);
 			
 			//Dessin des tir
 			int size_shot = values_.shots().size();
@@ -495,44 +496,37 @@ public class TdJeu extends StateJeu
 					//emission de particle
 					if(existePlus==0) //fumée
 					{
-						//System.err.println("fumméé");
 						actor2.add( new ParticleEffect(particle_effect_fumee));
 						actor2.get(actor2.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
 						actor2.get(actor2.size()-1).start();
 					}
 					else//sang
 					{
-						//System.err.println("sang");
 						actor1.add( new ParticleEffect(particle_effect_sang));
 						actor1.get(actor1.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
 						actor1.get(actor1.size()-1).start();
 					}
-					
+						
 					values_.shots().remove(a);
 					tir.time(0);
 					values_.getPile_shot_().push(tir);
-					
-					
 					break;
 				}
 
-
 				//deplacement
 				//animation
+								
 				tir.add_Time(Gdx.graphics.getDeltaTime()*2);
 				TextureRegion currentFrame2 = values_.shots_Sprite_().get_Animation(tir.num_Texture(),0).getKeyFrame(tir.time(), false);
 				//placement + dessin	
 				sb_.draw(currentFrame2,tir.position().x, tir.position().y);
 			}
 			
-		//	sb_.end();
 			
 			//affichage de la tour en cours de placement
 			t = values_.getT_temporaire_();
 			if(t!=null && values_.status() != Status.INFO_UPGRADE)
 			{
-			//	sb_.begin();
-
 				int pas = 32;
 				Vector2 c  = new Vector2(t.position().x+t.size_W()/2,t.position().y+t.size_H()/2);
 				float[] verts;
@@ -582,11 +576,9 @@ public class TdJeu extends StateJeu
 			    }else{System.err.println("tower_sprite = null pointeur ");}
 				
 				sb_.setShader(null);
-			    //sb_.end();
 			}
 
 			//dessin des particules
-		//	sb_.begin();
 			sb_.setShader(null);
 	      	for(int i=0;i < actor1.size();i++)
 			{
@@ -598,8 +590,7 @@ public class TdJeu extends StateJeu
 					actor1.remove(i);
 				}
 			}
-	      //	sb_.end();
-	      //	sb_.begin();
+
 			for(int i=0;i < actor2.size();i++)
 			{
 				actor2.get(i).update(Gdx.graphics.getDeltaTime());
@@ -610,10 +601,15 @@ public class TdJeu extends StateJeu
 					actor2.remove(i);
 				}
 			}
+			
+			
 			sb_.setShader(null);
 			sb_.end();
 		}
 
+		
+		
+		
 		//Changer de menu
 		if(selection_ != StateJeuEnum.JEU)
 		{
