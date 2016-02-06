@@ -138,22 +138,13 @@ public abstract class TowerType
 			if(cases_adj!=null)
 			{
 				size =0;
-				//pour chaque case adjacente faire
-				/*for(int i=0;i<cases_adj.size();i++)
-				{
-					System.err.print("  "+cases_adj.get(i));
-				}*/
-				
-			//	System.err.println("");
 				for(int i=0;i<cases_adj.size();i++)
 				{
 					//recuperer la taille
 					size = values_.carte()[cases_adj.get(i)].getMobs_size_();
-				//	System.err.println(cases_adj.get(i)+"  "+size);
 					//si case > 0, pour chaque ennemi present dans la case faire...
 					for(int j=0;j<size;j++)
 					{
-						//System.err.println("tir1");
 						// si il est vol on passe au suivant sinon on enregistre l'ennemi a viser
 						if(values_.carte()[cases_adj.get(i)].getMobs_().get(j).getAir()==false) 
 						{

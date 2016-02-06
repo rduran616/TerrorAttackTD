@@ -16,7 +16,7 @@ public class TickHorloge
 	public TickHorloge()
 	{
 		range_ = 0;
-		temps_passer_ = System.currentTimeMillis();;
+		temps_passer_ = System.currentTimeMillis();
 		temps_actuel_ = temps_passer_;
 	}
 	

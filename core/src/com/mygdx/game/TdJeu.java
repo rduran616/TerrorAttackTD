@@ -43,7 +43,7 @@ public class TdJeu extends StateJeu
 	SpriteBatch sb_;
 	int num_vague_=1;
 	double rythme_creation_mobs_min = 500; //en msseconde
-	double rythme_creation_mobs_max= 1000; //en msseconde
+	double rythme_creation_mobs_max= 10000; //en msseconde
 	VagueRand vague_;
 	TickHorloge tick_;
 	Noeud depart;
@@ -54,7 +54,6 @@ public class TdJeu extends StateJeu
 	ParticleEffect particle_effect_fumee;
 	ArrayList<ParticleEffect> actor1;
 	ArrayList<ParticleEffect> actor2;
-	
 	
 	CollisionBox box_viewport;
 	
@@ -74,6 +73,10 @@ public class TdJeu extends StateJeu
     Texture simple_texture;
     Texture draw_texture;
     Texture bruit_texture;
+    
+    
+    TickHorloge fps;
+	private int d_min = 20; //distance en tour et ennemi
 	
 	public TdJeu()
 	{	
@@ -140,6 +143,10 @@ public class TdJeu extends StateJeu
 		depart.set_Case(340);
 		arrivee= new Noeud();
 		arrivee.set_Case(320);
+		
+		values_.cell_Depart(340);
+		values_.cell_Arrive(320);
+		
 		//tracer chemin
 	//	chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
 		values_.recalculerChemin_(true);
@@ -164,6 +171,9 @@ public class TdJeu extends StateJeu
 
         simple_texture = new Texture(Gdx.files.internal("simpleTexture.png"));
         draw_texture = new Texture(Gdx.files.internal("drawTexture.jpg"));
+        
+        
+        values_.debug=true;
 	}
 	
 	
@@ -171,14 +181,16 @@ public class TdJeu extends StateJeu
 	public StateJeuEnum exectute() 
 	{
 		/*********************crétaion de l'ia***************************************/
-	
+
+		
 		//Création des mobs
 		if(vague_.nb_Ennemis()<=0)
 			vague_.new_Vague();
 		
 		if(values_.recalculerChemin_()==true)
 		{	
-			chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
+			//chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_n(), values_.size_m());
+			chemin = AStar.cheminPlusCourt(values_.carte_Ia(), depart, arrivee, 32,32);
 			values_.recalculerChemin_(false);
 		}
 		
@@ -189,8 +201,11 @@ public class TdJeu extends StateJeu
 			int m = vague_.get_Ennemi();
 		
 			//calcul position de départ
-			Vector2  position = new Vector2(values_.carte()[depart.case_()].centre());
+			//Vector2  position = new Vector2(values_.carte()[depart.case_()].centre());
+			Vector2  position = new Vector2(values_.carte_Ia()[depart.case_()].centre());
+			
 			//creation et placement		
+			if(chemin!=null)
 			switch(m)
 			{
 				//air
@@ -204,8 +219,10 @@ public class TdJeu extends StateJeu
 						mob0.setPosition_(position);
 						mob0.index_chemin_= chemin.size()-1;
 						//placement dans la liste
-						//values_.mobs().add(mob);
-						values_.carte()[depart.case_()].addMob(mob0);
+						//values_.carte()[depart.case_()].addMob(mob0);
+						
+						int cas =values_.get_Index_Cellule(position.x, position.y);
+						values_.carte()[cas].addMob(mob0);
 						
 					}
 
@@ -223,7 +240,9 @@ public class TdJeu extends StateJeu
 						mob1.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						//values_.mobs().add(mob);
-						values_.carte()[depart.case_()].addMob(mob1);
+						//values_.carte()[depart.case_()].addMob(mob1);
+						int cas =values_.get_Index_Cellule(position.x, position.y);
+						values_.carte()[cas].addMob(mob1);
 					}
 
 				break;
@@ -240,7 +259,9 @@ public class TdJeu extends StateJeu
 						mob2.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						//values_.mobs().add(mob);
-						values_.carte()[depart.case_()].addMob(mob2);
+						//values_.carte()[depart.case_()].addMob(mob2);
+						int cas =values_.get_Index_Cellule(position.x, position.y);
+						values_.carte()[cas].addMob(mob2);
 					}
 
 				break;
@@ -257,7 +278,9 @@ public class TdJeu extends StateJeu
 						mob3.index_chemin_= chemin.size()-1;
 						//placement dans la liste
 						//values_.mobs().add(mob);
-						values_.carte()[depart.case_()].addMob(mob3);
+						//values_.carte()[depart.case_()].addMob(mob3);
+						int cas =values_.get_Index_Cellule(position.x, position.y);
+						values_.carte()[cas].addMob(mob3);
 					}
 				break;
 				
@@ -273,76 +296,102 @@ public class TdJeu extends StateJeu
 		}
 		
 		
+		
+		
+		
 		/***********************************mise à jour de l'ia***************************************/
 		
-			//Recalcul du chemin des mobs
-			if(values_.recalculerChemin_()==true)
-			{
-				AStar.init_CellMap(values_.carte());
-				AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(),values_.size_n());
-				values_.recalculerChemin_(false);
-			}
-				
-			//ia ennemis = deplacement en suivant le chemin calculé ou recalculé en focntion du placement des tours
-		    for(int i =0; i< values_.carte().length;i++) //pour chaque mob dans mob[] faire
-		    {
-		    	for(int j = 0; j <values_.carte()[i].getMobs_size_();j++ )
-		    	{
-		    		//try{
-			    	Mobs m = values_.carte()[i].getMobs_().get(j);
-			    	Vector2 position = new Vector2();
-			    	
-			    	//position:
-	
-			    	//Case actu
-			    	int index = m.index_chemin_-1;
-			    	if(index == chemin.size())
-			    		index --;
-			    	//case suivante
-			    	int case_suivante=chemin.get(index).case_();
-			    	//position actuel
-			    	Vector2 pos = m.getPosition_();
-			    	//position cible
-			    	Vector2 pos2 =  values_.carte()[case_suivante].centre();
-			    	//vecteur de déplacement 
-			    	Vector2 pos3 = new Vector2(pos2.x - pos.x, pos2.y - pos.y);
-			    	//deplacement avec application de la vitesse
-			    	position.x=(pos.x+pos3.x/m.getSpeed_()*Gdx.graphics.getDeltaTime());
-			    	position.y=(pos.y+pos3.y/m.getSpeed_()*Gdx.graphics.getDeltaTime());
-			    	
-			    	//mise a jour position
-			    	m.setNum_direction_(0);
-			    	m.setPosition_(position);
+		
+		for(int i =0; i< values_.carte().length;i++) //cherche mob sur carte général
+	    {
+	    	for(int j = 0; j <values_.carte()[i].getMobs_size_();j++ )//pour chaque mob dans mob[] faire
+	    	{
+		    	Mobs m = values_.carte()[i].getMobs_().get(j);
+		    	Vector2 position = new Vector2();
+		    	
+		    	//position:
 
-			    	//enregsitrement sur la carte
-			    	int cell = values_.get_Index_Cellule((int)pos.x, (int)pos.y);
-			    	if(values_.get_Index_Cellule((int)position.x, (int)position.y) == case_suivante) // si on change de case
-			    	{
-			    		if(values_.get_Index_Cellule((int)position.x, (int)position.y) != arrivee.case_()) //si pas arrivé
-			    		{	    			
-			    			m.index_chemin_--;
-					    	values_.carte()[cell].getMobs_().remove(m);
-					    	values_.carte()[cell].setMobs_size_(values_.carte()[cell].getMobs_size_()-1);
-					    	values_.carte()[case_suivante].addMob(m);
-			    		}
-			    		else // on est arrivé
-			    		{
-			    			//si arrivé destructionp
-			    			values_.vie(values_.vie()-m.getDegat_());
-			    				
-			    			if(values_.vie()<=0)
-			    				selection_ = StateJeuEnum.FIN;
-			    			
-							values_.carte()[i].remove_Mobs(j);
-			    		}
-			    	}
+		    	//Case actu
+		    	int index = m.index_chemin_-1;
+		    	if(index == chemin.size())
+		    		index --;
+		    	//case suivante
+		    	int case_suivante=chemin.get(index).case_();
+		    	//position actuel
+		    	Vector2 pos = m.getPosition_();
+		    	//position cible
+		    	//Vector2 pos2 =  values_.carte()[case_suivante].centre();
+		    	Vector2 pos2 =  values_.carte_Ia()[case_suivante].centre();
+		    	//vecteur de déplacement 
+		    	Vector2 pos3 = new Vector2(pos2.x - pos.x, pos2.y - pos.y);
+		    	
+		    	//normalisation
+		    	if(pos3.x>0)
+		    	{
+		    		if(pos3.x<0)
+		    			pos3.x /= -pos3.x;
+		    		else
+		    			pos3.x /= pos3.x;
 		    	}
-		    }
-		    
-		    
+		    	
+		    	if(pos3.y>0)
+		    	{
+		    		if(pos3.y<0)
+		    			pos3.y /= -pos3.y;
+		    		else
+		    			pos3.y /= pos3.y;
+		    	}
+		    	
+		    	
+		    	//deplacement avec application de la vitesse
+		    	position.x=(pos.x+pos3.x*m.getSpeed_()*Gdx.graphics.getDeltaTime());
+		    	position.y=(pos.y+pos3.y*m.getSpeed_()*Gdx.graphics.getDeltaTime());
+		    	
+		    	//mise a jour position
+		    	m.setNum_direction_(0);
+		    	m.setPosition_(position);
+
+		    	//enregsitrement sur la carte general et sur la carte ia
+		    	int cell2_ia = values_.get_Index_Cellule(pos.x, pos.y, 32, 32);  // pos actuel sur map ia
+		    	int cell4_ia = values_.get_Index_Cellule(position.x, position.y,32,32); //new pose sur carte ia
+		    	
+		    	int cell1_g = values_.get_Index_Cellule((int)pos.x, (int)pos.y); //pos = pos actuel sur map general
+		    	int cell3_g = values_.get_Index_Cellule((int)position.x, (int)position.y); //new pos suivante sur map general
+		    	
+		    	if(cell4_ia == case_suivante) // si on change de case dans tableau ia on verifie si arrivé
+		    	{
+		    		if(cell4_ia != arrivee.case_()) //si pas arrivé
+		    		{	    			
+		    			m.index_chemin_--;
+				    	/*values_.carte()[cell].getMobs_().remove(m);
+				    	values_.carte()[cell].setMobs_size_(values_.carte()[cell].getMobs_size_()-1);
+				    	values_.carte()[case_suivante].addMob(m);*/
+		    			
+		    			//si on change de case dans la carte général
+		    			if(cell3_g!=cell1_g)
+		    			{
+		    				values_.carte()[cell1_g].getMobs_().remove(m);
+					    	values_.carte()[cell1_g].setMobs_size_(values_.carte()[cell1_g].getMobs_size_()-1);
+					    	values_.carte()[cell3_g].addMob(m);
+		    			}
+		    		}
+		    		else // on est arrivé
+		    		{
+		    			//si arrivé destruction
+		    			values_.vie(values_.vie()-m.getDegat_());
+		    				
+		    			if(values_.vie()<=0)
+		    				selection_ = StateJeuEnum.FIN;
+		    			
+						values_.carte()[i].remove_Mobs(j);
+		    		}
+		    	}
+	    	}
+	    }
+
 	    /*********************************** Affichage ***************************************/
 	  
-		
+		    fps = new TickHorloge();
 		//dessin des images
 		if(sb_!=null)
 		{ 
@@ -386,6 +435,7 @@ public class TdJeu extends StateJeu
 			else
 				sb_.setShader(null);
 			
+		
 			//dessin des tours -> parcours toutes la carte n*m
 			int cpt1=0;
 			int cpt2=0;
@@ -401,7 +451,6 @@ public class TdJeu extends StateJeu
 						cpt1++;
 						//Recuperation de la tour
 						mob = values_.carte()[i].getMobs_().get(k); 
-
 						if(mob.subir_Degat(0)==false)
 						{
 							values_.argent(values_.argent()+mob.getMoney_());
@@ -466,16 +515,8 @@ public class TdJeu extends StateJeu
 							values_.tower_sprite(t.num_Texture()).draw(sb_);
 						}
 					}	
-			/*	}
-				catch(Exception e)
-				{
-					System.err.println("tour dessin "+e);
-				}*/
 			}
-					
-			
-		//	System.err.println("cpt = "+cpt2+"/"+cpt1);
-			
+
 			//Dessin des tir
 			int size_shot = values_.shots().size();
 			for(int a=0;a < size_shot;a++)
@@ -484,7 +525,7 @@ public class TdJeu extends StateJeu
 				Tir tir = new Tir();
 				tir = values_.shots().get(a);
 				
-				
+				//case ou est le tir
 				int c = values_.get_Index_Cellule((int)tir.position().x,(int)tir.position().y);
 				if(c<0 || c>= values_.size_m()*values_.size_n())
 					continue;
@@ -512,7 +553,8 @@ public class TdJeu extends StateJeu
 					values_.getPile_shot_().push(tir);
 					break;
 				}
-
+			
+				
 				//deplacement
 				//animation
 								
@@ -521,6 +563,7 @@ public class TdJeu extends StateJeu
 				//placement + dessin	
 				sb_.draw(currentFrame2,tir.position().x, tir.position().y);
 			}
+			
 			
 			
 			//affichage de la tour en cours de placement
@@ -532,13 +575,18 @@ public class TdJeu extends StateJeu
 				float[] verts;
 				boolean col = false;
 				col = values_.collision_Avec_Tour(t);
+				
+				int num_cell = values_.get_Index_Cellule(c.x, c.y);
+				if(num_cell == values_.cell_Depart() ||  num_cell == values_.cell_Arrive())
+					col =true;
+				
 				Color color;
 				if(col == true)
 					color = new Color(0.8f,0f,0f,0.3f);
 				else
 					color = new Color(0.0f,0.8f,0f,0.3f);
 				
-				verts = Circle.make_Circle_Float_Color(t._range*values_.size_Px(), c, pas,color);
+				verts = Circle.make_Circle_Float_Color(t._range*values_.size_Px()/4, c, pas,color);
 				Mesh mesh = new Mesh( true, pas+1, pas*3,
 		                new VertexAttribute( VertexAttributes.Usage.Position, 3, "a_position" ),
 		                new VertexAttribute( VertexAttributes.Usage.ColorPacked, 4, "a_color" ),
@@ -576,8 +624,11 @@ public class TdJeu extends StateJeu
 			    }else{System.err.println("tower_sprite = null pointeur ");}
 				
 				sb_.setShader(null);
+				
+				
 			}
 
+			
 			//dessin des particules
 			sb_.setShader(null);
 	      	for(int i=0;i < actor1.size();i++)
@@ -605,9 +656,10 @@ public class TdJeu extends StateJeu
 			
 			sb_.setShader(null);
 			sb_.end();
+
 		}
 
-		
+		System.err.println(fps.temp_Passe());
 		
 		
 		//Changer de menu
@@ -625,6 +677,21 @@ public class TdJeu extends StateJeu
 	public void init()
 	{
 		selection_ = StateJeuEnum.JEU;
+		actor1 = new ArrayList<ParticleEffect>();
+		actor2 = new ArrayList<ParticleEffect>();
+		values_.recalculerChemin_(true);
+		
+		int[] liste_mob = new int[4];
+		liste_mob[0] = values_.m_air_modele_().getDegat_();
+		liste_mob[1] = values_.m_basic_modele_().getDegat_();
+		liste_mob[2] = values_.m_lourd_modele_().getDegat_();
+		liste_mob[3] = values_.m_boss_modele_().getDegat_();
+		
+		vague_.init(200,liste_mob);
+		values_.getPile_shot_().removeAllElements();
+		
+		values_.cell_Depart(340);
+		values_.cell_Arrive(320);
 	}
 
 	private float[] square_Vertices(float width, float height, float x, float y) 

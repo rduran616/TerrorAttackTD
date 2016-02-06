@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -205,17 +206,25 @@ public class HudGame
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       {   
-		    	  
-		    	   
+
 		    	   	//la position dans le monde
 		    	   	Vector3 pos = new Vector3(values_.getT_temporaire_().position().x,values_.getT_temporaire_().position().y,0); 
 					//la case ou on place le bonhomme
-	   				int cell = values_.get_Index_Cellule((int)pos.x,(int)pos.y);
-
+	   				int cell = values_.get_Index_Cellule(pos.x,pos.y);
+	   				int case_ia = values_.get_Index_Cellule(pos.x, pos.y, 32, 32);
+	   				
+	   				System.err.println(cell);
+	   				if(cell == values_.cell_Depart() || cell == values_.cell_Arrive())
+   					{
+   						System.err.println("depart ou arrivé");
+   						return;
+   					}
+	   				
+	   				
 		    	   //vérification collision 
 		    	   ArrayList<TowerType> list_tower = values_.carte()[cell].getUnits_();
 		    	   boolean colision = false;
-		    	   if(list_tower.size()>0)
+		    	   if(list_tower.size()>0) //est ce qu'il y a deja une tour dans la case?
 		    	   {
 		    		   colision = false;
 		    		   for(int i=0; i < list_tower.size();i++)
@@ -247,6 +256,8 @@ public class HudGame
 		    			   values_.setT_temporaire_(null);
 		    			   values_.status(Status.POSITIONNE);
 		    			   values_.recalculerChemin_(true);
+		    			   
+		    			   values_.carte_Ia_setOccupe(case_ia, true);
 		    			
 		    		   }
 		    	   }
@@ -268,6 +279,9 @@ public class HudGame
 	    			   values_.setT_temporaire_(null);
 	    			   values_.status(Status.POSITIONNE); 
 	    			   values_.recalculerChemin_(true);
+	    			   
+	    			  
+	    			   values_.carte_Ia_setOccupe(case_ia, true);
 	    			   
 		    	   }
 		       }
@@ -317,10 +331,16 @@ public class HudGame
 		    		 float xScr = Jeu.get_Last_Position().x;
 		    		 float yScr = Jeu.get_Last_Position().y;
 		    		 CollisionBox box =new CollisionBox((int)xScr-5,(int)yScr-5,10,10);
+		    		 
+		    		 int case_ia;
+		    		 
 		    		 for(int i=0; i < size ;i++)
 		    		 {
+		    			 
 	    				if(values_.carte()[cellule].getUnits_().get(i).collision(box) == true)				
 						{
+	    					Vector2 pos = new Vector2(values_.carte()[cellule].getUnits_().get(i).position());
+	    					case_ia = values_.get_Index_Cellule(pos.x, pos.y, 32, 32);
 	    					
 	    					if(values_.getT_temporaire_().nom().equals("air"))
 	    						values_.sub_uAir(1);
@@ -336,6 +356,7 @@ public class HudGame
 	    					values_.argent(values_.argent() + values_.getT_temporaire_().cout() *  pourcent_vente_/100);
 	    					values_.setT_temporaire_(null);
 	    					
+	    					values_.carte_Ia_setOccupe(case_ia, false);
 	    					
 							break;
 						}		
@@ -602,6 +623,11 @@ public class HudGame
 		txt_info_4.setText(values_.localisation().get("amelio")+"?");
 		
 		pause_.setText(values_.localisation().get("pause"));
+		
+		Pixmap pm1 = new Pixmap(1, 1, Format.RGB565);
+		pm1.setColor(Color.YELLOW);
+		pm1.fill();
+		main_table_game_.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(pm1))));
 	}
 	
 	

@@ -1,6 +1,5 @@
 package units;
 
-import com.badlogic.gdx.math.Vector2;
 
 import Utilitaires.CollisionBox;
 import Utilitaires.StructureEnnemi;

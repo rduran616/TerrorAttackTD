@@ -114,6 +114,99 @@ public final class AStar
 		
 	}
 	
+	public static ArrayList<Noeud> cheminPlusCourt(Cell[] map, Noeud depart, Noeud arrivee, int h, int w)
+	{
+		open 	= new ArrayList<Noeud>();
+		close 	= new ArrayList<Noeud>();
+		chemin 	= new ArrayList<Noeud>();
+		
+		Noeud courant = depart;
+		System.err.println("depart ="+courant.case_());
+		System.err.println("arrivée ="+arrivee.case_());
+		
+		
+		open.add(courant);
+		while(!open.isEmpty())
+		{
+			//recuperation d plus petit noeud dans la lsite ouverte
+			courant = meilleur_noeud();
+			//System.err.println("meilleur noeud ="+courant.case_);
+			//si arrivé on quit 
+			if( courant.case_() == arrivee.case_() )
+		          break;
+			
+			//basculer courant dans la liste fermée
+			addToCloseList(courant); 
+			//recherche des voisins v dans g
+			ArrayList<Noeud> voisin = getNeighbours(courant,map,h,w);	
+			//System.err.println("voisin "+voisin.size());
+			
+			//pour chaque voisin v de courant du graphe faire:
+			for(int i=0; i<voisin.size();i++)
+			{
+				Noeud v = voisin.get(i); //recuperation du voisin  v
+				
+				//System.err.println(v.case_());
+				
+				//si noeud nn walkable ou dans fermer -> ne rien faire
+				if(isOnCloseList(v) == true ||  walkable(v,map) == true)
+				{
+					//System.err.println("nn walkable");
+					continue;
+				}
+					
+
+				//si v case vide alors  calcul des nouveau couts
+				
+				//on fait de current le parent de v
+				 v.parent = courant;
+				 //on calcule le nouveau g = g du parent + distance entre parent et noeud
+		         int newG = v.parent.g + NODE_DISTANCE_VALUE; 
+		         //on calcule le nouveau h  = distance entre arrivé et courant : distance manhattan
+		         int newH = ( Math.abs( map[arrivee.case_()].getN_() -  map[v.case_()].getN_() ) + Math.abs( map[arrivee.case_()].getM_() - map[v.case_()].getM_() ) ) * NODE_DISTANCE_VALUE;
+		         //on calcule le nouveau F
+		         int newF = newH + newG;
+		         
+		         //ajouter dans openlist 
+		         if(isOnOpenList(v)) //si deja dans liste, on recalcul les couts
+		         {
+		        	 if( newG < v.g )
+		             {
+		               v.parent = courant;
+		               v.g = newG;
+		               v.h = newH;
+		               v.f = newF;
+		             }
+		         }
+		         else //sinon on ajoute
+		         {
+		        	   v.parent = courant;
+		               v.g = newG;
+		               v.h = newH;
+		               v.f = newF;
+		        	   addToOpenList(v);
+		         }      
+			}
+		}
+		
+		//on est sortie ! :fete: -> on peut tracer le chemin
+		
+		if(open.isEmpty()==true) //aucun chemin trouvé
+		{
+			System.err.println("Astar complete : pas de chemin");
+			return null;
+		}
+		
+		//chemin trouvé, on l'enregistre et le retourne
+		reconstituerChemin(depart, courant);
+		
+		System.err.println("Astar complete: chemin trouvé");
+		return chemin;
+		
+	}
+	
+	
+	
 	public static void init_CellMap(CellMap[] map)
 	{
 		if(map == null)
@@ -138,7 +231,7 @@ public final class AStar
 			//System.err.println(cpt);
 			//System.out.println(tmp.case_());
 			chemin.add(tmp);
-		//	System.err.println(tmp.parent);
+			//System.err.println(tmp.parent);
 			tmp=tmp.parent;
 			
 			if(tmp == null)
@@ -205,6 +298,11 @@ public final class AStar
 		
 		return false;
 	}
+	
+	private static boolean walkable(Noeud v, Cell[] map)
+	{
+		return map[v.case_()].isOccupe();
+	}
 
 
 	//recherche des voisin du noeud courant ( retourne la case correspondantes
@@ -239,6 +337,47 @@ public final class AStar
 	}
 
 
+	private static ArrayList<Noeud> getNeighbours(Noeud c,Cell[] map,int h, int w) 
+	{
+		ArrayList<Noeud> voisin = new ArrayList<Noeud>();
+		
+	/*System.err.println("indice_haut ="+(c.case_() - h));
+	System.err.println("indice_bas ="+(c.case_() + h));
+	System.err.println("indice_droite ="+(c.case_() + 1));
+	System.err.println("indice_gauche ="+(c.case_() - 1));*/
+
+		//calcul indice des noeuds adjacents
+		int indice_haut	 = c.case_() - h;
+		int indice_bas = c.case_() + h;
+		int indice_droite  = c.case_() + 1;
+		int indice_gauche= c.case_() - 1;
+
+		//vérification existance des voisins
+		try
+		{
+			if(indice_haut>= 0 && indice_haut<h*w)
+				voisin.add(map[indice_haut].noeud());
+			if(indice_bas>= 0 && indice_bas<h*w)
+				voisin.add(map[indice_bas].noeud());
+			if(indice_droite>= 0 && indice_droite<h*w && indice_droite%h !=0)
+				voisin.add(map[indice_droite].noeud());
+			if(indice_gauche>= 0 && indice_gauche<h*w && indice_gauche%h !=h-1)
+				voisin.add(map[indice_gauche].noeud());
+			
+			//System.err.println("test "+map[indice_haut].noeud().case_());
+			
+		}
+		catch(Exception e)
+		{
+			System.err.println("Astar voisins: "+e);
+		}
+		
+		return voisin;
+	}
+
+	
+	
+	
 	//passage du noeud courant de la lsite open a close
 	private static void addToCloseList(Noeud courant)
 	{
@@ -281,16 +420,16 @@ public final class AStar
 					
 		
 		int h=8;
-		int w=10;
+		int w=8;
 		
 		Noeud depart;
 		Noeud arrivee;
 		ArrayList<Noeud> chemin;
 		
 		depart = new Noeud();
-		depart.set_Case(0);
+		depart.set_Case(39);
 		arrivee= new Noeud();
-		arrivee.set_Case(79);
+		arrivee.set_Case(32);
 		
 		
 		//init carte
@@ -299,7 +438,7 @@ public final class AStar
 		{	
 			for(int j =0;j<h;j++)//0->7 =8
 			{
-				carte_[i*h+j] = new CellMap(0,0,i*h+j,i,j, 32, null, null, null, null); // 32 = taille px h et w on suppose carré
+				carte_[i*h+j] = new CellMap(0,0,i*h+j,i,j, 128, null, null, null, null); // 32 = taille px h et w on suppose carré
 			}
 		}
 		
@@ -310,13 +449,13 @@ public final class AStar
 		carte_[17].add_Obstacle(0);
 		carte_[25].add_Obstacle(0);
 		carte_[51].add_Obstacle(0);
-		carte_[67].add_Obstacle(0);
+		//carte_[67].add_Obstacle(0);
 		carte_[60].add_Obstacle(0);
 		carte_[61].add_Obstacle(0);
 		carte_[46].add_Obstacle(0);
 		carte_[47].add_Obstacle(0);
 		carte_[39].add_Obstacle(0);
-		carte_[77].add_Obstacle(0);
+	//	carte_[77].add_Obstacle(0);
 		
 		//dessin de la carte
 		for(int i=0;i<carte_.length;i++)

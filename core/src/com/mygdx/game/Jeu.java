@@ -314,10 +314,10 @@ public class Jeu extends StateMenu  implements InputProcessor
 		
 		Vector3 pos2 = new Vector3(screenX,screenY,0);
 		values_.camera().unproject(pos2);
-		int x2 = (int) (pos2.x / values_.size_n()); //index lignes
-		int y2= (int) (pos2.y / values_.size_m());  //index colones
+		int x2 = (int) (pos2.x / values_.size_Px()); //index lignes
+		int y2= (int) (pos2.y / values_.size_Px());  //index colones
 		int cellule2 = ((x2) * values_.size_m()) +  y2 ; 
-		System.err.println("Sourisx ="+screenX+" Sourisy="+screenY+" index x ="+x2+" y="+y2+" cellule= "+cellule2); //position souris ecran
+		System.err.println(pos2+"  "+values_.size_m()+"  Sourisx ="+screenX+" Sourisy="+screenY+" index x ="+x2+" y="+y2+" cellule= "+cellule2); //position souris ecran
 		
 		
 		
@@ -325,10 +325,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 		{
 			Vector3 pos = new Vector3(screenX,screenY,0);
 			values_.camera().unproject(pos);
-			int x = (int) (pos.x / values_.size_n());
-			int y= (int) (pos.y / values_.size_m());
-			int cellule = ((x) * values_.size_m()) +  y ; 
-			
+			int x = (int) (pos.x / values_.size_Px());
+			int y= (int) (pos.y / values_.size_Px());
+			int cellule = ((x) * values_.size_m()) +  y ;
 			//calcul cellule adj
 			ArrayList<Integer> cell = new ArrayList<Integer>();
     	    cell.add(cellule);
@@ -346,12 +345,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 			if(indice_gauche>= 0 && indice_gauche<values_.size_m() * values_.size_n() && indice_gauche%values_.size_m() !=values_.size_m()-1)
 				cell.add(indice_gauche);
               
-//cases adj non prise en compte
-/*System.err.println("x ="+screenX+" y="+screenY+"  pos.x= "+pos.x+" pos.y="+pos.y+" cellule ="+cellule+ "  map cellule= "+values_.carte()[cellule].getNum_case_()+"  coordo centre ="+values_.carte()[cellule].centre()+
-"  cell adj= "+cell.get(0)+" "+cell.get(1)+" "+cell.get(2)+" "+cell.get(3)+" "+cell.get(4));*/
 
-			
-			CollisionBox box =new CollisionBox((int)pos.x-5,(int)pos.y-5,10,10);
+			float zoom = values_.camera().zoom;
+			CollisionBox box =new CollisionBox((int)pos.x-5*(int)zoom,(int)pos.y-5*(int)zoom,10*(int)zoom,10*(int)zoom);
 			boolean trouve = false;
 			
 			for(int i=0;i<cell.size();i++)

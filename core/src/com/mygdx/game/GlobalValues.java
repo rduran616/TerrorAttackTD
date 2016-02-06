@@ -20,6 +20,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.SerializationException;
 
+import Utilitaires.Cell;
 import Utilitaires.CollisionBox;
 import Utilitaires.Localisation;
 import Utilitaires.ReadXml;
@@ -117,7 +118,7 @@ public final class GlobalValues
 	//général
 	private int height_	= 0; 			//resolution en w et h en px
 	private int width_	= 0;			
-	private int size_px_ = 32;			//Taille en px d'un carreaux de la carte
+	private int size_px_ = 128;			//Taille en px d'un carreaux de la carte
 	
 	//decors	
 	private Skin skin_bouton_;			//peau des boutons
@@ -150,10 +151,11 @@ public final class GlobalValues
 	
 	//carte
 	private int ennemi_max_=1000;				//nombre max d'ennemi
-	private int size_n_ = 32;					//nombre de carreaux de la carte en width
-	private int size_m_ = 32;					//nombre de carreaux de la carte en height
+	private int size_n_ = 8;					//nombre de carreaux de la carte en width
+	private int size_m_ = 8;					//nombre de carreaux de la carte en height
 	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
 	private boolean shader_enable =true;
+	private Cell[] carte_ia_;				//carte grandement discretisé pour A*
 	
 	//private ArrayList<TowerType> liste_tours;	//liste des tours placées
 	private ArrayList<Mobs> liste_mobs;			//liste des mobs à afficher
@@ -224,15 +226,33 @@ public final class GlobalValues
 	
 	public void carte_Init()
 	{
+		//initialisation carte générale
 		carte_ = new CellMap[size_n_ * size_m_];//0->1023 = 1024
 		for(int i =0;i<size_n_;i++)//0->31 = 32
 		{	
 			for(int j =0;j<size_m_;j++)//0->31 =32
 			{
-				carte_[i*size_n_+j] = new CellMap(size_n_,size_m_,i*size_n_+j,i,j, size_n_, null, null, null, null);
+				carte_[i*size_n_+j] = new CellMap(size_n_,size_m_,i*size_n_+j,i,j, size_px_, null, null, null, null);
 				//System.err.println(i*size_n_+j);
 			}
 		}
+		
+		//initialisation carte pour ia
+		int n=size_n_*size_px_;  //1024
+		int m= size_m_*size_px_; //1024
+		n/=32; // = 32
+		m/=32; // = 32
+		carte_ia_ = new Cell[n*m]; //= 32*32
+		for(int i =0;i<n;i++)//0->31 = 32
+		{	
+			for(int j =0;j<m;j++)//0->31 =32
+			{
+				carte_ia_[i*n+j]= new Cell(false,null,i,j,32,i*n+j);
+				//System.err.print(" "+(i*n+j));
+			}
+			//System.err.println("");
+		}
+		
 	}
 		
 	
@@ -304,7 +324,6 @@ public final class GlobalValues
 	
 	public void init_tile_map()
 	{
-		//float aspectRatio = (float)Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
         try 
         {
         	if(batch == null)
@@ -314,9 +333,9 @@ public final class GlobalValues
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
             tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,1,batch);
 
-            size_px_	= tiledMap_.getProperties().get("tileheight",Integer.class);
+         /* size_px_	= tiledMap_.getProperties().get("tileheight",Integer.class);
     		size_n_		= tiledMap_.getProperties().get("height",Integer.class);
-			size_m_		= tiledMap_.getProperties().get("width",Integer.class);
+			size_m_		= tiledMap_.getProperties().get("width",Integer.class);*/
 				
     		camera_Init();
             
@@ -616,6 +635,9 @@ public final class GlobalValues
 	public void status(Status s){status_=s;}
 	
 	public boolean debug = true;
+
+	private int cell_start_;
+	private int cell_end_;
 	
 	public void size_Px(int px){size_px_=px;}
 	public void size_n(int n){size_n_=n;}
@@ -651,10 +673,29 @@ public final class GlobalValues
 	public int get_Index_Cellule(int x, int y)
 	{
 		//calcul coordonnées dans matrice n*m via les coord du monde en px
-		int n = (int) (x / size_n_);
-		int m = (int) (y / size_m_);
+		int n = (int) (x / size_px_);
+		int m = (int) (y / size_px_);
 		
 		return (n * size_n_) + m ; 
+	}
+	
+	public int get_Index_Cellule(float x, float y)
+	{
+		//calcul coordonnées dans matrice n*m via les coord du monde en px
+		int n = (int) (x / size_px_);
+		int m = (int) (y / size_px_);
+		
+		return (n * size_n_) + m ; 
+	}
+	
+	
+	public int get_Index_Cellule(float x, float y, int s_px, int n_)
+	{
+		//calcul coordonnées dans matrice n*m via les coord du monde en px
+		int n = (int) (x / s_px);
+		int m = (int) (y / s_px);
+		
+		return (n * n_) + m ; 
 	}
 	
 
@@ -936,5 +977,16 @@ public final class GlobalValues
 	public void setAssets(AssetManager assets) {
 		this.assets = assets;
 	}
+
+
+	public Cell[] carte_Ia(){return carte_ia_;}
+	public Cell carte_Ia_Get(int i){return carte_ia_[i];}
+	public boolean carte_Ia_isOccupe(int i){return carte_ia_[i].isOccupe();}
+	public void carte_Ia_setOccupe(int i, boolean o){ carte_ia_[i].setOccupe(o);}
+	
+	public int cell_Depart() {return cell_start_;}
+	public int cell_Arrive(){return cell_end_;}
+	public void cell_Depart(int d) { cell_start_=d;}
+	public void cell_Arrive(int a){ cell_end_=a;}
 	
 }
