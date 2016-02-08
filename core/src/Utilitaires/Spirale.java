@@ -90,7 +90,7 @@ public class Spirale
 		adj.add(cell);
 		
 		
-		System.err.println("case depart = "+cell);
+	//	System.err.println("case depart = "+cell);
 		
 		for (int a = 0; a < num_couche; a++)
 		{     

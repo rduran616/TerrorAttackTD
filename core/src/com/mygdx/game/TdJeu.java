@@ -24,6 +24,7 @@ import Utilitaires.AStar;
 import Utilitaires.Circle;
 import Utilitaires.CollisionBox;
 import Utilitaires.Noeud;
+import Utilitaires.Spirale;
 import Utilitaires.StructureEnnemi;
 import Utilitaires.TickHorloge;
 import units.Mobs;
@@ -312,11 +313,45 @@ public class TdJeu extends StateJeu
 		    	//position:
 
 		    	//Case actu
-		    	int index = m.index_chemin_-1;
+		    	/*int index = m.index_chemin_-1;
 		    	if(index == chemin.size())
-		    		index --;
+		    		index --;*/
 		    	//case suivante
-		    	int case_suivante=chemin.get(index).case_();
+		    	int case_suivante;//=chemin.get(index).case_();
+		    	
+		    	
+		    	/****************** test new ia ************/
+		    	//recuperation cases adj valide
+
+		    	ArrayList<Integer> adj_valide = new ArrayList<Integer>();
+		    	adj_valide = Spirale.adjacente2(32, m.getPosition_(), 32, 32, 2);
+		    	
+	    		
+		    	int d_min =1000000000;
+		    	int indexx =0;
+		    	int case_actu = values_.get_Index_Cellule(m.getPosition_().x, m.getPosition_().y, 32, 32);
+		    	Vector2 arrivee_vec = new Vector2(values_.carte_Ia()[arrivee.case_()].centre());
+		    	for(int c = 0 ; c <adj_valide.size();c++ )
+		    	{
+		    		System.err.print("  "+adj_valide.get(c));
+		    		if(values_.carte_Ia_isOccupe(adj_valide.get(c))==false && adj_valide.get(c)!=case_actu)
+		    		{
+		    			Vector2 p = new Vector2(values_.carte_Ia()[adj_valide.get(c)].centre());
+		    			int d = (int) (Math.abs(arrivee_vec.x - p.x) + Math.abs(arrivee_vec.y - p.y));
+		    			System.err.print(" d= "+d);
+		    			if(d<=d_min)
+		    			{
+		    				d_min = d;
+		    				indexx=c;
+		    			}
+		    		}
+		    	}
+		    	
+		    	
+		    	case_suivante = adj_valide.get(indexx);
+		    	System.err.println("  case actu= "+case_actu+"  case suivante="+case_suivante);
+		    	//System.err.println("");
+		    	
 		    	//position actuel
 		    	Vector2 pos = m.getPosition_();
 		    	//position cible
@@ -325,8 +360,10 @@ public class TdJeu extends StateJeu
 		    	//vecteur de déplacement 
 		    	Vector2 pos3 = new Vector2(pos2.x - pos.x, pos2.y - pos.y);
 		    	
+		    	//System.err.println("vecteur depalcement ="+position);
+		    	
 		    	//normalisation
-		    	if(pos3.x>0)
+		    	if(pos3.x!=0)
 		    	{
 		    		if(pos3.x<0)
 		    			pos3.x /= -pos3.x;
@@ -334,7 +371,7 @@ public class TdJeu extends StateJeu
 		    			pos3.x /= pos3.x;
 		    	}
 		    	
-		    	if(pos3.y>0)
+		    	if(pos3.y!=0)
 		    	{
 		    		if(pos3.y<0)
 		    			pos3.y /= -pos3.y;
@@ -342,10 +379,13 @@ public class TdJeu extends StateJeu
 		    			pos3.y /= pos3.y;
 		    	}
 		    	
+		    	System.err.println(pos3);
 		    	
 		    	//deplacement avec application de la vitesse
-		    	position.x=(pos.x+pos3.x*m.getSpeed_()*Gdx.graphics.getDeltaTime());
-		    	position.y=(pos.y+pos3.y*m.getSpeed_()*Gdx.graphics.getDeltaTime());
+		    	position.x=(pos.x+(pos3.x*m.getSpeed_()*Gdx.graphics.getDeltaTime()));
+		    	position.y=(pos.y+(pos3.y*m.getSpeed_()*Gdx.graphics.getDeltaTime()));
+		    	
+		    
 		    	
 		    	//mise a jour position
 		    	m.setNum_direction_(0);
@@ -659,7 +699,7 @@ public class TdJeu extends StateJeu
 
 		}
 
-		System.err.println(fps.temp_Passe());
+		//System.err.println(fps.temp_Passe());
 		
 		
 		//Changer de menu

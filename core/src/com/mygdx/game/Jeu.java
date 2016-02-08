@@ -317,7 +317,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 		int x2 = (int) (pos2.x / values_.size_Px()); //index lignes
 		int y2= (int) (pos2.y / values_.size_Px());  //index colones
 		int cellule2 = ((x2) * values_.size_m()) +  y2 ; 
+		System.err.print("position carte ia = "+values_.get_Index_Cellule(pos2.x, pos2.y, 32,32)+"  ");
 		System.err.println(pos2+"  "+values_.size_m()+"  Sourisx ="+screenX+" Sourisy="+screenY+" index x ="+x2+" y="+y2+" cellule= "+cellule2); //position souris ecran
+		
 		
 		
 		
