@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="25" tilewidth="32" tileheight="32" nextobjectid="1">
  <properties>
   <property name="arrivee" value="6,24"/>
   <property name="d1" value="1,0"/>
   <property name="d2" value="6,0"/>
   <property name="d3" value="11,0"/>
   <property name="m" value="25"/>
-  <property name="n" value="25"/>
+  <property name="n" value="15"/>
   <property name="nb_depart" value="3"/>
   <property name="px" value="32"/>
  </properties>
@@ -22,29 +22,29 @@
    </properties>
   </tile>
  </tileset>
- <layer name="mainTerrain" width="25" height="25">
+ <layer name="mainTerrain" width="15" height="25">
   <properties>
    <property name="arrivee" value="6,24"/>
    <property name="d1" value="1,0"/>
    <property name="d2" value="6,0"/>
    <property name="d3" value="11,0"/>
    <property name="m" value="25"/>
-   <property name="n" value="25"/>
+   <property name="n" value="15"/>
    <property name="nb_depart" value="3"/>
    <property name="px" value="32"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzNlUEOwiAQRQns9ATGeg9XpvUebutB3HqjatSt3MNtr+AQmIiTgQLWhMULnT/0T6aZwiCEuABX4CEtA6Pd4PluYqBRQmjQeljXwEtOs0zch5TUyCW3RqcsW0eXgPE/uVXL7xzn85QWzGFcCuczOjA3yt/gfFplwVwbwP82oT0hH5zNKQ7qQ+o7SOos7V0fmxlndUG8tEeu14rMJOWYoVMN4ybgMSexPkI5To9psT5COU6PabX2sfP+rxQt1gc9B0vh6hvOEV8uRzU//sf9UjP0bKnNr/a6NfEGwArGIw==
+   eJy9k00OwiAQhQns9AQm9R6uDPUerj1It96oNepW7uG2V3Aa5qVkUnD8CYsvlDc8HoFpb4wZiAtxt5F+QbvS922aE40zJpD2JNYujlpS76fA27rIjmkVTL6OxoeNwIu5hpGBd7R6vIvA6zN0fNaQePAG7zi6GWjauz1w7lbxniuxJiRA24i7l5wKepOpaSjl5mrQS7m5GvTauXvujVKu7P/cHl7Uz4XzoPbN/1sT2aO/rvt3bg1eRs0NcA==
   </data>
  </layer>
- <layer name="Objets" width="25" height="25">
+ <layer name="Objets" width="15" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYEAFoUwMDGFAHM6EnQ8CT5gZGJ4yo+prZmRgaEHDrYwMOEE1E34+JwsDAxcLbv3EgAVMmPz5TNjVjoKhB9qAcdmJFJ+tTBAxZNyJFt/Y1IDwZRzmDBdQAPRLIRAX0dBPU4FmTwPi6UM03GYDy7Q5zITVUQIOAM0/SMAOdqA8BxBz0tAtOkCzdYFYj8b+HQX0B9jqbFzixIjhMg+9zsYnjiymxYRdHTZ96HU4PnFkMX8m7OpwmTeUAQC1USWu
+   eJxjYEAFoUwMDGFAHM6EnQ8CT5gZGJ4yM2AF1Uz4+ZwsDAxcLNj1LmDC5M9nwq52JIE2YBh0IoVDKxNEDBl3ooUTTM1AgQKg3YVAXESGG6YC9UwD4unDJO7ZgXmFA4g5ceQZfEAHqEcXiPXI0DtcAbYyCZc4NjH0MgmfOLoYehmFTxyXWnoBAKAPFnU=
   </data>
  </layer>
- <layer name="interet" width="25" height="25">
+ <layer name="interet" width="15" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYGBguM/MgAHuYBG7iUUMHeQD1RQQoW4UjIJRMApGwSgYBaNgMIE2RgaGdkba2rEaaP4aKtkBAOGDBes=
+   eJxjYGBguM/MgAHuYBG7iUVsFIyCUTAKRgHpoI2RgaGdkTy9q4H61hDQCwCprAUG
   </data>
  </layer>
 </map>

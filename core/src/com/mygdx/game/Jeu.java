@@ -84,14 +84,14 @@ public class Jeu extends StateMenu  implements InputProcessor
 		jeu_ = new StateJeu[5];
 		touche_activer_ = false;
 		
-		if(jeu_ != null)
+	/*	if(jeu_ != null)
 		{
 			jeu_[0] = new TdChoixNiveau();
 			jeu_[1] = new TdIntro();
 			jeu_[2] = new TdPause();
 			jeu_[3] = new TdJeu();
 			jeu_[4] = new TdFin();
-		}
+		}*/
 		
 		//initialisation des huds
 		
@@ -165,7 +165,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 			 }
 			 else if(etat_jeu_ == StateJeuEnum.INTRO)
 			 {
-				//dessin uid
+				//dessin uid			 
 			 }
 			 else if(etat_jeu_ == StateJeuEnum.FIN)
 			 {
@@ -185,6 +185,26 @@ public class Jeu extends StateMenu  implements InputProcessor
 			etat_jeu_  = StateJeuEnum.CHOIX;
 			selection_ = StateMEnuEnum.MENU;
 		}
+		
+		
+		 if(etat_jeu_ == StateJeuEnum.INTRO)
+		 {
+			//dessin uid
+			 if(jeu_ != null)
+			{
+				jeu_[0] = new TdChoixNiveau();
+				jeu_[1] = new TdIntro();
+				jeu_[2] = new TdPause();
+				jeu_[3] = new TdJeu();
+				jeu_[4] = new TdFin();
+			}
+			
+			
+			for(int i=0; i< jeu_.length;i++)
+				jeu_[i].init();
+		 }
+		
+		
 
 		// choix de l'etat et action en fonction de l'état du jeu
 		 if(etat_jeu_ == StateJeuEnum.PAUSE )
@@ -237,21 +257,27 @@ public class Jeu extends StateMenu  implements InputProcessor
 	
 	public void draw_shape()
 	{
+		if(values_.carte()==null)
+			return;
+		
 		shapeRenderer.setProjectionMatrix(values_.camera().combined);
 		int length = values_.carte().length;
 		for(int i=0; i < length;i++) //pour chaque case
 		{
+			if(values_.carte()[i]==null)
+				continue;
+			
 			//tracé les carreaux
-				shapeRenderer.begin(ShapeType.Line);
-				Color c = Color.RED;
-	            shapeRenderer.setColor(c);
-	            int a = (int)values_.carte()[i].getPosition().x* values_.size_Px() + 0;
-	            int b = (int)values_.carte()[i].getPosition().y* values_.size_Px() + 0;
-	            shapeRenderer.rect(a,b,values_.size_Px(),values_.size_Px());
-	            shapeRenderer.end();            
-			}
+			shapeRenderer.begin(ShapeType.Line);
+			Color c = Color.RED;
+            shapeRenderer.setColor(c);
+            int a = (int)values_.carte()[i].getPosition().x* values_.size_Px() + 0;
+            int b = (int)values_.carte()[i].getPosition().y* values_.size_Px() + 0;
+            shapeRenderer.rect(a,b,values_.size_Px(),values_.size_Px());
+            shapeRenderer.end();            
+		}
 			
-			
+			//shape viewport
 			shapeRenderer.begin(ShapeType.Line);
 			Color c = Color.BLUE;
             shapeRenderer.setColor(c);
@@ -354,6 +380,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 			
 			for(int i=0;i<cell.size();i++)
 			{
+				if(values_.carte()[cell.get(i)]==null)
+					continue;
+				
 				int size = values_.carte()[cell.get(i)].getUnits_().size();
 				for(int j=0 ; j < size; j++ )
 				{
@@ -439,8 +468,10 @@ public class Jeu extends StateMenu  implements InputProcessor
 		etat_jeu_ = StateJeuEnum.CHOIX;
 		selection_ = StateMEnuEnum.JEU;
 		
-		for(int i=0; i< jeu_.length;i++)
-			jeu_[i].init();
+		jeu_[0] = new TdChoixNiveau();
+		
+	/*	for(int i=0; i< jeu_.length;i++)
+			jeu_[i].init();*/
 		
 		hud_game_.update_lang();
 	}

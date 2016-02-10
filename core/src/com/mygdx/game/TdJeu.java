@@ -16,6 +16,8 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -47,7 +49,7 @@ public class TdJeu extends StateJeu
 	double rythme_creation_mobs_max= 10000; //en mseconde
 	VagueRand vague_;
 	TickHorloge tick_;
-	Noeud depart;
+	Noeud depart[];
 	Noeud arrivee;
 	ArrayList<Noeud> chemin;
 	
@@ -78,6 +80,47 @@ public class TdJeu extends StateJeu
     
     TickHorloge fps;
 	private int d_min = 20; //distance en tour et ennemi
+	int nb_depart=3;
+	
+	private void init_depart()
+	{
+		if(values_.tiled_Map_()==null)
+			return;
+		
+		
+		//set depart
+		nb_depart = Integer.parseInt(values_.tiled_Map_().getProperties().get("nb_depart",String.class));
+		depart = new Noeud[nb_depart];
+		for(int i =0; i < nb_depart;i++)
+		{
+			int num_case=0;
+			
+			String str = ("d"+(i+1));
+			String parse = values_.tiled_Map_().getProperties().get(str,String.class);
+			String tab[]=parse.split(",");
+			int x = Integer.parseInt(tab[0]);
+			int y = Integer.parseInt(tab[1]);
+					
+			num_case = values_.get_Index_Cellule((x)*32, (y)*32, 32,values_.size_n());
+			if(depart[i] == null)
+				depart[i] = new Noeud();
+			
+			System.err.print(num_case+" ");
+			depart[i].case_(num_case);
+		}
+		
+		// set arrivée
+		String parse = values_.tiled_Map_().getProperties().get("arrivee",String.class);
+		String tab[]=parse.split(",");
+		int x = Integer.parseInt(tab[0]);
+		int y = Integer.parseInt(tab[1]);
+		int num_case = values_.get_Index_Cellule((x)*32, (y)*32, 32,values_.size_n());
+		arrivee= new Noeud();
+		arrivee.set_Case(num_case);
+
+		System.err.println(" "+x+" "+y+"arrivée2 = "+num_case);
+		
+	}
 	
 	public TdJeu()
 	{	
@@ -140,13 +183,7 @@ public class TdJeu extends StateJeu
 		values_.recalculerChemin_(true);
 		
 		//Init chemin
-		depart = new Noeud();
-		depart.set_Case(340);
-		arrivee= new Noeud();
-		arrivee.set_Case(320);
-		
-		values_.cell_Depart(340);
-		values_.cell_Arrive(320);
+		//init_depart();
 		
 		//tracer chemin
 	//	chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_m(), values_.size_n());
@@ -177,6 +214,7 @@ public class TdJeu extends StateJeu
         values_.debug=true;
 	}
 	
+
 	
 	@Override
 	public StateJeuEnum exectute() 
@@ -190,7 +228,8 @@ public class TdJeu extends StateJeu
 		
 		if(values_.recalculerChemin_()==true)
 		{	
-			chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_n(), values_.size_m());
+			//for(int i = 0; i < )
+			chemin = AStar.cheminPlusCourt(values_.carte_Ia(), depart[0], arrivee, values_.size_n(), values_.size_m());
 			values_.recalculerChemin_(false);
 		}
 		
@@ -202,7 +241,9 @@ public class TdJeu extends StateJeu
 		
 			//calcul position de départ
 			//Vector2  position = new Vector2(values_.carte()[depart.case_()].centre());
-			Vector2  position = new Vector2(values_.carte_Ia()[depart.case_()].centre());
+			
+			int rand =(int)((Math.random()*100)%nb_depart);
+			Vector2  position = new Vector2(values_.carte_Ia()[depart[rand].case_()].centre());
 			
 			//creation et placement		
 			if(chemin!=null)
@@ -302,8 +343,10 @@ public class TdJeu extends StateJeu
 		/***********************************mise à jour de l'ia***************************************/
 		
 		
+		if(values_.carte()!=null)
 		for(int i =0; i< values_.carte().length;i++) //cherche mob sur carte général
 	    {
+			if(values_.carte()[i]!=null)
 	    	for(int j = 0; j <values_.carte()[i].getMobs_size_();j++ )//pour chaque mob dans mob[] faire
 	    	{
 		    	Mobs m = values_.carte()[i].getMobs_().get(j);
@@ -485,6 +528,7 @@ public class TdJeu extends StateJeu
 				//try
 				//{
 					//pour chaque mob de la case faire...
+					if(values_.carte()[i]!=null)
 					for(int k=0; k < values_.carte()[i].getMobs_size_();k++)
 					{
 						cpt1++;
@@ -517,6 +561,7 @@ public class TdJeu extends StateJeu
 					//System.err.println(box_viewport.get_X()+" "+box_viewport.get_Y()+" "+box_viewport.get_W()+" "+box_viewport.get_H());
 					
 					//pour chaque tour de la case faire...
+					if(values_.carte()[i]!=null)
 					for(int j=0; j < values_.carte()[i].getUnits_().size();j++)
 					{
 						//Recuperation de la tour
@@ -729,8 +774,7 @@ public class TdJeu extends StateJeu
 		vague_.init(200,liste_mob);
 		values_.getPile_shot_().removeAllElements();
 		
-		values_.cell_Depart(340);
-		values_.cell_Arrive(320);
+		init_depart();
 	}
 
 	private float[] square_Vertices(float width, float height, float x, float y) 

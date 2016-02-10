@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
@@ -152,8 +151,8 @@ public final class GlobalValues
 	
 	//carte
 	private int ennemi_max_=1000;				//nombre max d'ennemi
-	private int size_n_ = 8;					//nombre de carreaux de la carte en width
-	private int size_m_ = 8;					//nombre de carreaux de la carte en height
+	private int size_n_ = 20;					//nombre de carreaux de la carte en width
+	private int size_m_ = 20;					//nombre de carreaux de la carte en height
 	private CellMap carte_[];					//une carte qui contient la position des unité placées, des objets et des chemins
 	private boolean shader_enable =true;
 	private Cell[] carte_ia_;				//carte grandement discretisé pour A*
@@ -229,9 +228,9 @@ public final class GlobalValues
 	{
 		//initialisation carte générale
 		carte_ = new CellMap[size_n_ * size_m_];//0->1023 = 1024
-		for(int i =0;i<size_n_;i++)//0->31 = 32
+		for(int i =0;i<size_n_;i++)//0->31 = 32   0-> 15
 		{	
-			for(int j =0;j<size_m_;j++)//0->31 =32
+			for(int j =0;j<size_m_;j++)//0->31 =32 0 -> 25
 			{
 				carte_[i*size_n_+j] = new CellMap(size_n_,size_m_,i*size_n_+j,i,j, size_px_, null, null, null, null);
 				//System.err.println(i*size_n_+j);
@@ -239,10 +238,10 @@ public final class GlobalValues
 		}
 		
 		//initialisation carte pour ia
-		int n=size_n_*size_px_;  //1024
-		int m= size_m_*size_px_; //1024
+		int n=size_n_*size_px_;  //1024  //480
+		int m= size_m_*size_px_; //1024 800
 		n/=32; // = 32
-		m/=32; // = 32
+		m/=32; // = 32  //taille tile 
 		carte_ia_ = new Cell[n*m]; //= 32*32
 		for(int i =0;i<n;i++)//0->31 = 32
 		{	
@@ -329,18 +328,19 @@ public final class GlobalValues
         {
         	if(batch == null)
     			batch = new SpriteBatch();
-        	
-        	
+
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
-        	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap_.getLayers().get(0);
             tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,1,batch);
 
-
-            float s = layer.getProperties().get("px",Float.class);
-            size_px_	= layer.getProperties().get("px",Integer.class);
-    		size_n_		= layer.getProperties().get("n",Integer.class);
-			size_m_		= layer.getProperties().get("m",Integer.class);
-				
+    		size_n_		= Integer.parseInt(tiledMap_.getProperties().get("n",String.class));
+			size_m_		= Integer.parseInt(tiledMap_.getProperties().get("m",String.class));
+			size_px_	= Integer.parseInt(tiledMap_.getProperties().get("px",String.class));
+			
+			//discretisation de la map pour les tirs
+			size_n_/=5;
+			size_m_/=5;
+			size_px_*=5;
+			
     		camera_Init();
             
         }catch(SerializationException e) 

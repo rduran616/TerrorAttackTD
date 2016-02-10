@@ -35,10 +35,11 @@ public final class AStar
 		System.err.println("depart ="+courant.case_());
 		System.err.println("arrivée ="+arrivee.case_());
 		
-		
+		int cpt=0;
 		open.add(courant);
 		while(!open.isEmpty())
 		{
+			cpt++;
 			//recuperation d plus petit noeud dans la lsite ouverte
 			courant = meilleur_noeud();
 			//System.err.println("meilleur noeud ="+courant.case_);
@@ -103,7 +104,7 @@ public final class AStar
 		
 		if(open.isEmpty()==true) //aucun chemin trouvé
 		{
-			System.err.println("Astar complete : pas de chemin");
+			System.err.println("Astar complete : pas de chemin  "+cpt);
 			return null;
 		}
 		
@@ -126,9 +127,11 @@ public final class AStar
 		System.err.println("arrivée ="+arrivee.case_());
 		
 		
+		int cpt=0;
 		open.add(courant);
 		while(!open.isEmpty())
 		{
+			cpt++;
 			//recuperation d plus petit noeud dans la lsite ouverte
 			courant = meilleur_noeud();
 			//System.err.println("meilleur noeud ="+courant.case_);
@@ -194,7 +197,7 @@ public final class AStar
 		
 		if(open.isEmpty()==true) //aucun chemin trouvé
 		{
-			System.err.println("Astar complete : pas de chemin");
+			System.err.println("Astar complete : pas de chemin "+cpt);
 			return null;
 		}
 		

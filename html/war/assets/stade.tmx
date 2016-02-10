@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="25" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="tilemap2" tilewidth="32" tileheight="32" spacing="2" margin="2" tilecount="1036">
+  <image source="C:/Users/Florian/Desktop/tilemap2.png" trans="ff00ff" width="1260" height="954"/>
+  <tile id="917">
+   <properties>
+    <property name="arrivee" value="6,24"/>
+    <property name="d1" value="1,0"/>
+    <property name="d2" value="6,0"/>
+    <property name="d3" value="11,0"/>
+    <property name="nb_depart" value="3"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="mainTerrain" width="15" height="25">
+  <properties>
+   <property name="arrivee" value="6,24"/>
+   <property name="d1" value="1,0"/>
+   <property name="d2" value="6,0"/>
+   <property name="d3" value="11,0"/>
+   <property name="nb_depart" value="3"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJy9k00OwiAQhQns9AQm9R6uDPUerj1It96oNepW7uG2V3Aa5qVkUnD8CYsvlDc8HoFpb4wZiAtxt5F+QbvS922aE40zJpD2JNYujlpS76fA27rIjmkVTL6OxoeNwIu5hpGBd7R6vIvA6zN0fNaQePAG7zi6GWjauz1w7lbxniuxJiRA24i7l5wKepOpaSjl5mrQS7m5GvTauXvujVKu7P/cHl7Uz4XzoPbN/1sT2aO/rvt3bg1eRs0NcA==
+  </data>
+ </layer>
+ <layer name="Objets" width="15" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYEAFoUwMDGFAHM6EnQ8CT5gZGJ4yM2AF1Uz4+ZwsDAxcLNj1LmDC5M9nwq52JIE2YBh0IoVDKxNEDBl3ooUTTM1AgQKg3YVAXESGG6YC9UwD4unDJO7ZgXmFA4g5ceQZfEAHqEcXiPXI0DtcAbYyCZc4NjH0MgmfOLoYehmFTxyXWnoBAKAPFnU=
+  </data>
+ </layer>
+ <layer name="interet" width="15" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYGBguM/MgAHuYBG7iUVsFIyCUTAKRgHpoI2RgaGdkTy9q4H61hDQCwCprAUG
+  </data>
+ </layer>
+</map>

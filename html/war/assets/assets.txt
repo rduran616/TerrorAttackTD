@@ -3,7 +3,7 @@ i:badlogic.jpg:68465:image/jpeg
 b:carte1_test.tmx:2981:application/unknown
 d:Config:0:application/unknown
 t:Config/config.xml:0:application/xml
-t:Config/units.xml:2291:application/xml
+t:Config/units.xml:2295:application/xml
 t:default.fnt:11527:application/unknown
 i:default.png:26179:image/png
 i:drawTexture.jpg:34387:image/jpeg
@@ -16,8 +16,8 @@ b:Lang/MyBundle_en.properties:0:application/unknown
 b:Lang/MyBundle_fr.properties:595:application/unknown
 i:Lang/uk_flag.png:10929:image/png
 d:map:0:application/unknown
-b:map/carte1_test.tmx:1762:application/unknown
-i:map/tileset.png:148196:image/png
+b:map/stade.tmx:2213:application/unknown
+i:map/tilemap2.png:76957:image/png
 d:particle:0:application/unknown
 b:particle/explosion.p:3177:application/unknown
 b:particle/fumee.p:6317:application/unknown
@@ -36,6 +36,7 @@ d:shaders/vertexShaders:0:application/unknown
 t:shaders/vertexShaders/simpleVertex.glsl:340:application/unknown
 t:shaders/vertexShaders/vertex.glsl:284:application/unknown
 i:simpleTexture.png:254:image/png
+b:stade.tmx:1795:application/unknown
 i:StaticSnow.png:159176:image/png
 t:switch.json:0:application/unknown
 t:switch_skin.atlas:349:application/unknown
