@@ -2,6 +2,7 @@ package Utilitaires;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.mygdx.game.CellMap;
 import com.mygdx.game.GlobalValues;
 
@@ -204,7 +205,6 @@ public final class AStar
 		return chemin;
 		
 	}
-	
 	
 	
 	public static void init_CellMap(CellMap[] map)

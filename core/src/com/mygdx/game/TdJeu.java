@@ -43,8 +43,8 @@ public class TdJeu extends StateJeu
 	StateJeuEnum selection_;
 	SpriteBatch sb_;
 	int num_vague_=1;
-	double rythme_creation_mobs_min = 500; //en msseconde
-	double rythme_creation_mobs_max= 10000; //en msseconde
+	double rythme_creation_mobs_min = 500; //en mseconde
+	double rythme_creation_mobs_max= 10000; //en mseconde
 	VagueRand vague_;
 	TickHorloge tick_;
 	Noeud depart;
@@ -190,8 +190,7 @@ public class TdJeu extends StateJeu
 		
 		if(values_.recalculerChemin_()==true)
 		{	
-			//chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_n(), values_.size_m());
-			chemin = AStar.cheminPlusCourt(values_.carte_Ia(), depart, arrivee, 32,32);
+			chemin = AStar.cheminPlusCourt(values_.carte(), depart, arrivee, values_.size_n(), values_.size_m());
 			values_.recalculerChemin_(false);
 		}
 		

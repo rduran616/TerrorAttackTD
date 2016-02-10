@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
@@ -331,11 +332,14 @@ public final class GlobalValues
         	
         	
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
+        	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap_.getLayers().get(0);
             tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,1,batch);
 
-         /* size_px_	= tiledMap_.getProperties().get("tileheight",Integer.class);
-    		size_n_		= tiledMap_.getProperties().get("height",Integer.class);
-			size_m_		= tiledMap_.getProperties().get("width",Integer.class);*/
+
+            float s = layer.getProperties().get("px",Float.class);
+            size_px_	= layer.getProperties().get("px",Integer.class);
+    		size_n_		= layer.getProperties().get("n",Integer.class);
+			size_m_		= layer.getProperties().get("m",Integer.class);
 				
     		camera_Init();
             
