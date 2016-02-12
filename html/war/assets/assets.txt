@@ -16,7 +16,7 @@ b:Lang/MyBundle_en.properties:0:application/unknown
 b:Lang/MyBundle_fr.properties:595:application/unknown
 i:Lang/uk_flag.png:10929:image/png
 d:map:0:application/unknown
-b:map/stade.tmx:2213:application/unknown
+b:map/stade.tmx:2349:application/unknown
 i:map/tilemap2.png:76957:image/png
 d:particle:0:application/unknown
 b:particle/explosion.p:3177:application/unknown

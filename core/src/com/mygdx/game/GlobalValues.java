@@ -11,8 +11,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
@@ -227,27 +229,33 @@ public final class GlobalValues
 	public void carte_Init()
 	{
 		//initialisation carte générale
-		carte_ = new CellMap[size_n_ * size_m_];//0->1023 = 1024
-		for(int i =0;i<size_n_;i++)//0->31 = 32   0-> 15
+		carte_ = new CellMap[(size_n_/pas_discretisation) * (size_m_/pas_discretisation)];//0->1023 = 1024
+		for(int i =0;i<size_n_/pas_discretisation;i++)//0->31 = 32   0-> 15
 		{	
-			for(int j =0;j<size_m_;j++)//0->31 =32 0 -> 25
+			for(int j =0;j<size_m_/pas_discretisation;j++)//0->31 =32 0 -> 25
 			{
-				carte_[i*size_n_+j] = new CellMap(size_n_,size_m_,i*size_n_+j,i,j, size_px_, null, null, null, null);
+				carte_[i*(size_n_/pas_discretisation)+j] = new CellMap(size_n_/pas_discretisation,size_m_/pas_discretisation,(i*(size_n_/pas_discretisation))+j,i,j, size_px_*pas_discretisation, null, null, null, null);
 				//System.err.println(i*size_n_+j);
 			}
 		}
-		
+
 		//initialisation carte pour ia
-		int n=size_n_*size_px_;  //1024  //480
-		int m= size_m_*size_px_; //1024 800
+		int n=size_n_*size_px_;  //n=1024  //n=800
+		int m= size_m_*size_px_; //m=1024 //m=800
 		n/=32; // = 32
 		m/=32; // = 32  //taille tile 
 		carte_ia_ = new Cell[n*m]; //= 32*32
+		MapLayer layer = this.tiledMap_.getLayers().get("Objets");
 		for(int i =0;i<n;i++)//0->31 = 32
 		{	
 			for(int j =0;j<m;j++)//0->31 =32
 			{
-				carte_ia_[i*n+j]= new Cell(false,null,i,j,32,i*n+j);
+				//true or false en fonction de la propriété du layer objet terrrain
+			    TiledMapTileLayer.Cell cell = ((TiledMapTileLayer) layer).getCell(i,j);
+			    if(cell==null)
+					carte_ia_[i*n+j]= new Cell(false,null,i,j,32,i*n+j);
+				else
+					carte_ia_[i*n+j]= new Cell(true,null,i,j,32,i*n+j);
 				//System.err.print(" "+(i*n+j));
 			}
 			//System.err.println("");
@@ -290,14 +298,26 @@ public final class GlobalValues
 	{
 		if(tiledMapRenderer_ != null)
 		{
+			tiledMapRenderer_.getMap().getLayers().get(3).setVisible(true);
+			tiledMapRenderer_.getMap().getLayers().get(2).setVisible(false);
+			tiledMapRenderer_.getMap().getLayers().get(1).setVisible(true);
+			tiledMapRenderer_.getMap().getLayers().get(0).setVisible(true);
 			tiledMapRenderer_.render();
+			
 			return ErrorEnum.OK;
 		}
 		else
 			return ErrorEnum.UNINITIALIZED;
 	}
 	
-
+	 public void tiled_Map_Render_delay()
+	 {
+		 	tiledMapRenderer_.getMap().getLayers().get(3).setVisible(false);
+			tiledMapRenderer_.getMap().getLayers().get(2).setVisible(true);
+			tiledMapRenderer_.getMap().getLayers().get(1).setVisible(false);
+			tiledMapRenderer_.getMap().getLayers().get(0).setVisible(false);
+			tiledMapRenderer_.render();
+	 }
 	
 	public ErrorEnum init_tile_map(String name, SpriteBatch b )
 	{
@@ -322,6 +342,7 @@ public final class GlobalValues
         return ErrorEnum.OK;
 	}
 	
+	//init chargement tile map
 	public void init_tile_map()
 	{
         try 
@@ -331,16 +352,11 @@ public final class GlobalValues
 
         	tiledMap_ = new TmxMapLoader().load(carte_name_);
             tiledMapRenderer_ = new OrthogonalTiledMapRenderer(tiledMap_,1,batch);
-
+          
     		size_n_		= Integer.parseInt(tiledMap_.getProperties().get("n",String.class));
-			size_m_		= Integer.parseInt(tiledMap_.getProperties().get("m",String.class));
+			size_m_		= Integer.parseInt(tiledMap_.getProperties().get("m",String.class));		
 			size_px_	= Integer.parseInt(tiledMap_.getProperties().get("px",String.class));
-			
-			//discretisation de la map pour les tirs
-			size_n_/=5;
-			size_m_/=5;
-			size_px_*=5;
-			
+		
     		camera_Init();
             
         }catch(SerializationException e) 
@@ -642,6 +658,8 @@ public final class GlobalValues
 
 	private int cell_start_;
 	private int cell_end_;
+
+	private int pas_discretisation = 5;
 	
 	public void size_Px(int px){size_px_=px;}
 	public void size_n(int n){size_n_=n;}
@@ -922,10 +940,12 @@ public final class GlobalValues
 	
 	public boolean collision_Avec_Tour(TowerType t)
 	{
+		int pas = this.pas_discretisation;
+		
 		//la position dans le monde
 	   	Vector3 pos = new Vector3(t.position().x,t.position().y,0); 
 		//la case ou on place le bonhomme
-			int cell = get_Index_Cellule((int)pos.x,(int)pos.y);
+			int cell = get_Index_Cellule((int)pos.x,(int)pos.y,this.size_px_*pas,this.size_m_/pas);
 
 	   //vérification collision 
 	   ArrayList<TowerType> list_tower = carte()[cell].getUnits_();
@@ -992,5 +1012,11 @@ public final class GlobalValues
 	public int cell_Arrive(){return cell_end_;}
 	public void cell_Depart(int d) { cell_start_=d;}
 	public void cell_Arrive(int a){ cell_end_=a;}
+
+
+	public int get_Pas() 
+	{
+		return pas_discretisation;
+	}
 	
 }

@@ -149,7 +149,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 
 			
 			if(values_.debug==true)
-				draw_shape();
+				draw_shape(5);
 			
 			
 	        //dessins du reste
@@ -199,7 +199,6 @@ public class Jeu extends StateMenu  implements InputProcessor
 				jeu_[4] = new TdFin();
 			}
 			
-			
 			for(int i=0; i< jeu_.length;i++)
 				jeu_[i].init();
 		 }
@@ -224,7 +223,11 @@ public class Jeu extends StateMenu  implements InputProcessor
 			 etat_jeu_ = jeu_[etat_jeu_.ordinal()].exectute(); //execute fais les mise à jour des ia + dessin
 		 
 		 
-		 
+		 if(values_.isShader_enable())
+				values_.tiled_Map().getBatch().setShader(cartoon_shader);
+			else
+				values_.tiled_Map().getBatch().setShader(null);
+		 values_.tiled_Map_Render_delay();
 		 
 		 if(etat_jeu_ == StateJeuEnum.JEU )
 		 {
@@ -255,7 +258,7 @@ public class Jeu extends StateMenu  implements InputProcessor
 	}
 	
 	
-	public void draw_shape()
+	public void draw_shape(int pas)
 	{
 		if(values_.carte()==null)
 			return;
@@ -271,9 +274,9 @@ public class Jeu extends StateMenu  implements InputProcessor
 			shapeRenderer.begin(ShapeType.Line);
 			Color c = Color.RED;
             shapeRenderer.setColor(c);
-            int a = (int)values_.carte()[i].getPosition().x* values_.size_Px() + 0;
-            int b = (int)values_.carte()[i].getPosition().y* values_.size_Px() + 0;
-            shapeRenderer.rect(a,b,values_.size_Px(),values_.size_Px());
+            int a = (int)values_.carte()[i].getPosition().x* values_.size_Px()*pas + 0;
+            int b = (int)values_.carte()[i].getPosition().y* values_.size_Px()*pas + 0;
+            shapeRenderer.rect(a,b,values_.size_Px()*5,values_.size_Px()*pas);
             shapeRenderer.end();            
 		}
 			
@@ -336,15 +339,15 @@ public class Jeu extends StateMenu  implements InputProcessor
 	{		
 		finger.finger_Touch(screenX, screenY, pointer);
 		
-		
+		int pas = values_.get_Pas();
 		
 		Vector3 pos2 = new Vector3(screenX,screenY,0);
 		values_.camera().unproject(pos2);
-		int x2 = (int) (pos2.x / values_.size_Px()); //index lignes
-		int y2= (int) (pos2.y / values_.size_Px());  //index colones
-		int cellule2 = ((x2) * values_.size_m()) +  y2 ; 
-		System.err.print("position carte ia = "+values_.get_Index_Cellule(pos2.x, pos2.y, 32,32)+"  ");
-		System.err.println(pos2+"  "+values_.size_m()+"  Sourisx ="+screenX+" Sourisy="+screenY+" index x ="+x2+" y="+y2+" cellule= "+cellule2); //position souris ecran
+		int x2 = (int) pos2.x / (values_.size_Px()*pas); //index lignes
+		int y2= (int) pos2.y / (values_.size_Px()*pas);  //index colones
+		int cellule2 = (x2) * (values_.size_m()/pas) +  y2 ; 
+		System.err.print("position carte ia = "+values_.get_Index_Cellule(pos2.x, pos2.y, values_.size_Px(),values_.size_n())+"  ");
+		System.err.println(pos2+"  "+(values_.size_m()/pas)+"  Sourisx ="+screenX+" Sourisy="+screenY+" index x ="+x2+" y="+y2+" cellule= "+cellule2); //position souris ecran
 		
 		
 		
@@ -353,24 +356,25 @@ public class Jeu extends StateMenu  implements InputProcessor
 		{
 			Vector3 pos = new Vector3(screenX,screenY,0);
 			values_.camera().unproject(pos);
-			int x = (int) (pos.x / values_.size_Px());
-			int y= (int) (pos.y / values_.size_Px());
-			int cellule = ((x) * values_.size_m()) +  y ;
+			int x = (int) pos.x / (values_.size_Px()*pas);
+			int y= (int) pos.y / (values_.size_Px()*pas);
+			int cellule = (x) * (values_.size_m()/pas) +  y ;
 			//calcul cellule adj
 			ArrayList<Integer> cell = new ArrayList<Integer>();
+			System.err.println("cellule ="+cellule);
     	    cell.add(cellule);
-    	    int indice_haut	 = cellule - values_.size_m();
-  		    int indice_bas = cellule + values_.size_m();
+    	    int indice_haut	 = cellule - (values_.size_m()/pas);
+  		    int indice_bas = cellule + (values_.size_m()/pas);
   		    int indice_droite  = cellule + 1;
   		    int indice_gauche= cellule - 1;
   		  
-	  		if(indice_haut>= 0 && indice_haut<values_.size_m() * values_.size_n())
+	  		if(indice_haut>= 0 && indice_haut<(values_.size_m()/pas) * (values_.size_n()/pas))
 	  			cell.add(indice_haut);
-			if(indice_bas>= 0 && indice_bas<values_.size_m() * values_.size_n())
+			if(indice_bas>= 0 && indice_bas<(values_.size_m()/pas) * (values_.size_n()/pas))
 				cell.add(indice_bas);
-			if(indice_droite>= 0 && indice_droite<values_.size_m() * values_.size_n() && indice_droite%values_.size_m() !=0)
+			if(indice_droite>= 0 && indice_droite<(values_.size_m()/pas) * (values_.size_n()/pas) && indice_droite%(values_.size_m()/pas) !=0)
 				cell.add(indice_droite);
-			if(indice_gauche>= 0 && indice_gauche<values_.size_m() * values_.size_n() && indice_gauche%values_.size_m() !=values_.size_m()-1)
+			if(indice_gauche>= 0 && indice_gauche<(values_.size_m()/pas) * (values_.size_n()/pas) && indice_gauche%(values_.size_m()/pas) !=(values_.size_m()/pas)-1)
 				cell.add(indice_gauche);
               
 

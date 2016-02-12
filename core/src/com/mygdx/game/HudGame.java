@@ -206,12 +206,13 @@ public class HudGame
 		       @Override
 		       public void clicked(InputEvent event, float x, float y) 
 		       {   
-
+		    	   	int pas = values_.get_Pas();
+		    	   
 		    	   	//la position dans le monde
 		    	   	Vector3 pos = new Vector3(values_.getT_temporaire_().position().x,values_.getT_temporaire_().position().y,0); 
 					//la case ou on place le bonhomme
-	   				int cell = values_.get_Index_Cellule(pos.x,pos.y);
-	   				int case_ia = values_.get_Index_Cellule(pos.x, pos.y, 32, 32);
+	   				int cell = values_.get_Index_Cellule(pos.x,pos.y,values_.size_Px()*pas, values_.size_m()/pas);
+	   				int case_ia = values_.get_Index_Cellule(pos.x, pos.y, values_.size_Px(), values_.size_m());
 	   				
 	   				System.err.println(cell);
 	   				if(cell == values_.cell_Depart() || cell == values_.cell_Arrive())

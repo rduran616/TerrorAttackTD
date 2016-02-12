@@ -49,7 +49,7 @@ public class TdJeu extends StateJeu
 	double rythme_creation_mobs_max= 10000; //en mseconde
 	VagueRand vague_;
 	TickHorloge tick_;
-	Noeud depart[];
+	Noeud depart[]; //posibilité d'avoir plusieurs départ
 	Noeud arrivee;
 	ArrayList<Noeud> chemin;
 	
@@ -82,46 +82,8 @@ public class TdJeu extends StateJeu
 	private int d_min = 20; //distance en tour et ennemi
 	int nb_depart=3;
 	
-	private void init_depart()
-	{
-		if(values_.tiled_Map_()==null)
-			return;
-		
-		
-		//set depart
-		nb_depart = Integer.parseInt(values_.tiled_Map_().getProperties().get("nb_depart",String.class));
-		depart = new Noeud[nb_depart];
-		for(int i =0; i < nb_depart;i++)
-		{
-			int num_case=0;
-			
-			String str = ("d"+(i+1));
-			String parse = values_.tiled_Map_().getProperties().get(str,String.class);
-			String tab[]=parse.split(",");
-			int x = Integer.parseInt(tab[0]);
-			int y = Integer.parseInt(tab[1]);
-					
-			num_case = values_.get_Index_Cellule((x)*32, (y)*32, 32,values_.size_n());
-			if(depart[i] == null)
-				depart[i] = new Noeud();
-			
-			System.err.print(num_case+" ");
-			depart[i].case_(num_case);
-		}
-		
-		// set arrivée
-		String parse = values_.tiled_Map_().getProperties().get("arrivee",String.class);
-		String tab[]=parse.split(",");
-		int x = Integer.parseInt(tab[0]);
-		int y = Integer.parseInt(tab[1]);
-		int num_case = values_.get_Index_Cellule((x)*32, (y)*32, 32,values_.size_n());
-		arrivee= new Noeud();
-		arrivee.set_Case(num_case);
-
-		System.err.println(" "+x+" "+y+"arrivée2 = "+num_case);
-		
-	}
 	
+
 	public TdJeu()
 	{	
 		//init des particules
@@ -214,7 +176,6 @@ public class TdJeu extends StateJeu
         values_.debug=true;
 	}
 	
-
 	
 	@Override
 	public StateJeuEnum exectute() 
@@ -262,7 +223,9 @@ public class TdJeu extends StateJeu
 						//placement dans la liste
 						//values_.carte()[depart.case_()].addMob(mob0);
 						
-						int cas =values_.get_Index_Cellule(position.x, position.y);
+					//	int cas =values_.get_Index_Cellule(position.x, position.y);
+						int cas =values_.get_Index_Cellule(position.x, position.y, values_.size_Px()*5,values_.size_n()/5);
+						
 						values_.carte()[cas].addMob(mob0);
 						
 					}
@@ -282,7 +245,9 @@ public class TdJeu extends StateJeu
 						//placement dans la liste
 						//values_.mobs().add(mob);
 						//values_.carte()[depart.case_()].addMob(mob1);
-						int cas =values_.get_Index_Cellule(position.x, position.y);
+						//int cas =values_.get_Index_Cellule(position.x, position.y);
+						int cas =values_.get_Index_Cellule(position.x, position.y, values_.size_Px()*5,values_.size_n()/5);
+						
 						values_.carte()[cas].addMob(mob1);
 					}
 
@@ -301,7 +266,7 @@ public class TdJeu extends StateJeu
 						//placement dans la liste
 						//values_.mobs().add(mob);
 						//values_.carte()[depart.case_()].addMob(mob2);
-						int cas =values_.get_Index_Cellule(position.x, position.y);
+						int cas =values_.get_Index_Cellule(position.x, position.y, values_.size_Px()*5,values_.size_n()/5);
 						values_.carte()[cas].addMob(mob2);
 					}
 
@@ -366,7 +331,7 @@ public class TdJeu extends StateJeu
 		    	//recuperation cases adj valide
 
 		    	ArrayList<Integer> adj_valide = new ArrayList<Integer>();
-		    	adj_valide = Spirale.adjacente2(32, m.getPosition_(), 32, 32, 2);
+		    	adj_valide = Spirale.adjacente2(values_.size_Px(), m.getPosition_(), values_.size_n(), values_.size_m(), 2);
 		    	
 	    		
 		    	int d_min =1000000000;
@@ -375,12 +340,12 @@ public class TdJeu extends StateJeu
 		    	Vector2 arrivee_vec = new Vector2(values_.carte_Ia()[arrivee.case_()].centre());
 		    	for(int c = 0 ; c <adj_valide.size();c++ )
 		    	{
-		    		System.err.print("  "+adj_valide.get(c));
+		    	//	System.err.print("  c="+adj_valide.get(c));
 		    		if(values_.carte_Ia_isOccupe(adj_valide.get(c))==false && adj_valide.get(c)!=case_actu)
 		    		{
 		    			Vector2 p = new Vector2(values_.carte_Ia()[adj_valide.get(c)].centre());
 		    			int d = (int) (Math.abs(arrivee_vec.x - p.x) + Math.abs(arrivee_vec.y - p.y));
-		    			System.err.print(" d= "+d);
+		    		//	System.err.print(" d= "+d);
 		    			if(d<=d_min)
 		    			{
 		    				d_min = d;
@@ -391,7 +356,7 @@ public class TdJeu extends StateJeu
 		    	
 		    	
 		    	case_suivante = adj_valide.get(indexx);
-		    	System.err.println("  case actu= "+case_actu+"  case suivante="+case_suivante);
+		    	//System.err.println("  case actu= "+case_actu+"  case suivante="+case_suivante);
 		    	//System.err.println("");
 		    	
 		    	//position actuel
@@ -421,7 +386,7 @@ public class TdJeu extends StateJeu
 		    			pos3.y /= pos3.y;
 		    	}
 		    	
-		    	System.err.println(pos3);
+		    //	System.err.println(pos3);
 		    	
 		    	//deplacement avec application de la vitesse
 		    	position.x=(pos.x+(pos3.x*m.getSpeed_()*Gdx.graphics.getDeltaTime()));
@@ -434,11 +399,11 @@ public class TdJeu extends StateJeu
 		    	m.setPosition_(position);
 
 		    	//enregsitrement sur la carte general et sur la carte ia
-		    	int cell2_ia = values_.get_Index_Cellule(pos.x, pos.y, 32, 32);  // pos actuel sur map ia
-		    	int cell4_ia = values_.get_Index_Cellule(position.x, position.y,32,32); //new pose sur carte ia
+		    	int cell2_ia = values_.get_Index_Cellule(pos.x, pos.y, values_.size_Px(), values_.size_n());  // pos actuel sur map ia
+		    	int cell4_ia = values_.get_Index_Cellule(position.x, position.y,values_.size_Px(), values_.size_n()); //new pose sur carte ia
 		    	
-		    	int cell1_g = values_.get_Index_Cellule((int)pos.x, (int)pos.y); //pos = pos actuel sur map general
-		    	int cell3_g = values_.get_Index_Cellule((int)position.x, (int)position.y); //new pos suivante sur map general
+		    	int cell1_g = values_.get_Index_Cellule((int)pos.x, (int)pos.y,values_.size_Px()*values_.get_Pas(),values_.size_n()/values_.get_Pas()); //pos = pos actuel sur map general
+		    	int cell3_g = values_.get_Index_Cellule((int)position.x, (int)position.y,values_.size_Px()*values_.get_Pas(),values_.size_n()/values_.get_Pas()); //new pos suivante sur map general
 		    	
 		    	if(cell4_ia == case_suivante) // si on change de case dans tableau ia on verifie si arrivé
 		    	{
@@ -610,7 +575,7 @@ public class TdJeu extends StateJeu
 				tir = values_.shots().get(a);
 				
 				//case ou est le tir
-				int c = values_.get_Index_Cellule((int)tir.position().x,(int)tir.position().y);
+				int c = values_.get_Index_Cellule((int)tir.position().x,(int)tir.position().y,values_.size_Px()*values_.get_Pas(),values_.size_m()/values_.get_Pas());
 				if(c<0 || c>= values_.size_m()*values_.size_n())
 					continue;
 
@@ -777,6 +742,50 @@ public class TdJeu extends StateJeu
 		init_depart();
 	}
 
+	
+	//initialise les valeur de depart
+	private void init_depart()
+	{
+		if(values_.tiled_Map_()==null)
+			return;
+		
+		
+		//set depart
+		nb_depart = Integer.parseInt(values_.tiled_Map_().getProperties().get("nb_depart",String.class));
+		depart = new Noeud[nb_depart];
+		for(int i =0; i < nb_depart;i++)
+		{
+			int num_case=0;
+			
+			String str = ("d"+(i+1));
+			String parse = values_.tiled_Map_().getProperties().get(str,String.class);
+			String tab[]=parse.split(",");
+			int x = Integer.parseInt(tab[0]);//colonne
+			int y = Integer.parseInt(tab[1]);//ligne
+					
+			num_case = values_.get_Index_Cellule((x)*32, (y-2)*32, 32,values_.size_n());
+			if(depart[i] == null)
+				depart[i] = new Noeud();
+			
+			System.err.print(num_case+" ");
+			depart[i].case_(num_case);
+		}
+		
+		// set arrivée
+		String parse = values_.tiled_Map_().getProperties().get("arrivee",String.class);
+		String tab[]=parse.split(",");
+		int x = Integer.parseInt(tab[0]);
+		int y = Integer.parseInt(tab[1]);
+		int num_case = values_.get_Index_Cellule((x)*32, (y+1)*32, 32,values_.size_n());
+		arrivee= new Noeud();
+		arrivee.set_Case(num_case);
+
+		System.err.println(" "+x+" "+y+"arrivée2 = "+num_case);
+		
+	}
+	
+	
+	
 	private float[] square_Vertices(float width, float height, float x, float y) 
 	{
 		float[] verts = new float[20];

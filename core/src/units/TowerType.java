@@ -141,6 +141,9 @@ public abstract class TowerType
 				for(int i=0;i<cases_adj.size();i++)
 				{
 					//recuperer la taille
+					if(cases_adj.get(i)>=((values_.size_m()/values_.get_Pas())*(values_.size_n()/values_.get_Pas())))
+						continue;
+					
 					size = values_.carte()[cases_adj.get(i)].getMobs_size_();
 					//si case > 0, pour chaque ennemi present dans la case faire...
 					for(int j=0;j<size;j++)
@@ -205,7 +208,10 @@ public abstract class TowerType
 			else
 			{
 				Vector3 p = new Vector3(this.position().x,this.position().y,0);
-				cases_adj = new ArrayList<Integer>( Spirale.adjacente2( values_.size_Px(), new Vector2(p.x,p.y), values_.size_n(), values_.size_m(), (int)this.get_range()));
+				cases_adj = new ArrayList<Integer>( Spirale.adjacente2( values_.size_Px()*values_.get_Pas(), new Vector2(p.x,p.y), values_.size_n()/values_.get_Pas(), values_.size_m()/values_.get_Pas(), (int)this.get_range()));
+				for(int a=0;a<cases_adj.size();a++)
+					System.err.print(cases_adj.get(a)+" ");
+				System.err.println(" ");
 			}
 		}
 		
