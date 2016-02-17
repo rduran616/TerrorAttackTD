@@ -214,14 +214,12 @@ public class HudGame
 	   				int cell = values_.get_Index_Cellule(pos.x,pos.y,values_.size_Px()*pas, values_.size_m()/pas);
 	   				int case_ia = values_.get_Index_Cellule(pos.x, pos.y, values_.size_Px(), values_.size_m());
 	   				
-	   				System.err.println(cell);
 	   				if(cell == values_.cell_Depart() || cell == values_.cell_Arrive())
-   					{
-   						System.err.println("depart ou arrivé");
    						return;
-   					}
-	   				
-	   				
+   					   				
+	   				if(values_.carte_Ia_isOccupe(case_ia)==true)
+	   					return;	
+	   						
 		    	   //vérification collision 
 		    	   ArrayList<TowerType> list_tower = values_.carte()[cell].getUnits_();
 		    	   boolean colision = false;

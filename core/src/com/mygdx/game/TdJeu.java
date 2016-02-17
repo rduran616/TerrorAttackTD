@@ -82,7 +82,7 @@ public class TdJeu extends StateJeu
 	private int d_min = 20; //distance en tour et ennemi
 	int nb_depart=3;
 	
-	
+	int e;
 
 	public TdJeu()
 	{	
@@ -185,7 +185,10 @@ public class TdJeu extends StateJeu
 		
 		//Création des mobs
 		if(vague_.nb_Ennemis()<=0)
+		{
 			vague_.new_Vague();
+			e = vague_.get_Ennemi();	
+		}
 		
 		if(values_.recalculerChemin_()==true)
 		{	
@@ -195,7 +198,7 @@ public class TdJeu extends StateJeu
 		}
 		
 		//si on est dans le bon temps on peut creer un ennemi
-		if(tick_.tick() )
+		if(tick_.tick() &&  vague_.get_Ennemi() == e)
 		{
 			//choix de l'ennemi
 			int m = vague_.get_Ennemi();
@@ -383,8 +386,6 @@ public class TdJeu extends StateJeu
 		    			pos3.y /= pos3.y;
 		    	}
 		    	
-		    //	System.err.println(pos3);
-		    	
 		    	//deplacement avec application de la vitesse
 		    	position.x=(pos.x+(pos3.x*m.getSpeed_()*Gdx.graphics.getDeltaTime()));
 		    	position.y=(pos.y+(pos3.y*m.getSpeed_()*Gdx.graphics.getDeltaTime()));
@@ -404,7 +405,7 @@ public class TdJeu extends StateJeu
 		    	{
 		    		if(cell4_ia != arrivee.case_()) //si pas arrivé
 		    		{	    			
-		    			m.index_chemin_--;
+		    			//m.index_chemin_--;
 				    	/*values_.carte()[cell].getMobs_().remove(m);
 				    	values_.carte()[cell].setMobs_size_(values_.carte()[cell].getMobs_size_()-1);
 				    	values_.carte()[case_suivante].addMob(m);*/
@@ -412,9 +413,9 @@ public class TdJeu extends StateJeu
 		    			//si on change de case dans la carte général
 		    			if(cell3_g!=cell1_g)
 		    			{
-		    				values_.carte()[cell1_g].getMobs_().remove(m);
 					    	values_.carte()[cell1_g].setMobs_size_(values_.carte()[cell1_g].getMobs_size_()-1);
 					    	values_.carte()[cell3_g].addMob(m);
+					    	values_.carte()[cell1_g].getMobs_().remove(m);
 		    			}
 		    		}
 		    		else // on est arrivé
@@ -515,11 +516,7 @@ public class TdJeu extends StateJeu
 							sb_.draw(currentFrame,mob.getPosition_().x, mob.getPosition_().y);
 						}
 					}
-					
-					
 
-					//System.err.println(box_viewport.get_X()+" "+box_viewport.get_Y()+" "+box_viewport.get_W()+" "+box_viewport.get_H());
-					
 					//pour chaque tour de la case faire...
 					if(values_.carte()[i]!=null)
 					for(int j=0; j < values_.carte()[i].getUnits_().size();j++)
@@ -536,7 +533,7 @@ public class TdJeu extends StateJeu
 								//recuperation
 								Tir tir = values_.getPile_shot_().pop();
 								//initialisation
-								tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_);
+								tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_, t._range);
 								//lancement
 								values_.shots().add(tir);
 							}
@@ -545,8 +542,7 @@ public class TdJeu extends StateJeu
 								//duplication
 								Tir tir = new Tir(values_.tir_Modele_());
 								//parametrage
-								Vector2 vitesse2 = new Vector2(1,1);
-								tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_);
+								tir.init(str.degat_, str.position_tour_, str.vecteur_vitesse_, 0.000002f, str.time_, t._range);
 								//lancement
 								values_.shots().add(tir);
 							}
@@ -571,41 +567,52 @@ public class TdJeu extends StateJeu
 				
 				//case ou est le tir
 				int c = values_.get_Index_Cellule((int)tir.position().x,(int)tir.position().y,values_.size_Px()*values_.get_Pas(),values_.size_m()/values_.get_Pas());
-				if(c<0 || c>= values_.size_m()*values_.size_n())
-					continue;
-
-				ArrayList<Mobs> case_mob =values_.carte()[c].getMobs_(); //ts les mobs de la case
-				int existePlus = tir.onExectute(case_mob); //tir sur mob
-				if(existePlus >= 0)//on suprime
+				if(c>=0 && c< values_.size_m())
 				{
-					//emission de particle
-					if(existePlus==0) //fumée
+					ArrayList<Mobs> case_mob =values_.carte()[c].getMobs_(); //ts les mobs de la case
+					int existePlus = tir.onExectute(case_mob); //tir sur mob
+					if(existePlus >= 0)//on suprime
+					{
+						//emission de particle
+						if(existePlus==0) //fumée
+						{
+							actor2.add( new ParticleEffect(particle_effect_fumee));
+							actor2.get(actor2.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
+							actor2.get(actor2.size()-1).start();
+						}
+						else//sang
+						{
+							actor1.add( new ParticleEffect(particle_effect_sang));
+							actor1.get(actor1.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
+							actor1.get(actor1.size()-1).start();
+						}
+							
+						values_.shots().remove(a);
+						tir.time(0);
+						values_.getPile_shot_().push(tir);
+						break;
+					}
+					else if(c < 0 || c >= values_.size_m())
 					{
 						actor2.add( new ParticleEffect(particle_effect_fumee));
 						actor2.get(actor2.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
 						actor2.get(actor2.size()-1).start();
-					}
-					else//sang
-					{
-						actor1.add( new ParticleEffect(particle_effect_sang));
-						actor1.get(actor1.size()-1).getEmitters().first().setPosition(tir.position().x, tir.position().y);
-						actor1.get(actor1.size()-1).start();
-					}
 						
-					values_.shots().remove(a);
-					tir.time(0);
-					values_.getPile_shot_().push(tir);
-					break;
+						values_.shots().remove(a);
+						tir.time(0);
+						values_.getPile_shot_().push(tir);
+						break;
+					}
+					
+					
+					//deplacement
+					//animation
+									
+					tir.add_Time(Gdx.graphics.getDeltaTime()*2);
+					TextureRegion currentFrame2 = values_.shots_Sprite_().get_Animation(tir.num_Texture(),0).getKeyFrame(tir.time(), false);
+					//placement + dessin	
+					sb_.draw(currentFrame2,tir.position().x, tir.position().y);
 				}
-			
-				
-				//deplacement
-				//animation
-								
-				tir.add_Time(Gdx.graphics.getDeltaTime()*2);
-				TextureRegion currentFrame2 = values_.shots_Sprite_().get_Animation(tir.num_Texture(),0).getKeyFrame(tir.time(), false);
-				//placement + dessin	
-				sb_.draw(currentFrame2,tir.position().x, tir.position().y);
 			}
 			
 			
@@ -621,7 +628,7 @@ public class TdJeu extends StateJeu
 				col = values_.collision_Avec_Tour(t);
 				
 				int num_cell = values_.get_Index_Cellule(c.x, c.y);
-				if(num_cell == values_.cell_Depart() ||  num_cell == values_.cell_Arrive())
+				if(num_cell == values_.cell_Depart() ||  num_cell == values_.cell_Arrive() || values_.carte_Ia_isOccupe(num_cell)==true)
 					col =true;
 				
 				Color color;

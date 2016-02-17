@@ -3,7 +3,10 @@ package com.mygdx.game;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+
 import Utilitaires.CollisionBox;
 import units.Mobs;
 
@@ -27,7 +30,9 @@ public class Tir
 	private Vector2 size_txt_;
 	private int max_texture_;
 	
-	public Tir(String n, int h, int w, int n_txt, int degat, CollisionBox bbox, int nb_anim) 
+	public float range_;
+	
+	public Tir(String n, int h, int w, int n_txt, int degat, CollisionBox bbox, int nb_anim, float r) 
 	{
 		//System.err.println("create tir");
 		bbox_(bbox);
@@ -38,6 +43,8 @@ public class Tir
 		
 		position(new Vector2(0,0));
 		vitesse(new Vector2(0,0));
+		
+		range_ =r;
 	}
 	
 	public Tir(Tir modele) 
@@ -59,7 +66,7 @@ public class Tir
 		// TODO Auto-generated constructor stub
 	}
 
-	public void init(int degat, Vector2 position, Vector2 vitesse, float time, float time_destruction)
+	public void init(int degat, Vector2 position, Vector2 vitesse, float time, float time_destruction,float r)
 	{
 		position(position);
 		vitesse(vitesse);
@@ -68,17 +75,19 @@ public class Tir
 		time_total_ = time_destruction;
 		time_actu_ = 0;
 		num_texture_ =0;
+		range_ = r;
 	}
 
 	
 	public int onExectute(ArrayList<Mobs> case_mob)
 	{
-		//test collision
-		bbox_.set_X((int) position_.x);
-		bbox_.set_Y((int) position_.y);
-		
 		//changement position
 		position_.add(vitesse());
+		
+		//enregistrement position actuelle
+		bbox_.set_X((int) this.position_.x);
+		bbox_.set_Y((int) this.position_.y);
+				
 		time_total_ -=Gdx.graphics.getDeltaTime()*1000;//passage en ms
 		if(time_total_<0)
 		{
@@ -86,10 +95,10 @@ public class Tir
 		}
 		else
 		{
-			
+			//System.err.println(case_mob.size());
 			for(int i =0; i <case_mob.size();i++)
 			{
-				if(this.bbox_.collision(case_mob.get(i).getBbox_()))
+				if(case_mob.get(i).getBbox_().collision(bbox_)==true)
 				{
 					case_mob.get(i).subir_Degat(this.degat_);
 					System.err.println("degat = "+this.degat_);

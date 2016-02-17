@@ -554,7 +554,7 @@ public final class GlobalValues
 				int nb_anim=Integer.parseInt(xml.get_Child_Attribute("tir", "nb_anim", i));
 				
 				bbox = new CollisionBox(0,0,w,h);
-				tir_modele_ = new Tir(n,h,w,n_txt,0,bbox,nb_anim);
+				tir_modele_ = new Tir(n,h,w,n_txt,0,bbox,nb_anim,1);
 			} 
 		}
 		else
@@ -626,7 +626,7 @@ public final class GlobalValues
 				int nb_anim=Integer.parseInt(xml.get_Sub_Node_Item(i,"tir", "nb_anim"));
 				
 				bbox = new CollisionBox(0,0,w,h);
-				tir_modele_ = new Tir(n,h,w,n_txt,0,bbox,nb_anim);
+				tir_modele_ = new Tir(n,h,w,n_txt,0,bbox,nb_anim,1);
 			} 
 		}
 	}

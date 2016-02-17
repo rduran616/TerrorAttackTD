@@ -122,7 +122,6 @@ public class FingerTransformMap
 			 fingerOne.set(x, y, 0);
 			 Vector3 translation = new Vector3(positon_actuel.x-fingerOne.x,positon_actuel.y-fingerOne.y,0); 
 			 
-			// System.err.println("pos camera = "+(values_.camera().position.x + translation.x) +" "+(values_.camera().position.y +  translation.y+" xmin= "+y_min_+" max= "+y_max_));
 			 if((values_.camera().position.x + translation.x) >= x_min_ && (values_.camera().position.x + translation.x) < x_max_)
 				 	values_.camera_Translate(translation.x, 0);
 			 if((values_.camera().position.y - translation.y) >= y_min_ && (values_.camera().position.y - translation.y) < y_max_ )

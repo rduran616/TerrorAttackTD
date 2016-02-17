@@ -56,7 +56,10 @@ public final class CollisionBox
 	
 	public boolean collision(CollisionBox box2)
 	{
-		if((box2.x() >= x_ + w_) || (box2.x() + box2.w() <= x_)|| (box2.y() >= y_ + h_)|| (box2.y() + box2.h() <= y_)) 
+		if((box2.x() >= x_ + w_) || 
+			(box2.x() + box2.w() <= x_)||
+			(box2.y() >= y_ + h_)||
+			(box2.y() + box2.h() <= y_)) 
           return false; 
 	   else
           return true; 

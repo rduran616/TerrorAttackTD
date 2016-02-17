@@ -149,7 +149,7 @@ public abstract class TowerType
 					for(int j=0;j<size;j++)
 					{
 						// si il est vol on passe au suivant sinon on enregistre l'ennemi a viser
-						if(values_.carte()[cases_adj.get(i)].getMobs_().get(j).getAir()==false) 
+						if(values_.carte()[cases_adj.get(i)].getMobs_().get(j).getAir()==false || _air==true) 
 						{
 							cible = values_.carte()[cases_adj.get(i)].getMobs_().get(j);
 							

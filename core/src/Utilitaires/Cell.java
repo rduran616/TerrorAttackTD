@@ -1,6 +1,10 @@
 package Utilitaires;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
+
+import units.Mobs;
 
 public class Cell 
 {
@@ -85,6 +89,4 @@ public class Cell
 	{
 		return centre_;
 	}
-
-
 }
