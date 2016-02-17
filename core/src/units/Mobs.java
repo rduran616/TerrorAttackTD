@@ -32,6 +32,7 @@ public abstract class Mobs
 	private float time_;			//tps pour jouer animation
 	
 	public int index_chemin_;
+	public int case_pre_;
 	
 	
 	

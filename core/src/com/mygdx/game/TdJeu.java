@@ -46,7 +46,7 @@ public class TdJeu extends StateJeu
 	SpriteBatch sb_;
 	int num_vague_=1;
 	double rythme_creation_mobs_min = 500; //en mseconde
-	double rythme_creation_mobs_max= 10000; //en mseconde
+	double rythme_creation_mobs_max= 1000; //en mseconde
 	VagueRand vague_;
 	TickHorloge tick_;
 	Noeud depart[]; //posibilité d'avoir plusieurs départ
@@ -195,7 +195,7 @@ public class TdJeu extends StateJeu
 		}
 		
 		//si on est dans le bon temps on peut creer un ennemi
-		if(tick_.tick())
+		if(tick_.tick() )
 		{
 			//choix de l'ennemi
 			int m = vague_.get_Ennemi();
@@ -205,7 +205,7 @@ public class TdJeu extends StateJeu
 			
 			int rand =(int)((Math.random()*100)%nb_depart);
 			Vector2  position = new Vector2(values_.carte_Ia()[depart[rand].case_()].centre());
-			
+
 			//creation et placement		
 			if(chemin!=null)
 			switch(m)
@@ -324,40 +324,37 @@ public class TdJeu extends StateJeu
 		    	if(index == chemin.size())
 		    		index --;*/
 		    	//case suivante
-		    	int case_suivante;//=chemin.get(index).case_();
+		    	int case_suivante = 0;//=chemin.get(index).case_();
 		    	
 		    	
 		    	/****************** test new ia ************/
 		    	//recuperation cases adj valide
 
 		    	ArrayList<Integer> adj_valide = new ArrayList<Integer>();
-		    	adj_valide = Spirale.adjacente2(values_.size_Px(), m.getPosition_(), values_.size_n(), values_.size_m(), 2);
-		    	
-	    		
-		    	int d_min =1000000000;
-		    	int indexx =0;
-		    	int case_actu = values_.get_Index_Cellule(m.getPosition_().x, m.getPosition_().y, 32, 32);
+		    	int case_actu = values_.get_Index_Cellule(m.getPosition_().x, m.getPosition_().y, values_.size_Px(), values_.size_n());
 		    	Vector2 arrivee_vec = new Vector2(values_.carte_Ia()[arrivee.case_()].centre());
-		    	for(int c = 0 ; c <adj_valide.size();c++ )
+		    	//vecteur DA
+		    	Vector2 DA = new Vector2(arrivee_vec.x -m.getPosition_().x, arrivee_vec.y -m.getPosition_().y);
+		    	double norme =Math.sqrt((Math.pow(DA.x, 2))+(Math.pow(DA.y, 2))); 
+		    	int case_suivante_2 = values_.get_Index_Cellule((float)(m.getPosition_().x+25*(DA.x/norme)),(float)( m.getPosition_().y+25*(DA.y/norme)), values_.size_Px(), values_.size_n());
+		    	if(values_.carte_Ia_isOccupe(case_suivante_2)==false)
 		    	{
-		    	//	System.err.print("  c="+adj_valide.get(c));
-		    		if(values_.carte_Ia_isOccupe(adj_valide.get(c))==false && adj_valide.get(c)!=case_actu)
-		    		{
-		    			Vector2 p = new Vector2(values_.carte_Ia()[adj_valide.get(c)].centre());
-		    			int d = (int) (Math.abs(arrivee_vec.x - p.x) + Math.abs(arrivee_vec.y - p.y));
-		    		//	System.err.print(" d= "+d);
-		    			if(d<=d_min)
-		    			{
-		    				d_min = d;
-		    				indexx=c;
-		    			}
-		    		}
+		    		case_suivante = case_suivante_2;
 		    	}
-		    	
-		    	
-		    	case_suivante = adj_valide.get(indexx);
-		    	//System.err.println("  case actu= "+case_actu+"  case suivante="+case_suivante);
-		    	//System.err.println("");
+		    	else
+		    	{
+		    		adj_valide = Spirale.adjacente2(values_.size_Px(), m.getPosition_(), values_.size_n(), values_.size_m(), 2);
+			    	
+		    		//prendre la premiere case vide
+		    		for(int c = 0 ; c <adj_valide.size();c++ )
+			    	{
+		    			if(values_.carte_Ia_isOccupe(adj_valide.get(c))==false && adj_valide.get(c)!=case_actu)
+		    			{
+		    				case_suivante = adj_valide.get(c);
+		    				break;
+		    			}
+			    	}
+		    	}
 		    	
 		    	//position actuel
 		    	Vector2 pos = m.getPosition_();
@@ -391,8 +388,6 @@ public class TdJeu extends StateJeu
 		    	//deplacement avec application de la vitesse
 		    	position.x=(pos.x+(pos3.x*m.getSpeed_()*Gdx.graphics.getDeltaTime()));
 		    	position.y=(pos.y+(pos3.y*m.getSpeed_()*Gdx.graphics.getDeltaTime()));
-		    	
-		    
 		    	
 		    	//mise a jour position
 		    	m.setNum_direction_(0);
